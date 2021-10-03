@@ -7,9 +7,9 @@
 #include "operator.h"
 #include "data_partition.h"
 
-::(size_t column, size_t rows, size_t index_from, size_t index_to): column(column), rows(rows), index_from(index_from), index_to(index_to), results(std::ceil((double(index_to) - double(index_from))/2)) {}
+Operator::Operator(size_t column, size_t rows, size_t index_from, size_t index_to): column(column), rows(rows), index_from(index_from), index_to(index_to), results(std::ceil((double(index_to) - double(index_from))/2)) {}
 
-void ::apply(data_partition& dp){
+void Operator::apply(DataPartition& dp){
     /*
     if(dp.getFirstRowIndex() >= index_from && dp.getLastRowIndex() < index_to){
         size_t idx = dp.getIndex();
@@ -29,11 +29,11 @@ void ::apply(data_partition& dp){
     }
 }
 
-uint16_t ::combine() const {
+uint16_t Operator::combine() const {
     return operate(results);
 }
 
-uint16_t ::operate(const std::vector<uint16_t>& data) const{
+uint16_t Operator::operate(const std::vector<uint16_t>& data) const{
     return operate(data, 0, data.size());
 }
 

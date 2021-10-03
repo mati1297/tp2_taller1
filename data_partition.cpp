@@ -1,13 +1,13 @@
 #include <iostream>
 #include "data_partition.h"
 
-data_partition::data_partition(size_t index, size_t rows, size_t columns): index(index), rows(rows), columns(columns), _row(0), _column(0), state(STATE_CLEAR), data(columns){
+DataPartition::DataPartition(size_t index, size_t rows, size_t columns): index(index), rows(rows), columns(columns), _row(0), _column(0), state(STATE_CLEAR), data(columns){
     for(size_t i = 0; i < columns; i++){
         data[i] = std::vector<uint16_t>(rows);
     }
 }
 
-void data_partition::load(const uint16_t& number){
+void DataPartition::load(const uint16_t& number){
     if(state == STATE_FULL){
         std::cout << "FULL" << std::endl;
     }
@@ -24,20 +24,20 @@ void data_partition::load(const uint16_t& number){
     }
 }
 
-void data_partition::reset(const size_t& index){
+void DataPartition::reset(const size_t& index){
     this->index = index;
     _column = _row = 0;
     //memset a 0?.
     state = STATE_CLEAR;
 }
 
-bool data_partition::isFull() const{
+bool DataPartition::isFull() const{
     if(state == STATE_FULL)
         return true;
     return false;
 }
 
-void data_partition::print(){
+void DataPartition::print(){
     std::cout << "Particion:" << std::endl;
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++)
@@ -46,22 +46,22 @@ void data_partition::print(){
     }
 }
 
-const std::vector<uint16_t>& data_partition::getColumnData(size_t column_idx) const{
+const std::vector<uint16_t>& DataPartition::getColumnData(size_t column_idx) const{
     if(column_idx >= columns)
         std::cout<<"ERROR"<<std::endl;
         //exception
     return data[column_idx];
 }
 
-size_t data_partition::getFirstRowIndex() const{
+size_t DataPartition::getFirstRowIndex() const{
     return index * rows;
 }
 
-size_t data_partition::getLastRowIndex() const {
+size_t DataPartition::getLastRowIndex() const {
     return (index + 1) * rows - 1;
 }
 
-size_t data_partition::getIndex() const {
+size_t DataPartition::getIndex() const {
     return index;
 }
 

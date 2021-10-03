@@ -11,11 +11,11 @@ int main() {
     uint16_t number;
 
     size_t rows = 2;
-    data_partition data_partition(0, rows, 4);
-    max max = max(0, rows, 0, 15);
-    min min = min(0, rows, 0, 15);
-    sum sum = sum(0, rows, 1, 13);
-     * op = &min;
+    DataPartition data_partition(0, rows, 4);
+    Max max = Max(0, rows, 0, 15);
+    Min min = Min(0, rows, 0, 15);
+    Sum sum = Sum(0, rows, 1, 13);
+    Operator * op = &min;
     int i = 0;
     while (!file_reader.eof()){
         data_partition.reset(i);

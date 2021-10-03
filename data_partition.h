@@ -1,10 +1,10 @@
-#ifndef TP2_TALLER1_DATA_PARTITION_H
-#define TP2_TALLER1_DATA_PARTITION_H
+#ifndef TP2_TALLER1_DATAPARTITION_H
+#define TP2_TALLER1_DATAPARTITION_H
 
 #include <vector>
 #include <cstdint>
 
-class data_partition {
+class DataPartition {
 private:
     enum State{
         STATE_CLEAR,
@@ -21,7 +21,7 @@ private:
     std::vector<std::vector<uint16_t>> data;
 
 public:
-    data_partition(size_t index, size_t rows, size_t columns);
+    DataPartition(size_t index, size_t rows, size_t columns);
     void load(const uint16_t &number);
 
     bool isFull() const;
@@ -41,4 +41,4 @@ public:
 };
 
 
-#endif //TP2_TALLER1_DATA_PARTITION_H
+#endif //TP2_TALLER1_DATAPARTITION_H

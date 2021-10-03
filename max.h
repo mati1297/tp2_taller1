@@ -8,9 +8,9 @@
 #include <cstdint>
 #include "operator.h"
 
-class max: public  {
+class Max: public Operator {
 public:
-    max(size_t column, size_t rows, size_t index_from, size_t index_to);
+    Max(size_t column, size_t rows, size_t index_from, size_t index_to);
     uint16_t operate(const std::vector<uint16_t>& data, const size_t& from, const size_t& to) const override;
 };
 
