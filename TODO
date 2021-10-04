@@ -1,3 +1,5 @@
 revisar tipos const (funciones const) y size_t
 agregar excepciones donde lo indique y mas
-
+validar parametros de task etc.
+revisar pasajes const y &, etc
+revisar lo de los constructores por copia
