@@ -37,6 +37,8 @@ private:
 
     void setPartitionRows(const size_t& partition_rows);
 
+    void reset();
+
 public:
     Task(Operator * op, size_t partition_columns, size_t partition_rows, size_t column_to_process, size_t index_from, size_t index_to, size_t workers, DataLoader * data_loader);
 
@@ -47,6 +49,8 @@ public:
     size_t split();
 
     uint16_t run();
+
+
 };
 
 

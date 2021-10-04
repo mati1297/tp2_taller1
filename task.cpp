@@ -13,7 +13,15 @@ Task::Task(Operator * op, size_t partition_columns, size_t partition_rows, size_
 
 // crear otro constructor??
 
+void Task::reset(){
+    data_loader->reset();
+    current_data_partition_index = 0;
+    for (size_t  i = 0; i < results.size(); i++)
+        results[i] = 0;
+}
+
 uint16_t Task::run() {
+    reset();
     while(!data_loader->endOfDataset()) {
         size_t index = split();
         apply(partitions[index]);
@@ -53,6 +61,8 @@ void Task::setOperator(const Operator *& op) {
 void Task::setRange(const size_t &from, const size_t &to) {
     if(to <= from)
         return;
+    if ((index_to - index_from) == (to - from))
+        results = std::vector<uint16_t>(to - from);
     index_from = from;
     index_to = to;
 }

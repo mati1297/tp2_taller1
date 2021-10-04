@@ -15,13 +15,23 @@ TaskReader::TaskReader(): sum(), min(), max() {}
 void TaskReader::read(Task &task) {
     std::string read1, read2;
     std::cin >> read1;
+    if(std::cin.eof())
+        return;
     std::cin >> read2;
+    if(std::cin.eof())
+        return;
     setupRanges(task, read1, read2);
     std::cin >> read1;
-    setupColumn(task, read1);
-    std::cin >> read1;
+    if(std::cin.eof())
+        return;
     setupPartitionRows(task, read1);
     std::cin >> read1;
+    if(std::cin.eof())
+        return;
+    setupColumn(task, read1);
+    std::cin >> read1;
+    if(std::cin.eof())
+        return;
     setupOperator(task, read1);
 }
 

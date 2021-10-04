@@ -19,14 +19,10 @@ int main() {
 
     TaskReader task_reader = TaskReader();
 
-    task_reader.read(task);
-
-
-
-
-
-    uint16_t result = task.run();
-
-    std::cout << "Resultado: " << result << std::endl;
+    while(!std::cin.eof()) {
+        task_reader.read(task);
+        uint16_t result = task.run();
+        std::cout << "Resultado: " << result << std::endl;
+    }
     return 0;
 }
