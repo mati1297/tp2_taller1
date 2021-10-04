@@ -4,3 +4,4 @@ validar parametros de task etc.
 revisar pasajes const y &, etc
 revisar lo de los constructores por copia
 hacer que corte si ya llego al index (y antes? podria hacerlo tambien)
+esta bien como estoy leyendo de stdin?

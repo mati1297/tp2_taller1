@@ -23,8 +23,8 @@ Task::Task(Operator * op, size_t part_columns, size_t part_rows,
 void Task::reset(){
     data_loader->reset();
     current_data_partition_index = 0;
-    for (size_t  i = 0; i < results.size(); i++)
-        results[i] = 0;
+    for (size_t i = 0; i < results.size(); i++)
+        results[i].reset();
 }
 
 Result Task::run() {
@@ -45,12 +45,13 @@ size_t Task::split() {
     return reduced_index;
 }
 
+//revisarlo esto, ver tema de si se puede hacer sin ir a negativo.
 void Task::apply(DataPartition& dp){
     if (index_from >= index_to)
         return;
-    int dp_from = std::max(index_from,
+    int64_t dp_from = std::max(index_from,
                            dp.getFirstRowIndex()) - dp.getFirstRowIndex();
-    int dp_to = std::min(index_to - 1,
+    int64_t dp_to = std::min(index_to - 1,
                          dp.getLastRowIndex()) - dp.getFirstRowIndex() + 1;
     if (dp_to > dp_from){
         size_t idx = dp.getIndex();
@@ -73,7 +74,7 @@ void Task::setOperator(const Operator *& op) {
 
 void Task::setRange(const size_t &from, const size_t &to) {
     if (to <= from)
-        return;
+        throw std::invalid_argument("la fila inicial es mayor que la final");
     if ((index_to - index_from) != (to - from))
         results = std::vector<Result>(
                 ceil(to - from, part_rows));
@@ -83,13 +84,13 @@ void Task::setRange(const size_t &from, const size_t &to) {
 
 void Task::setColumnToProcess(const size_t &column) {
     if (column < 0 || column >= this->part_columns)
-        return;
+        throw std::invalid_argument("la columna ingresada no es valida");
     this->column_to_process = column;
 }
 
 void Task::setPartitionRows(const size_t& rows) {
     if (rows < 1)
-        return;
+        throw std::invalid_argument("la cantidad de columnas no puede ser 0");
     if (this->part_rows == rows)
         return;
     this->part_rows = rows;

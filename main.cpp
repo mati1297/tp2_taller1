@@ -12,7 +12,11 @@ int main(int argc, char * argv[]) {
     if (argc < 4)
         return 1;
 
+
+
+
     FileReader file_reader(argv[1]);
+
 
     size_t columns = std::stoull(argv[2]);
     size_t workers = std::stoull(argv[3]);
@@ -30,7 +34,8 @@ int main(int argc, char * argv[]) {
             if (task_reader.read(task))
                 break;
         }
-        catch(std::exception &e) {
+        catch(std::invalid_argument &e) {
+            std::cerr << "Error: " << e.what() << std::endl;
             return EXIT_FAILURE;
         }
         task.run();

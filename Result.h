@@ -23,6 +23,8 @@ public:
     const uint16_t &getNumber() const;
 
     const size_t &getExtra() const;
+
+    void reset();
 };
 
 
