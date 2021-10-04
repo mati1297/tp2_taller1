@@ -15,50 +15,50 @@ TaskReader::TaskReader(): sum(), min(), max(), mean() {}
 uint8_t TaskReader::read(Task &task) {
     std::string read1, read2;
     std::cin >> read1;
-    if(std::cin.eof())
+    if (std::cin.eof())
         return 1;
     std::cin >> read2;
-    if(std::cin.eof())
+    if (std::cin.eof())
         //exception
         return 1;
     setupRanges(task, read1, read2);
     std::cin >> read1;
-    if(std::cin.eof())
+    if (std::cin.eof())
         return 1;
     setupPartitionRows(task, read1);
     std::cin >> read1;
-    if(std::cin.eof())
+    if (std::cin.eof())
         return 1;
     setupColumn(task, read1);
     std::cin >> read1;
-    if(std::cin.eof())
+    if (std::cin.eof())
         return 1;
     try {
         setupOperator(task, read1);
     }
-    catch (std::exception& e){
+    catch(std::exception& e){
         throw e;
     }
     return 0;
 }
 
-void TaskReader::setupOperator(Task &task, const std::string& text) const{
+void TaskReader::setupOperator(Task &task, const std::string& text) const {
     const Operator * op = nullptr;
-    if(text == "sum")
+    if (text == "sum")
         op = &sum;
-    else if(text == "min")
+    else if (text == "min")
         op = &min;
-    else if(text == "max")
+    else if (text == "max")
         op = &max;
-    else if(text == "mean")
+    else if (text == "mean")
         op = &mean;
-    else{
+    else
         throw std::invalid_argument("operador incorrecto");
-    }
     task.setOperator(op);
 }
 
-void TaskReader::setupRanges(Task &task, const std::string& text_from, const std::string& text_to) {
+void TaskReader::setupRanges(Task &task, const std::string& text_from,
+                             const std::string& text_to) {
     //chequeos de conversion
     size_t from = std::stoull(text_from);
     size_t to = std::stoull(text_to);
@@ -71,7 +71,7 @@ void TaskReader::setupColumn(Task &task, const std::string& text) {
     task.setColumnToProcess(column);
 }
 
-void TaskReader::setupPartitionRows(Task &task, const std::string& text) const {
+void TaskReader::setupPartitionRows(Task &task, const std::string& text) {
     size_t partition_rows = std::stoull(text);
     //validar
     task.setPartitionRows(partition_rows);

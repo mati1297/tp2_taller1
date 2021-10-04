@@ -5,7 +5,8 @@
 #include "data_loader.h"
 #include "file_reader.h"
 
-DataLoader::DataLoader(FileReader * const file_reader): file_reader(file_reader) {}
+DataLoader::DataLoader(FileReader * const file_reader):
+                       file_reader(file_reader) {}
 
 void DataLoader::reset(){
     file_reader->reset();
@@ -20,12 +21,12 @@ void DataLoader::load(DataPartition &dp, const size_t& idx) const {
     if (!file_reader->peekEof()){
         dp.reset(idx);
         while (!dp.isFull()){
-            if(file_reader->peekEof())
+            if (file_reader->peekEof())
                 break;
             file_reader->read(number);
             dp.load(number);
         }
-        while(!dp.isFull())
+        while (!dp.isFull())
             dp.load(0);
         //dp.print();
     }

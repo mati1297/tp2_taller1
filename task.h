@@ -19,8 +19,8 @@ class Task {
 private:
     const Operator * op;
     const size_t workers;
-    const size_t partition_columns;
-    size_t partition_rows;
+    const size_t part_columns;
+    size_t part_rows;
     size_t column_to_process;
     size_t index_from;
     size_t index_to;
@@ -39,8 +39,12 @@ private:
 
     void reset();
 
+    static size_t ceil(size_t num, size_t den);
+
 public:
-    Task(Operator * op, size_t partition_columns, size_t partition_rows, size_t column_to_process, size_t index_from, size_t index_to, size_t workers, DataLoader * data_loader);
+    Task(Operator * op, size_t part_columns, size_t part_rows,
+         size_t column_to_process, size_t index_from,
+         size_t index_to, size_t workers, DataLoader * data_loader);
 
     void apply(DataPartition &dp);
 
@@ -49,8 +53,6 @@ public:
     size_t split();
 
     Result run();
-
-
 };
 
 

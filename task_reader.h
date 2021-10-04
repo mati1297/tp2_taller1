@@ -23,17 +23,19 @@ private:
 
     void setupOperator(Task &task, const std::string &text) const;
 
-public:
+    static void setupRanges(Task &task, const std::string& text_from,
+                            const std::string& text_to);
 
+    static void setupColumn(Task &task, const std::string& text);
+
+    static void setupPartitionRows(Task &task, const std::string& text);
+
+public:
     TaskReader();
 
-    uint8_t read(Task& task) ;
+    uint8_t read(Task& task);
 
-    static void setupRanges(Task &task, const std::string& text_from, const std::string& text_to) ;
 
-    static void setupColumn(Task &task, const std::string& text) ;
-
-    void setupPartitionRows(Task &task, const std::string& text) const;
 };
 
 

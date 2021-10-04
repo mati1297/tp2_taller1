@@ -9,7 +9,7 @@
 #include "max.h"
 
 int main(int argc, char * argv[]) {
-    if(argc < 4)
+    if (argc < 4)
         return 1;
 
     FileReader file_reader(argv[1]);
@@ -27,10 +27,10 @@ int main(int argc, char * argv[]) {
 
     while (!std::cin.eof() && std::cin.peek() != EOF) {
         try {
-            if(task_reader.read(task))
+            if (task_reader.read(task))
                 break;
         }
-        catch (std::exception &e) {
+        catch(std::exception &e) {
             return EXIT_FAILURE;
         }
         task.run();

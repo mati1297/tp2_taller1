@@ -2,7 +2,7 @@
 #include "file_reader.h"
 
 FileReader::FileReader(const char * const & filename): file(filename) {
-    if(!file.is_open()) {
+    if (!file.is_open()) {
         file.close();
         throw std::invalid_argument("el archivo no existe");
     }
@@ -48,7 +48,7 @@ FileReader::~FileReader() {
 // Reemplazar con clase Endian?
 void FileReader::checkNativeEndianness() {
     int num = 1;
-    if(*(char *)&num == 1)
+    if (*(char *)&num == 1)
         native = ENDIANNESS_LITTLE;
     else
         native = ENDIANNESS_BIG;
