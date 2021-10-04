@@ -10,6 +10,7 @@
 #include "min.h"
 #include "sum.h"
 #include "max.h"
+#include "mean.h"
 
 class Task;
 
@@ -18,6 +19,7 @@ private:
     const Sum sum;
     const Min min;
     const Max max;
+    const Mean mean;
 
     void setupOperator(Task &task, const std::string &text) const;
 
@@ -25,7 +27,7 @@ public:
 
     TaskReader();
 
-    void read(Task& task) ;
+    uint8_t read(Task& task) ;
 
     static void setupRanges(Task &task, const std::string& text_from, const std::string& text_to) ;
 

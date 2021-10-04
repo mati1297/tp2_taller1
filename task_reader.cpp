@@ -10,29 +10,36 @@
 #include "max.h"
 #include "min.h"
 
-TaskReader::TaskReader(): sum(), min(), max() {}
+TaskReader::TaskReader(): sum(), min(), max(), mean() {}
 
-void TaskReader::read(Task &task) {
+uint8_t TaskReader::read(Task &task) {
     std::string read1, read2;
     std::cin >> read1;
     if(std::cin.eof())
-        return;
+        return 1;
     std::cin >> read2;
     if(std::cin.eof())
-        return;
+        //exception
+        return 1;
     setupRanges(task, read1, read2);
     std::cin >> read1;
     if(std::cin.eof())
-        return;
+        return 1;
     setupPartitionRows(task, read1);
     std::cin >> read1;
     if(std::cin.eof())
-        return;
+        return 1;
     setupColumn(task, read1);
     std::cin >> read1;
     if(std::cin.eof())
-        return;
-    setupOperator(task, read1);
+        return 1;
+    try {
+        setupOperator(task, read1);
+    }
+    catch (std::exception& e){
+        throw e;
+    }
+    return 0;
 }
 
 void TaskReader::setupOperator(Task &task, const std::string& text) const{
@@ -43,6 +50,8 @@ void TaskReader::setupOperator(Task &task, const std::string& text) const{
         op = &min;
     else if(text == "max")
         op = &max;
+    else if(text == "mean")
+        op = &mean;
     else{
         throw std::invalid_argument("operador incorrecto");
     }

@@ -9,7 +9,7 @@
 #include "operator.h"
 #include "file_reader.h"
 
-Task::Task(Operator * op, size_t partition_columns, size_t partition_rows, size_t column_to_process, size_t index_from, size_t index_to, size_t workers, DataLoader * data_loader): op(op), workers(workers), partition_columns(partition_columns), partition_rows(partition_rows), column_to_process(column_to_process), index_from(index_from), index_to(index_to), results(std::ceil((double(index_to) - double(index_from)) / 2)), partitions(workers, DataPartition(0, partition_rows, partition_columns)), data_loader(data_loader), current_data_partition_index(0) {}
+Task::Task(Operator * op, size_t partition_columns, size_t partition_rows, size_t column_to_process, size_t index_from, size_t index_to, size_t workers, DataLoader * data_loader): op(op), workers(workers), partition_columns(partition_columns), partition_rows(partition_rows), column_to_process(column_to_process), index_from(index_from), index_to(index_to), results(std::ceil((double(index_to) - double(index_from)) / partition_rows)), partitions(workers, DataPartition(0, partition_rows, partition_columns)), data_loader(data_loader), current_data_partition_index(0) {}
 
 // crear otro constructor??
 
@@ -20,14 +20,15 @@ void Task::reset(){
         results[i] = 0;
 }
 
-uint16_t Task::run() {
+Result Task::run() {
     reset();
     while(!data_loader->endOfDataset()) {
         size_t index = split();
         apply(partitions[index]);
     }
-    return combine();
-
+    Result result = combine();
+    op->printResult(result);
+    return result;
 }
 
 size_t Task::split() {
@@ -45,13 +46,14 @@ void Task::apply(DataPartition& dp){
     if(dp_to > dp_from){
         size_t idx = dp.getIndex();
         const std::vector<uint16_t>& column_data = dp.getColumnData(column_to_process);
-        uint16_t result = op->operate(column_data, dp_from, dp_to);
-        results[idx - index_from / partition_rows] = result;
+        op->operate(results[idx - index_from / partition_rows], column_data, dp_from, dp_to);
     }
 }
 
-uint16_t Task::combine() const {
-    return op->operate(results);
+Result Task::combine() const {
+    Result result;
+    op->operate(result, results);
+    return result;
 }
 
 void Task::setOperator(const Operator *& op) {
@@ -61,8 +63,8 @@ void Task::setOperator(const Operator *& op) {
 void Task::setRange(const size_t &from, const size_t &to) {
     if(to <= from)
         return;
-    if ((index_to - index_from) == (to - from))
-        results = std::vector<uint16_t>(to - from);
+    if ((index_to - index_from) != (to - from))
+        results = std::vector<Result>(std::ceil((double(to) - double(from)) / partition_rows));
     index_from = from;
     index_to = to;
 }
@@ -76,10 +78,13 @@ void Task::setColumnToProcess(const size_t &column) {
 void Task::setPartitionRows(const size_t& rows) {
     if(rows < 1)
         return;
+    if(this->partition_rows == rows)
+        return;
     this->partition_rows = rows;
     for (size_t i = 0; i < workers; i++){
         partitions[i].setRows(rows);
     }
+    results = std::vector<Result>(std::ceil((double(index_to) - double(index_from)) / partition_rows));
 }
 
 

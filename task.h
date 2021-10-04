@@ -24,7 +24,7 @@ private:
     size_t column_to_process;
     size_t index_from;
     size_t index_to;
-    std::vector<uint16_t> results;
+    std::vector<Result> results;
     std::vector<DataPartition> partitions;
     DataLoader * data_loader;
     size_t current_data_partition_index;
@@ -44,11 +44,11 @@ public:
 
     void apply(DataPartition &dp);
 
-    uint16_t combine() const;
+    Result combine() const;
 
     size_t split();
 
-    uint16_t run();
+    Result run();
 
 
 };

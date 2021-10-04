@@ -10,7 +10,7 @@
 
 class Min: public Operator {
 public:
-    uint16_t operate(const std::vector<uint16_t>& data, const size_t& from, const size_t& to) const override;
+    void operate(Result& result, const std::vector<uint16_t>& data, const size_t& from, const size_t& to) const override;
 };
 
 

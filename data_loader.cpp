@@ -27,6 +27,6 @@ void DataLoader::load(DataPartition &dp, const size_t& idx) const {
         }
         while(!dp.isFull())
             dp.load(0);
-        dp.print();
+        //dp.print();
     }
 }
