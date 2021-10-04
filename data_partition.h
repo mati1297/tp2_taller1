@@ -13,7 +13,7 @@ private:
     };
 
     size_t index;
-    const size_t rows;
+    size_t rows;
     const size_t columns;
     size_t _row;
     size_t _column;
@@ -38,6 +38,7 @@ public:
 
     size_t getIndex() const;
 
+    void setRows(const size_t &_rows);
 };
 
 

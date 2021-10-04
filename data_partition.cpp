@@ -1,13 +1,10 @@
 #include <iostream>
 #include "data_partition.h"
 
-DataPartition::DataPartition(size_t index, size_t rows, size_t columns): index(index), rows(rows), columns(columns), _row(0), _column(0), state(STATE_CLEAR), data(columns){
-    for(size_t i = 0; i < columns; i++){
-        data[i] = std::vector<uint16_t>(rows);
-    }
-}
+DataPartition::DataPartition(size_t index, size_t rows, size_t columns): index(index), rows(rows), columns(columns), _row(0), _column(0), state(STATE_CLEAR), data(columns, std::vector<uint16_t>(rows)) {}
 
 void DataPartition::load(const uint16_t& number){
+    //hacer los contadores static?
     if(state == STATE_FULL){
         std::cout << "FULL" << std::endl;
     }
@@ -63,6 +60,14 @@ size_t DataPartition::getLastRowIndex() const {
 
 size_t DataPartition::getIndex() const {
     return index;
+}
+
+void DataPartition::setRows(const size_t& _rows) {
+    if(this->rows == _rows)
+        return;
+    this->rows = _rows;
+    for (size_t i = 0; i < columns; i++)
+        data[i] = std::vector<uint16_t>(_rows);
 }
 
 

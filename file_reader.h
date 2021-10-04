@@ -8,7 +8,7 @@ typedef enum{
     ENDIANNESS_LITTLE
 } Endianness;
 
-class file_reader {
+class FileReader {
 private:
     std::ifstream file;
     Endianness native;
@@ -16,13 +16,17 @@ private:
     void checkNativeEndianness();
 
 public:
-    file_reader(const char * const & filename);
-    file_reader(file_reader& original) = delete;
-    ~file_reader();
+    explicit FileReader(const char * const & filename);
+    FileReader(FileReader& original) = delete;
+    ~FileReader();
     void read(uint8_t& byte);
     void read(uint16_t& n, Endianness endianness);
     void read(uint16_t& n);
     bool eof();
+
+    void reset();
+
+    bool peekEof();
 };
 
 

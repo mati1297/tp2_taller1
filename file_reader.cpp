@@ -1,7 +1,7 @@
 #include <iostream>
 #include "file_reader.h"
 
-file_reader::file_reader(const char * const & filename): file(filename) {
+FileReader::FileReader(const char * const & filename): file(filename) {
     if(!file.is_open()) {
         file.close();
         throw std::invalid_argument("el archivo no existe");
@@ -9,12 +9,17 @@ file_reader::file_reader(const char * const & filename): file(filename) {
     checkNativeEndianness();
 }
 
-void file_reader::read(uint8_t& byte) {
+void FileReader::reset(){
+    file.clear();
+    file.seekg(0, std::ios_base::beg);
+}
+
+void FileReader::read(uint8_t& byte) {
     file.read((char*) &byte, 1);
 }
 
 //chequeos
-void file_reader::read(uint16_t& n, Endianness endianness){
+void FileReader::read(uint16_t& n, Endianness endianness){
     uint8_t bytes[2];
     read(bytes[0]);
     read(bytes[1]);
@@ -24,25 +29,31 @@ void file_reader::read(uint16_t& n, Endianness endianness){
         n = bytes[1] + (bytes[0] << 8);
 }
 
-void file_reader::read(uint16_t& n){
+void FileReader::read(uint16_t& n){
     read(n, ENDIANNESS_BIG);
 }
 
-bool file_reader::eof() {
+bool FileReader::eof() {
     return file.eof();
 }
 
-file_reader::~file_reader() {
+bool FileReader::peekEof() {
+    return (file.peek() == EOF);
+}
+
+FileReader::~FileReader() {
     file.close();
 }
 
 // Reemplazar con clase Endian?
-void file_reader::checkNativeEndianness() {
+void FileReader::checkNativeEndianness() {
     int num = 1;
     if(*(char *)&num == 1)
         native = ENDIANNESS_LITTLE;
     else
         native = ENDIANNESS_BIG;
 }
+
+
 
 

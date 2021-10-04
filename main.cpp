@@ -1,37 +1,32 @@
 #include <iostream>
 #include "file_reader.h"
+#include "data_loader.h"
 #include "data_partition.h"
-#include "operator.h"
+#include "task.h"
+#include "task_reader.h"
 #include "sum.h"
 #include "min.h"
 #include "max.h"
 
 int main() {
-    file_reader file_reader("dataset");
-    uint16_t number;
+    FileReader file_reader("dataset");
 
     size_t rows = 2;
-    DataPartition data_partition(0, rows, 4);
-    Max max = Max(0, rows, 0, 15);
-    Min min = Min(0, rows, 0, 15);
-    Sum sum = Sum(0, rows, 1, 13);
+    Min min = Min();
     Operator * op = &min;
-    int i = 0;
-    while (!file_reader.eof()){
-        data_partition.reset(i);
-        while (!data_partition.isFull()){
-            file_reader.read(number);
-            data_partition.load(number);
-        }
-        data_partition.print();
-        op->apply(data_partition);
-        i++;
-    }
+    DataLoader data_loader = DataLoader(&file_reader);
+    Task task = Task(op, 4, rows, 0, 0, 15, 1, &data_loader);
 
-    uint16_t result = op->combine();
+    TaskReader task_reader = TaskReader();
 
-    std::cout << "Filas: " << i << std::endl;
+    task_reader.read(task);
+
+
+
+
+
+    uint16_t result = task.run();
+
     std::cout << "Resultado: " << result << std::endl;
-
     return 0;
 }

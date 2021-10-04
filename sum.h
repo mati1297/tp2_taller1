@@ -11,7 +11,6 @@
 
 class Sum: public Operator{
 public:
-    Sum(size_t column, size_t rows, size_t index_from, size_t index_to);
     uint16_t operate(const std::vector<uint16_t>& data, const size_t& from, const size_t& to) const override;
 };
 
