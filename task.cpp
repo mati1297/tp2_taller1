@@ -55,7 +55,7 @@ uint32_t Task::split() {
 
 //revisarlo esto, ver tema de si se puede hacer sin ir a negativo.
 void Task::apply(const DataPartition & dp){
-    if(op == nullptr)
+    if (op == nullptr)
         throw std::invalid_argument("no hay un operador designado");
     int64_t dp_from = std::max((uint32_t) 0,
                            dp.getFirstRowIndex()) - dp.getFirstRowIndex();

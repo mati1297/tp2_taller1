@@ -15,7 +15,7 @@ int main(int argc, char * argv[]) {
     try {
         file_reader.open(argv[1]);
     }
-    catch (std::exception & e) {
+    catch(std::exception & e) {
         std::cerr << "Error al leer el archivo: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }

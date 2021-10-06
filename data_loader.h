@@ -23,5 +23,4 @@ public:
     void setEnd(const uint32_t & end_);
 };
 
-
 #endif //TP2_TALLER1_DATA_LOADER_H

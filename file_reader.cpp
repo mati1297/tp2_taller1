@@ -5,18 +5,18 @@
 FileReader::FileReader(): file() {}
 
 void FileReader::open(const char * const & filename) {
-    if(file.is_open()){
+    if (file.is_open()){
         file.close();
     }
     file.open(filename);
-    if(!file.is_open()) {
+    if (!file.is_open()) {
         file.close();
         throw std::invalid_argument("el archivo no existe");
     }
 }
 
 void FileReader::close() {
-    if(file.is_open())
+    if (file.is_open())
         file.close();
 }
 

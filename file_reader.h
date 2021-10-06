@@ -5,8 +5,6 @@
 
 class FileReader {
 private:
-
-
     std::ifstream file;
 
 public:
