@@ -34,8 +34,6 @@ public:
     TaskReader();
 
     uint8_t read(Task& task);
-
-
 };
 
 

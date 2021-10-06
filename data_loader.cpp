@@ -32,7 +32,6 @@ void DataLoader::load(DataPartition &dp, const size_t& idx){
         dp.close();
         //dp.print();
     }
-
 }
 
 void DataLoader::setStart(const size_t& _start) {

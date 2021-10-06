@@ -75,7 +75,7 @@ void TaskReader::setupRanges(Task &task, const std::string& text_from,
                              const std::string& text_to) {
     size_t from, to;
     try {
-        if(text_from.find('-') != std::string::npos)
+        if (text_from.find('-') != std::string::npos)
             throw std::invalid_argument("");
         from = std::stoull(text_from);
     }
@@ -83,7 +83,7 @@ void TaskReader::setupRanges(Task &task, const std::string& text_from,
         throw std::invalid_argument("error al leer la fila inicial");
     }
     try {
-        if(text_to.find('-') != std::string::npos)
+        if (text_to.find('-') != std::string::npos)
             throw std::invalid_argument("");
         to = std::stoull(text_to);
     }
@@ -93,7 +93,7 @@ void TaskReader::setupRanges(Task &task, const std::string& text_from,
     try {
         task.setRange(from, to);
     }
-    catch (std::invalid_argument& e){
+    catch(std::invalid_argument& e){
         throw e;
     }
 }
@@ -101,7 +101,7 @@ void TaskReader::setupRanges(Task &task, const std::string& text_from,
 void TaskReader::setupColumn(Task &task, const std::string& text) {
     size_t column;
     try {
-        if(text.find('-') != std::string::npos)
+        if (text.find('-') != std::string::npos)
             throw std::invalid_argument("");
         column = std::stoull(text);
     }
@@ -111,7 +111,7 @@ void TaskReader::setupColumn(Task &task, const std::string& text) {
     try {
         task.setColumnToProcess(column);
     }
-    catch (std::invalid_argument& e){
+    catch(std::invalid_argument& e){
         throw e;
     }
 }
@@ -119,7 +119,7 @@ void TaskReader::setupColumn(Task &task, const std::string& text) {
 void TaskReader::setupPartitionRows(Task &task, const std::string& text) {
     size_t partition_rows;
     try {
-        if(text.find('-') != std::string::npos)
+        if (text.find('-') != std::string::npos)
             throw std::invalid_argument("");
         partition_rows = std::stoull(text);
     }
@@ -130,7 +130,7 @@ void TaskReader::setupPartitionRows(Task &task, const std::string& text) {
     try {
         task.setPartitionRows(partition_rows);
     }
-    catch (std::invalid_argument& e){
+    catch(std::invalid_argument& e){
         throw e;
     }
 }

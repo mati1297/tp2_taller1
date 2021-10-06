@@ -38,10 +38,10 @@ Result Task::run() {
             apply(partitions[index]);
         }
     }
-    catch (std::length_error& e){
+    catch(std::length_error& e){
         throw e;
     }
-    catch (std::invalid_argument& e){
+    catch(std::invalid_argument& e){
         throw e;
     }
     Result result = combine();
@@ -52,9 +52,10 @@ Result Task::run() {
 size_t Task::split() {
     size_t reduced_index = current_data_partition_index % workers;
     try {
-        data_loader->load(partitions[reduced_index], current_data_partition_index);
+        data_loader->load(partitions[reduced_index],
+                          current_data_partition_index);
     }
-    catch (std::length_error& e){
+    catch(std::length_error& e){
         throw e;
     }
     current_data_partition_index++;
