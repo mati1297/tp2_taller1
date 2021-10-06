@@ -4,11 +4,13 @@
 #include "operator.h"
 #include "result.h"
 
-void Operator::operate(Result & result, const std::vector<uint16_t> & data) const{
+void Operator::operate(Result & result,
+                       const std::vector<uint16_t> & data) const{
     operate(result, data, 0, data.size());
 }
 
-void Operator::operate(Result & result, const std::vector<Result> & data) const {
+void Operator::operate(Result & result,
+                       const std::vector<Result> & data) const {
     std::vector<uint16_t> _data = std::vector<uint16_t>(data.size());
     for (uint32_t i = 0; i < _data.size(); i++)
         _data[i] = data[i].getNumber();

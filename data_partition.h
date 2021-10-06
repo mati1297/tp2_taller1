@@ -21,7 +21,8 @@ private:
     std::vector<std::vector<uint16_t>> data;
 
 public:
-    DataPartition(const uint32_t & index, const uint32_t & rows, const uint32_t & columns);
+    DataPartition(const uint32_t & index, const uint32_t & rows,
+                  const uint32_t & columns);
     void load(const uint16_t &number);
 
     bool isFull() const;
@@ -30,7 +31,8 @@ public:
 
     void print();
 
-    const std::vector<uint16_t> &getColumnData(const uint32_t & column_idx) const;
+    const std::vector<uint16_t> &getColumnData(const uint32_t
+                                                & column_idx) const;
 
     uint32_t getFirstRowIndex() const;
 

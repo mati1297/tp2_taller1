@@ -43,9 +43,10 @@ private:
     static uint32_t ceil(const uint32_t & num, const uint32_t & den);
 
 public:
-    Task(const Operator * const & op, const uint32_t & part_columns, const uint32_t & part_rows,
-         const uint32_t & column_to_process, const uint32_t & index_from,
-         const uint32_t & index_to, const uint32_t & workers, DataLoader * const & data_loader);
+    Task(const Operator * const & op, const uint32_t & part_columns,
+         const uint32_t & part_rows, const uint32_t & column_to_process,
+         const uint32_t & index_from, const uint32_t & index_to,
+         const uint32_t & workers, DataLoader * const & data_loader);
 
     void apply(const DataPartition &dp);
 

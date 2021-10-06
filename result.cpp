@@ -9,7 +9,8 @@ Result::Result(): number(0), extra(0) {}
 
 Result::Result(const uint16_t & number): number(number), extra(0) {}
 
-Result::Result(const uint16_t & number, const uint32_t & extra): number(number), extra(extra) {}
+Result::Result(const uint16_t & number,
+               const uint32_t & extra): number(number), extra(extra) {}
 
 void Result::reset(){
     number = 0;

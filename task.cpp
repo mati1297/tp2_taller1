@@ -8,8 +8,9 @@
 #include "data_partition.h"
 #include "operator.h"
 
-Task::Task(const Operator * const & op, const uint32_t & part_columns, const uint32_t & part_rows,
-           const uint32_t & column_to_process, const uint32_t & index_from, const uint32_t & index_to,
+Task::Task(const Operator * const & op, const uint32_t & part_columns,
+           const uint32_t & part_rows, const uint32_t & column_to_process,
+           const uint32_t & index_from, const uint32_t & index_to,
            const uint32_t & workers, DataLoader * const & data_loader):
         op(op), workers(workers), part_columns(part_columns),
         part_rows(part_rows), column_to_process(column_to_process),
