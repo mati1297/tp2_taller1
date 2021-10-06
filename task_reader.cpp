@@ -24,7 +24,7 @@ uint8_t TaskReader::read(Task &task) {
         setupRanges(task, read1, read2);
     }
     catch(std::invalid_argument& e) {
-        throw e;
+        throw;
     }
     std::cin >> read1;
     if (std::cin.eof())
@@ -33,7 +33,7 @@ uint8_t TaskReader::read(Task &task) {
         setupPartitionRows(task, read1);
     }
     catch(std::invalid_argument& e){
-        throw e;
+        throw;
     }
     std::cin >> read1;
     if (std::cin.eof())
@@ -42,7 +42,7 @@ uint8_t TaskReader::read(Task &task) {
         setupColumn(task, read1);
     }
     catch(std::invalid_argument& e){
-        throw e;
+        throw;
     }
     std::cin >> read1;
     if (std::cin.eof())
@@ -51,7 +51,7 @@ uint8_t TaskReader::read(Task &task) {
         setupOperator(task, read1);
     }
     catch(std::invalid_argument& e){
-        throw e;
+        throw;
     }
     return 0;
 }
@@ -94,7 +94,7 @@ void TaskReader::setupRanges(Task &task, const std::string& text_from,
         task.setRange(from, to);
     }
     catch(std::invalid_argument& e){
-        throw e;
+        throw;
     }
 }
 
@@ -112,7 +112,7 @@ void TaskReader::setupColumn(Task &task, const std::string& text) {
         task.setColumnToProcess(column);
     }
     catch(std::invalid_argument& e){
-        throw e;
+        throw;
     }
 }
 
@@ -131,7 +131,7 @@ void TaskReader::setupPartitionRows(Task &task, const std::string& text) {
         task.setPartitionRows(partition_rows);
     }
     catch(std::invalid_argument& e){
-        throw e;
+        throw;
     }
 }
 

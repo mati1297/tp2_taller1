@@ -34,17 +34,14 @@ int main(int argc, char * argv[]) {
             if (task_reader.read(task))
                 break;
         }
-        catch(std::invalid_argument &e) {
+        catch(std::exception &e) {
             std::cerr << "Error al leer la tarea: " << e.what() << std::endl;
             return EXIT_FAILURE;
         }
         try {
             task.run();
         }
-        catch(std::length_error &e){
-            std::cerr << "Error al correr la tarea: " << e.what() << std::endl;
-        }
-        catch(std::invalid_argument &e){
+        catch(std::exception &e){
             std::cerr << "Error al correr la tarea: " << e.what() << std::endl;
         }
     }

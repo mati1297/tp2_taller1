@@ -30,7 +30,7 @@ private:
     DataLoader * data_loader;
     size_t current_data_partition_index;
 
-    void setOperator(const Operator *&op);
+    void setOperator(const Operator * const & op);
 
     void setRange(const size_t& from, const size_t& to);
 
@@ -47,7 +47,7 @@ public:
          size_t column_to_process, size_t index_from,
          size_t index_to, size_t workers, DataLoader * data_loader);
 
-    void apply(DataPartition &dp);
+    void apply(const DataPartition &dp);
 
     Result combine() const;
 

@@ -6,7 +6,8 @@
 #include "file_reader.h"
 
 DataLoader::DataLoader(FileReader * const file_reader):
-                       file_reader(file_reader), start(0), end(UINT64_MAX) {}
+                       file_reader(file_reader), start(0),
+                       end(UINT64_MAX), counter(0) {}
 
 
 bool DataLoader::endOfDataset(){
@@ -14,10 +15,10 @@ bool DataLoader::endOfDataset(){
 }
 
 void DataLoader::load(DataPartition &dp, const size_t& idx){
-    uint16_t number;
     if (!file_reader->peekEof() and counter < (end - start)){
         dp.reset(idx);
         while (!dp.isFull()){
+            uint16_t number;
             if (file_reader->peekEof())
                 break;
             file_reader->read(number);
@@ -25,7 +26,7 @@ void DataLoader::load(DataPartition &dp, const size_t& idx){
                 dp.load(number);
             }
             catch(std::length_error& e){
-                throw e;
+                throw;
             }
             counter++;
         }

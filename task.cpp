@@ -38,11 +38,8 @@ Result Task::run() {
             apply(partitions[index]);
         }
     }
-    catch(std::length_error& e){
-        throw e;
-    }
-    catch(std::invalid_argument& e){
-        throw e;
+    catch(std::exception& e){
+        throw;
     }
     Result result = combine();
     op->printResult(result);
@@ -56,14 +53,14 @@ size_t Task::split() {
                           current_data_partition_index);
     }
     catch(std::length_error& e){
-        throw e;
+        throw;
     }
     current_data_partition_index++;
     return reduced_index;
 }
 
 //revisarlo esto, ver tema de si se puede hacer sin ir a negativo.
-void Task::apply(DataPartition& dp){
+void Task::apply(const DataPartition& dp){
     int64_t dp_from = std::max((size_t) 0,
                            dp.getFirstRowIndex()) - dp.getFirstRowIndex();
     int64_t dp_to = std::min(fake_index_to - 1,
@@ -77,7 +74,7 @@ void Task::apply(DataPartition& dp){
                         column_data, dp_from, dp_to);
         }
         catch(std::invalid_argument& e) {
-            throw e;
+            throw;
         }
     }
 }
@@ -88,7 +85,7 @@ Result Task::combine() const {
     return result;
 }
 
-void Task::setOperator(const Operator *& op) {
+void Task::setOperator(const Operator * const & op) {
     this->op = op;
 }
 
@@ -106,7 +103,7 @@ void Task::setRange(const size_t &from, const size_t &to) {
 }
 
 void Task::setColumnToProcess(const size_t &column) {
-    if (column < 0 or column >= this->part_columns)
+    if (column >= this->part_columns)
         throw std::invalid_argument("la columna ingresada no es valida");
     this->column_to_process = column;
 }

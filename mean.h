@@ -20,7 +20,7 @@ public:
     void operate(Result& result,
                  const std::vector<Result> & data) const override;
 
-    virtual void printResult(Result& result) const;
+    virtual void printResult(Result& result) const override;
 };
 
 

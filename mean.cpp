@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <numeric>
 #include "mean.h"
 
 void Mean::operate(Result &result, const std::vector<uint16_t> &data,
@@ -14,8 +15,8 @@ void Mean::operate(Result &result, const std::vector<uint16_t> &data,
 void Mean::operate(Result &result, const std::vector<Result> &data) const {
     Operator::operate(result, data);
     size_t total_extra = 0;
-    for (Result result_ : data)
-        total_extra += result_.getExtra();
+    for (size_t i = 0; i < data.size(); i++)
+        total_extra += data[i].getExtra();
     result.setExtra(total_extra);
 }
 
