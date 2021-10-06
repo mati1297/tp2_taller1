@@ -1,7 +1,6 @@
 #include <iostream>
 #include <netinet/in.h>
 #include "file_reader.h"
-#include "endian.h"
 
 FileReader::FileReader(const char * const & filename): file(filename) {
     if (!file.is_open()) {
