@@ -24,6 +24,7 @@ private:
     size_t column_to_process;
     size_t index_from;
     size_t index_to;
+    size_t fake_index_to;
     std::vector<Result> results;
     std::vector<DataPartition> partitions;
     DataLoader * data_loader;

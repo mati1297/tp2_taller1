@@ -14,6 +14,7 @@ Task::Task(Operator * op, size_t part_columns, size_t part_rows,
         op(op), workers(workers), part_columns(part_columns),
         part_rows(part_rows), column_to_process(column_to_process),
         index_from(index_from), index_to(index_to),
+        fake_index_to(index_to - index_from),
         results(ceil(index_to - index_from, part_rows)),
         partitions(workers, DataPartition(0, part_rows, part_columns)),
         data_loader(data_loader), current_data_partition_index(0) {}
@@ -21,7 +22,9 @@ Task::Task(Operator * op, size_t part_columns, size_t part_rows,
 // crear otro constructor??
 
 void Task::reset(){
-    data_loader->reset();
+    data_loader->setStart(index_from * part_columns);
+    data_loader->setEnd(index_to * part_columns);
+    fake_index_to = index_to - index_from;
     current_data_partition_index = 0;
     for (size_t i = 0; i < results.size(); i++)
         results[i].reset();
@@ -29,9 +32,17 @@ void Task::reset(){
 
 Result Task::run() {
     reset();
-    while (!data_loader->endOfDataset()) {
-        size_t index = split();
-        apply(partitions[index]);
+    try {
+        while (!data_loader->endOfDataset()) {
+            size_t index = split();
+            apply(partitions[index]);
+        }
+    }
+    catch (std::length_error& e){
+        throw e;
+    }
+    catch (std::invalid_argument& e){
+        throw e;
     }
     Result result = combine();
     op->printResult(result);
@@ -40,25 +51,33 @@ Result Task::run() {
 
 size_t Task::split() {
     size_t reduced_index = current_data_partition_index % workers;
-    data_loader->load(partitions[reduced_index], current_data_partition_index);
+    try {
+        data_loader->load(partitions[reduced_index], current_data_partition_index);
+    }
+    catch (std::length_error& e){
+        throw e;
+    }
     current_data_partition_index++;
     return reduced_index;
 }
 
 //revisarlo esto, ver tema de si se puede hacer sin ir a negativo.
 void Task::apply(DataPartition& dp){
-    if (index_from >= index_to)
-        return;
-    int64_t dp_from = std::max(index_from,
+    int64_t dp_from = std::max((size_t) 0,
                            dp.getFirstRowIndex()) - dp.getFirstRowIndex();
-    int64_t dp_to = std::min(index_to - 1,
+    int64_t dp_to = std::min(fake_index_to - 1,
                          dp.getLastRowIndex()) - dp.getFirstRowIndex() + 1;
     if (dp_to > dp_from){
         size_t idx = dp.getIndex();
-        const std::vector<uint16_t>& column_data =
-                dp.getColumnData(column_to_process);
-        op->operate(results[idx - index_from / part_rows],
-                    column_data, dp_from, dp_to);
+        try {
+            const std::vector<uint16_t> &column_data =
+                    dp.getColumnData(column_to_process);
+            op->operate(results[idx],
+                        column_data, dp_from, dp_to);
+        }
+        catch(std::invalid_argument& e) {
+            throw e;
+        }
     }
 }
 
@@ -80,10 +99,13 @@ void Task::setRange(const size_t &from, const size_t &to) {
                 ceil(to - from, part_rows));
     index_from = from;
     index_to = to;
+    data_loader->setStart(index_from * part_columns);
+    data_loader->setEnd(index_to * part_columns);
+    fake_index_to = index_to - index_from;
 }
 
 void Task::setColumnToProcess(const size_t &column) {
-    if (column < 0 || column >= this->part_columns)
+    if (column < 0 or column >= this->part_columns)
         throw std::invalid_argument("la columna ingresada no es valida");
     this->column_to_process = column;
 }
@@ -99,6 +121,8 @@ void Task::setPartitionRows(const size_t& rows) {
     }
     results = std::vector<Result>(
             ceil(index_to - index_from, part_rows));
+    data_loader->setStart(index_from * part_columns);
+    data_loader->setEnd(index_to * part_columns);
 }
 
 size_t Task::ceil(size_t num, size_t den) {

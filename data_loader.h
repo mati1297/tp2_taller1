@@ -11,17 +11,22 @@
 
 class DataLoader {
     FileReader * const file_reader;
+    size_t start;
+    size_t end;
+    size_t counter;
 
 public:
     //DataLoader(DataLoader& original) = delete;
 
     explicit DataLoader(FileReader * const file_reader);
 
-    void load(DataPartition& dp, const size_t& idx) const;
-
-    void reset();
+    void load(DataPartition& dp, const size_t& idx);
 
     bool endOfDataset();
+
+    void setStart(const size_t& _start);
+
+    void setEnd(const size_t& _end);
 };
 
 

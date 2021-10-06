@@ -29,16 +29,24 @@ int main(int argc, char * argv[]) {
 
     TaskReader task_reader = TaskReader();
 
-    while (!std::cin.eof() && std::cin.peek() != EOF) {
+    while (!std::cin.eof() and std::cin.peek() != EOF) {
         try {
             if (task_reader.read(task))
                 break;
         }
         catch(std::invalid_argument &e) {
-            std::cerr << "Error: " << e.what() << std::endl;
+            std::cerr << "Error al leer la tarea: " << e.what() << std::endl;
             return EXIT_FAILURE;
         }
-        task.run();
+        try {
+            task.run();
+        }
+        catch(std::length_error &e){
+            std::cerr << "Error al correr la tarea: " << e.what() << std::endl;
+        }
+        catch(std::invalid_argument &e){
+            std::cerr << "Error al correr la tarea: " << e.what() << std::endl;
+        }
     }
 
     return 0;

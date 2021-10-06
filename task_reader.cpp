@@ -90,7 +90,12 @@ void TaskReader::setupRanges(Task &task, const std::string& text_from,
     catch(std::exception& e){
         throw std::invalid_argument("error al leer la fila final");
     }
-    task.setRange(from, to);
+    try {
+        task.setRange(from, to);
+    }
+    catch (std::invalid_argument& e){
+        throw e;
+    }
 }
 
 void TaskReader::setupColumn(Task &task, const std::string& text) {
@@ -103,7 +108,12 @@ void TaskReader::setupColumn(Task &task, const std::string& text) {
     catch(std::exception& e){
         throw std::invalid_argument("error al leer la columna");
     }
-    task.setColumnToProcess(column);
+    try {
+        task.setColumnToProcess(column);
+    }
+    catch (std::invalid_argument& e){
+        throw e;
+    }
 }
 
 void TaskReader::setupPartitionRows(Task &task, const std::string& text) {
@@ -117,7 +127,12 @@ void TaskReader::setupPartitionRows(Task &task, const std::string& text) {
         throw std::invalid_argument("error al leer la cantidad de"
                                     " filas por particion");
     }
-    task.setPartitionRows(partition_rows);
+    try {
+        task.setPartitionRows(partition_rows);
+    }
+    catch (std::invalid_argument& e){
+        throw e;
+    }
 }
 
 

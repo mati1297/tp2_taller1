@@ -39,6 +39,8 @@ public:
     size_t getIndex() const;
 
     void setRows(const size_t &_rows);
+
+    void close();
 };
 
 

@@ -11,27 +11,26 @@ DataPartition::DataPartition(size_t index, size_t rows,
                                   std::vector<uint16_t>(rows)) {}
 
 void DataPartition::load(const uint16_t& number){
-    //hacer los contadores static?
-    if (state == STATE_FULL){
-        std::cout << "FULL" << std::endl;
-    }
+    if (state == STATE_FULL)
+        throw std::length_error("la particion ya esta llena");
+
     if (state == STATE_CLEAR)
         state = STATE_HALF;
+
     data[_column++][_row] = number;
+
     if (_column == columns) {
         _column = 0;
         _row++;
     }
     if (_row == rows) {
-        state = STATE_FULL;
-        _row = 0;
+        close();
     }
 }
 
 void DataPartition::reset(const size_t& index){
     this->index = index;
     _column = _row = 0;
-    //memset a 0?.
     state = STATE_CLEAR;
 }
 
@@ -53,8 +52,7 @@ void DataPartition::print(){
 const std::vector<uint16_t>&
         DataPartition::getColumnData(size_t column_idx) const{
     if (column_idx >= columns)
-        std::cout<<"ERROR"<<std::endl;
-        //exception
+        throw std::invalid_argument("esa columna no existe en la particion");
     return data[column_idx];
 }
 
@@ -78,5 +76,14 @@ void DataPartition::setRows(const size_t& _rows) {
         data[i] = std::vector<uint16_t>(_rows);
 }
 
+void DataPartition::close() {
+    if(_column < columns and _column > 0) {
+        while (_column < columns and _column > 0)
+            data[_column++][_row] = 0;
+        _column = 0;
+        _row++;
+    }
+    state = STATE_FULL;
+}
 
 

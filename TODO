@@ -1,7 +1,7 @@
 revisar tipos const (funciones const) y size_t
-agregar excepciones donde lo indique y mas
 validar parametros de task etc.
 revisar pasajes const y &, etc
 revisar lo de los constructores por copia
-hacer que corte si ya llego al index (y antes? podria hacerlo tambien)
 esta bien como estoy leyendo de stdin?
+cambiar size_t
+cambiar ! y && por keywords
