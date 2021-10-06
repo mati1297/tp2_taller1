@@ -2,7 +2,7 @@
 #include <vector>
 #include <iostream>
 #include "operator.h"
-#include "Result.h"
+#include "result.h"
 
 void Operator::operate(Result& result, const std::vector<uint16_t>& data) const{
     operate(result, data, 0, data.size());

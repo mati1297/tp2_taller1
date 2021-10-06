@@ -5,7 +5,7 @@
 #ifndef TP2_TALLER1_OPERATOR_H
 #define TP2_TALLER1_OPERATOR_H
 #include <vector>
-#include "Result.h"
+#include "result.h"
 
 
 class Operator {

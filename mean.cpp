@@ -1,7 +1,7 @@
 #include <vector>
 #include <iostream>
-#include <numeric>
 #include "mean.h"
+#include "result.h"
 
 void Mean::operate(Result &result, const std::vector<uint16_t> &data,
                    const size_t &from, const size_t &to) const {

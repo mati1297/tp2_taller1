@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "Result.h"
+#include "result.h"
 
 Result::Result(): number(0), extra(0) {}
 

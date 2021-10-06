@@ -9,7 +9,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <vector>
-#include "Result.h"
+#include "result.h"
 #include "operator.h"
 
 class Mean: public Operator {
