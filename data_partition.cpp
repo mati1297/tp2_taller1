@@ -77,8 +77,8 @@ void DataPartition::setRows(const uint32_t & rows_) {
 }
 
 void DataPartition::close() {
-    if (_column < columns and _column > 0) {
-        while (_column < columns and _column > 0)
+    if (_column < columns && _column > 0) {
+        while (_column < columns && _column > 0)
             data[_column++][_row] = 0;
         _column = 0;
         _row++;

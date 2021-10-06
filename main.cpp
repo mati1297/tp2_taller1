@@ -29,7 +29,7 @@ int main(int argc, char * argv[]) {
 
     TaskReader task_reader = TaskReader();
 
-    while (!std::cin.eof() and std::cin.peek() != EOF) {
+    while (!std::cin.eof() && std::cin.peek() != EOF) {
         try {
             if (task_reader.read(task))
                 break;
