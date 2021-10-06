@@ -1,4 +1,5 @@
 #include <iostream>
+#include <netinet/in.h>
 #include "file_reader.h"
 #include "endian.h"
 
@@ -24,7 +25,7 @@ void FileReader::read(uint16_t& n, bool is_little_endian){
     read(bytes[0]);
     read(bytes[1]);
     n = bytes[0] + (bytes[1] << 8);
-    n = Endian::toNative(n, is_little_endian);
+    n = ntohs(n);
 }
 
 void FileReader::read(uint16_t& n){
