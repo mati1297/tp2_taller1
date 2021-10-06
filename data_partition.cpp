@@ -40,14 +40,14 @@ bool DataPartition::isFull() const{
     return false;
 }
 
-void DataPartition::print(){
+/*void DataPartition::print(){
     std::cout << "Particion:" << std::endl;
     for (size_t i = 0; i < rows; i++){
         for (size_t j = 0; j < columns; j++)
             std::cout << data[j][i] << " ";
         std::cout << std::endl;
     }
-}
+}*/
 
 const std::vector<uint16_t>&
         DataPartition::getColumnData(size_t column_idx) const{

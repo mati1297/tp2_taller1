@@ -28,7 +28,7 @@ public:
 
     void reset(const size_t& index);
 
-    void print();
+    //void print();
 
     const std::vector<uint16_t> &getColumnData(size_t column_idx) const;
 
