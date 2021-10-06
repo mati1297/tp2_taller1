@@ -11,18 +11,18 @@
 
 class Result {
     uint16_t number;
-    size_t extra;
+    uint32_t extra;
 
 public:
     Result();
-    explicit Result(uint16_t number);
-    Result(uint16_t number, size_t extra);
-    void setNumber(uint16_t number);
-    void setExtra(size_t extra);
+    explicit Result(const uint16_t & number);
+    Result(const uint16_t & number, const uint32_t & extra);
+    void setNumber(const uint16_t & number_);
+    void setExtra(const uint32_t & extra_);
 
-    const uint16_t &getNumber() const;
+    const uint16_t & getNumber() const;
 
-    const size_t &getExtra() const;
+    const uint32_t & getExtra() const;
 
     void reset();
 };

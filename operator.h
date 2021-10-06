@@ -10,12 +10,12 @@
 
 class Operator {
 public:
-    virtual void operate(Result& result, const std::vector<uint16_t>& data,
-                         const size_t& from, const size_t& to) const = 0;
-    void operate(Result& result, const std::vector<uint16_t> &data) const;
-    virtual void operate(Result& result,
+    virtual void operate(Result & result, const std::vector<uint16_t> & data,
+                         const uint32_t & from, const uint32_t & to) const = 0;
+    void operate(Result & result, const std::vector<uint16_t> & data) const;
+    virtual void operate(Result & result,
                          const std::vector<Result> & data) const;
-    virtual void printResult(Result& result) const;
+    virtual void printResult(Result & result) const;
 };
 
 

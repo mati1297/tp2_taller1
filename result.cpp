@@ -7,27 +7,27 @@
 
 Result::Result(): number(0), extra(0) {}
 
-Result::Result(uint16_t number): number(number), extra(0) {}
+Result::Result(const uint16_t & number): number(number), extra(0) {}
 
-Result::Result(uint16_t number, size_t extra): number(number), extra(extra) {}
+Result::Result(const uint16_t & number, const uint32_t & extra): number(number), extra(extra) {}
 
 void Result::reset(){
     number = 0;
     extra = 0;
 }
 
-void Result::setNumber(uint16_t number) {
-    this->number = number;
+void Result::setNumber(const uint16_t & number_) {
+    this->number = number_;
 }
 
-void Result::setExtra(size_t extra) {
-    this->extra = extra;
+void Result::setExtra(const uint32_t & extra_) {
+    this->extra = extra_;
 }
 
-const uint16_t &Result::getNumber() const {
+const uint16_t & Result::getNumber() const {
     return number;
 }
 
-const size_t& Result::getExtra() const {
+const uint32_t & Result::getExtra() const {
     return extra;
 }

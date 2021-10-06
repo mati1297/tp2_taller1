@@ -18,17 +18,12 @@ void FileReader::read(uint8_t& byte) {
     file.read((char*) &byte, 1);
 }
 
-//chequeos
-void FileReader::read(uint16_t& n, bool is_little_endian){
+void FileReader::read(uint16_t& n){
     uint8_t bytes[2];
     read(bytes[0]);
     read(bytes[1]);
     n = bytes[0] + (bytes[1] << 8);
     n = ntohs(n);
-}
-
-void FileReader::read(uint16_t& n){
-    read(n, false);
 }
 
 bool FileReader::eof() {
@@ -43,7 +38,7 @@ FileReader::~FileReader() {
     file.close();
 }
 
-void FileReader::setTo(size_t position) {
+void FileReader::setTo(const uint32_t & position) {
     file.seekg(position, std::ios_base::beg);
 }
 

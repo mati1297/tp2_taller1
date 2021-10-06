@@ -12,7 +12,7 @@
 
 TaskReader::TaskReader(): sum(), min(), max(), mean() {}
 
-uint8_t TaskReader::read(Task &task) {
+uint8_t TaskReader::read(Task & task) {
     std::string read1, read2;
     std::cin >> read1;
     if (std::cin.eof())
@@ -56,7 +56,7 @@ uint8_t TaskReader::read(Task &task) {
     return 0;
 }
 
-void TaskReader::setupOperator(Task &task, const std::string& text) const {
+void TaskReader::setupOperator(Task & task, const std::string & text) const {
     const Operator * op = nullptr;
     if (text == "sum")
         op = &sum;
@@ -71,9 +71,9 @@ void TaskReader::setupOperator(Task &task, const std::string& text) const {
     task.setOperator(op);
 }
 
-void TaskReader::setupRanges(Task &task, const std::string& text_from,
-                             const std::string& text_to) {
-    size_t from, to;
+void TaskReader::setupRanges(Task & task, const std::string & text_from,
+                             const std::string & text_to) {
+    uint32_t from, to;
     try {
         if (text_from.find('-') != std::string::npos)
             throw std::invalid_argument("");
@@ -98,8 +98,8 @@ void TaskReader::setupRanges(Task &task, const std::string& text_from,
     }
 }
 
-void TaskReader::setupColumn(Task &task, const std::string& text) {
-    size_t column;
+void TaskReader::setupColumn(Task & task, const std::string & text) {
+    uint32_t column;
     try {
         if (text.find('-') != std::string::npos)
             throw std::invalid_argument("");
@@ -116,8 +116,8 @@ void TaskReader::setupColumn(Task &task, const std::string& text) {
     }
 }
 
-void TaskReader::setupPartitionRows(Task &task, const std::string& text) {
-    size_t partition_rows;
+void TaskReader::setupPartitionRows(Task & task, const std::string & text) {
+    uint32_t partition_rows;
     try {
         if (text.find('-') != std::string::npos)
             throw std::invalid_argument("");

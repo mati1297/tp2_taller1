@@ -3,19 +3,20 @@
 //
 
 #include "data_loader.h"
+#include "data_partition.h"
 #include "file_reader.h"
 
-DataLoader::DataLoader(FileReader * const file_reader):
+DataLoader::DataLoader(FileReader * const & file_reader):
                        file_reader(file_reader), start(0),
-                       end(UINT64_MAX), counter(0) {}
+                       end(UINT32_MAX), counter(0) {}
 
 
 bool DataLoader::endOfDataset(){
-    return (file_reader->eof() or counter >= (end-start));
+    return (file_reader->eof() || counter >= (end-start));
 }
 
-void DataLoader::load(DataPartition &dp, const size_t& idx){
-    if (!file_reader->peekEof() and counter < (end - start)){
+void DataLoader::load(DataPartition & dp, const uint32_t & idx){
+    if (!file_reader->peekEof() && counter < (end - start)){
         dp.reset(idx);
         while (!dp.isFull()){
             uint16_t number;
@@ -35,13 +36,13 @@ void DataLoader::load(DataPartition &dp, const size_t& idx){
     }
 }
 
-void DataLoader::setStart(const size_t& _start) {
-    start = _start;
-    file_reader->setTo(_start * 2);
+void DataLoader::setStart(const uint32_t & start_) {
+    start = start_;
+    file_reader->setTo(start_ * 2);
     counter = 0;
 }
 
-void DataLoader::setEnd(const size_t& _end) {
-    end = _end;
+void DataLoader::setEnd(const uint32_t & end_) {
+    end = end_;
     counter = 0;
 }

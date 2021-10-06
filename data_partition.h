@@ -12,33 +12,33 @@ private:
         STATE_FULL
     };
 
-    size_t index;
-    size_t rows;
-    const size_t columns;
-    size_t _row;
-    size_t _column;
+    uint32_t index;
+    uint32_t rows;
+    const uint32_t columns;
+    uint32_t _row;
+    uint32_t _column;
     enum State state;
     std::vector<std::vector<uint16_t>> data;
 
 public:
-    DataPartition(size_t index, size_t rows, size_t columns);
+    DataPartition(const uint32_t & index, const uint32_t & rows, const uint32_t & columns);
     void load(const uint16_t &number);
 
     bool isFull() const;
 
-    void reset(const size_t& index);
+    void reset(const uint32_t & index_);
 
-    //void print();
+    void print();
 
-    const std::vector<uint16_t> &getColumnData(size_t column_idx) const;
+    const std::vector<uint16_t> &getColumnData(const uint32_t & column_idx) const;
 
-    size_t getFirstRowIndex() const;
+    uint32_t getFirstRowIndex() const;
 
-    size_t getLastRowIndex() const;
+    uint32_t getLastRowIndex() const;
 
-    size_t getIndex() const;
+    uint32_t getIndex() const;
 
-    void setRows(const size_t &_rows);
+    void setRows(const uint32_t & rows_);
 
     void close();
 };

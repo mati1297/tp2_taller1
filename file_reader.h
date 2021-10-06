@@ -12,7 +12,6 @@ public:
     FileReader(FileReader& original) = delete;
     ~FileReader();
     void read(uint8_t& byte);
-    void read(uint16_t& n, bool is_little_endian);
     void read(uint16_t& n);
     bool eof();
 
@@ -20,7 +19,7 @@ public:
 
     bool peekEof();
 
-    void setTo(size_t position);
+    void setTo(const uint32_t & position);
 };
 
 

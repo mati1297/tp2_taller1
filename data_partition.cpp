@@ -2,15 +2,15 @@
 #include <vector>
 #include "data_partition.h"
 
-DataPartition::DataPartition(size_t index, size_t rows,
-                             size_t columns):
+DataPartition::DataPartition(const uint32_t & index, const uint32_t & rows,
+                             const uint32_t & columns):
                              index(index), rows(rows),
                              columns(columns), _row(0),
                              _column(0), state(STATE_CLEAR),
                              data(columns,
                                   std::vector<uint16_t>(rows)) {}
 
-void DataPartition::load(const uint16_t& number){
+void DataPartition::load(const uint16_t & number) {
     if (state == STATE_FULL)
         throw std::length_error("la particion ya esta llena");
 
@@ -28,52 +28,52 @@ void DataPartition::load(const uint16_t& number){
     }
 }
 
-void DataPartition::reset(const size_t& index){
-    this->index = index;
+void DataPartition::reset(const uint32_t & index_) {
+    index = index_;
     _column = _row = 0;
     state = STATE_CLEAR;
 }
 
-bool DataPartition::isFull() const{
+bool DataPartition::isFull() const {
     if (state == STATE_FULL)
         return true;
     return false;
 }
 
-/*void DataPartition::print(){
+void DataPartition::print(){
     std::cout << "Particion:" << std::endl;
-    for (size_t i = 0; i < rows; i++){
-        for (size_t j = 0; j < columns; j++)
+    for (uint32_t i = 0; i < rows; i++){
+        for (uint32_t j = 0; j < columns; j++)
             std::cout << data[j][i] << " ";
         std::cout << std::endl;
     }
-}*/
+}
 
 const std::vector<uint16_t>&
-        DataPartition::getColumnData(size_t column_idx) const{
+        DataPartition::getColumnData(const uint32_t & column_idx) const {
     if (column_idx >= columns)
         throw std::invalid_argument("esa columna no existe en la particion");
     return data[column_idx];
 }
 
-size_t DataPartition::getFirstRowIndex() const{
+uint32_t DataPartition::getFirstRowIndex() const {
     return index * rows;
 }
 
-size_t DataPartition::getLastRowIndex() const {
+uint32_t DataPartition::getLastRowIndex() const {
     return (index + 1) * rows - 1;
 }
 
-size_t DataPartition::getIndex() const {
+uint32_t DataPartition::getIndex() const {
     return index;
 }
 
-void DataPartition::setRows(const size_t& _rows) {
-    if (this->rows == _rows)
+void DataPartition::setRows(const uint32_t & rows_) {
+    if (this->rows == rows_)
         return;
-    this->rows = _rows;
-    for (size_t i = 0; i < columns; i++)
-        data[i] = std::vector<uint16_t>(_rows);
+    this->rows = rows_;
+    for (uint32_t i = 0; i < columns; i++)
+        data[i] = std::vector<uint16_t>(rows_);
 }
 
 void DataPartition::close() {

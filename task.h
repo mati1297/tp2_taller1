@@ -18,40 +18,40 @@ class Task {
     friend class TaskReader;
 private:
     const Operator * op;
-    const size_t workers;
-    const size_t part_columns;
-    size_t part_rows;
-    size_t column_to_process;
-    size_t index_from;
-    size_t index_to;
-    size_t fake_index_to;
+    const uint32_t workers;
+    const uint32_t part_columns;
+    uint32_t part_rows;
+    uint32_t column_to_process;
+    uint32_t index_from;
+    uint32_t index_to;
+    uint32_t fake_index_to;
     std::vector<Result> results;
     std::vector<DataPartition> partitions;
     DataLoader * data_loader;
-    size_t current_data_partition_index;
+    uint32_t current_data_partition_index;
 
     void setOperator(const Operator * const & op);
 
-    void setRange(const size_t& from, const size_t& to);
+    void setRange(const uint32_t & from, const uint32_t & to);
 
-    void setColumnToProcess(const size_t &column);
+    void setColumnToProcess(const uint32_t & column);
 
-    void setPartitionRows(const size_t& partition_rows);
+    void setPartitionRows(const uint32_t & partition_rows);
 
     void reset();
 
-    static size_t ceil(size_t num, size_t den);
+    static uint32_t ceil(const uint32_t & num, const uint32_t & den);
 
 public:
-    Task(Operator * op, size_t part_columns, size_t part_rows,
-         size_t column_to_process, size_t index_from,
-         size_t index_to, size_t workers, DataLoader * data_loader);
+    Task(const Operator * const & op, const uint32_t & part_columns, const uint32_t & part_rows,
+         const uint32_t & column_to_process, const uint32_t & index_from,
+         const uint32_t & index_to, const uint32_t & workers, DataLoader * const & data_loader);
 
     void apply(const DataPartition &dp);
 
     Result combine() const;
 
-    size_t split();
+    uint32_t split();
 
     Result run();
 };

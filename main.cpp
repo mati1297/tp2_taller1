@@ -18,10 +18,10 @@ int main(int argc, char * argv[]) {
     FileReader file_reader(argv[1]);
 
 
-    size_t columns = std::stoull(argv[2]);
-    size_t workers = std::stoull(argv[3]);
+    uint32_t columns = std::stoul(argv[2]);
+    uint32_t workers = std::stoul(argv[3]);
 
-    size_t rows = 2;
+    uint32_t rows = 2;
     Min min = Min();
     Operator * op = &min;
     DataLoader data_loader = DataLoader(&file_reader);
