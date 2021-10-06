@@ -1,7 +1,3 @@
-//
-// Created by matias on 3/10/21.
-//
-
 #include <string>
 #include <iostream>
 #include "task_reader.h"

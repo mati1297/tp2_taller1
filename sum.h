@@ -1,7 +1,3 @@
-//
-// Created by matias on 2/10/21.
-//
-
 #ifndef TP2_TALLER1_SUM_H
 #define TP2_TALLER1_SUM_H
 

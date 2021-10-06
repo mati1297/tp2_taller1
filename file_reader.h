@@ -5,10 +5,12 @@
 
 class FileReader {
 private:
+
+
     std::ifstream file;
 
 public:
-    explicit FileReader(const char * const & filename);
+    FileReader();
     FileReader(FileReader& original) = delete;
     ~FileReader();
     void read(uint8_t& byte);
@@ -20,6 +22,10 @@ public:
     bool peekEof();
 
     void setTo(const uint32_t & position);
+
+    void open(const char *const &filename);
+
+    void close();
 };
 
 

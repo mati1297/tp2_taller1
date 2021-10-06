@@ -1,7 +1,3 @@
-//
-// Created by matias on 3/10/21.
-//
-
 #ifndef TP2_TALLER1_MAX_H
 #define TP2_TALLER1_MAX_H
 

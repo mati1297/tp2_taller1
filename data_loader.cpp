@@ -1,7 +1,3 @@
-//
-// Created by matias on 4/10/21.
-//
-
 #include "data_loader.h"
 #include "data_partition.h"
 #include "file_reader.h"
@@ -11,11 +7,11 @@ DataLoader::DataLoader(FileReader * const & file_reader):
                        end(UINT32_MAX), counter(0) {}
 
 
-bool DataLoader::endOfDataset(){
+bool DataLoader::endOfDataset() const {
     return (file_reader->eof() || counter >= (end-start));
 }
 
-void DataLoader::load(DataPartition & dp, const uint32_t & idx){
+void DataLoader::load(DataPartition & dp, const uint32_t & idx) {
     if (!file_reader->peekEof() && counter < (end - start)){
         dp.reset(idx);
         while (!dp.isFull()){

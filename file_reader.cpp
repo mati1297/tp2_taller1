@@ -2,14 +2,25 @@
 #include <netinet/in.h>
 #include "file_reader.h"
 
-FileReader::FileReader(const char * const & filename): file(filename) {
-    if (!file.is_open()) {
+FileReader::FileReader(): file() {}
+
+void FileReader::open(const char * const & filename) {
+    if(file.is_open()){
+        file.close();
+    }
+    file.open(filename);
+    if(!file.is_open()) {
         file.close();
         throw std::invalid_argument("el archivo no existe");
     }
 }
 
-void FileReader::reset(){
+void FileReader::close() {
+    if(file.is_open())
+        file.close();
+}
+
+void FileReader::reset() {
     file.clear();
     file.seekg(0, std::ios_base::beg);
 }

@@ -1,7 +1,3 @@
-//
-// Created by matias on 4/10/21.
-//
-
 #include <iostream>
 #include "result.h"
 

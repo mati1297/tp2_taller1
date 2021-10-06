@@ -1,7 +1,3 @@
-//
-// Created by matias on 4/10/21.
-//
-
 #ifndef TP2_TALLER1_MEAN_H
 #define TP2_TALLER1_MEAN_H
 

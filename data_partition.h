@@ -23,6 +23,7 @@ private:
 public:
     DataPartition(const uint32_t & index, const uint32_t & rows,
                   const uint32_t & columns);
+
     void load(const uint16_t &number);
 
     bool isFull() const;

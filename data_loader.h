@@ -1,7 +1,3 @@
-//
-// Created by matias on 4/10/21.
-//
-
 #ifndef TP2_TALLER1_DATA_LOADER_H
 #define TP2_TALLER1_DATA_LOADER_H
 
@@ -16,13 +12,11 @@ class DataLoader {
     uint32_t counter;
 
 public:
-    //DataLoader(DataLoader& original) = delete;
-
     explicit DataLoader(FileReader * const & file_reader);
 
     void load(DataPartition & dp, const uint32_t & idx);
 
-    bool endOfDataset();
+    bool endOfDataset() const;
 
     void setStart(const uint32_t & start_);
 
