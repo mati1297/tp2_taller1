@@ -1,8 +1,1 @@
-revisar tipos const (funciones const) y size_t
-validar parametros de task etc.
-revisar pasajes const y &, etc
-revisar lo de los constructores por copia
-esta bien como estoy leyendo de stdin?
-cambiar size_t
-cambiar ! y && por keywords
-make apply y esos privaet
+hacer apply privado ?? ( ver cuando haga lo de threads)
