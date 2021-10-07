@@ -12,7 +12,6 @@ private:
         STATE_FULL
     };
 
-    uint32_t index;
     uint32_t rows;
     const uint32_t columns;
     uint32_t _row;
@@ -28,18 +27,12 @@ public:
 
     bool isFull() const;
 
-    void reset(const uint32_t & index_);
+    void reset();
 
     void print();
 
     const std::vector<uint16_t> &getColumnData(const uint32_t
                                                 & column_idx) const;
-
-    uint32_t getFirstRowIndex() const;
-
-    uint32_t getLastRowIndex() const;
-
-    uint32_t getIndex() const;
 
     void setRows(const uint32_t & rows_);
 

@@ -19,25 +19,23 @@ private:
     uint32_t column_to_process;
     uint32_t index_from;
     uint32_t index_to;
-    uint32_t fake_index_to;
-    std::vector<Result> results;
+    Result result;
     std::vector<DataPartition> partitions;
     DataLoader * data_loader;
-    uint32_t current_data_partition_index;
 
     void reset();
 
     static uint32_t ceil(const uint32_t & num, const uint32_t & den);
 
 public:
-    Task(const uint32_t &part_columns, const uint32_t &workers,
-          DataLoader *const &data_loader);
+    Task(const uint32_t & part_columns, const uint32_t & workers,
+          DataLoader *const & data_loader);
 
     void apply(const DataPartition &dp);
 
-    Result combine() const;
+    //Result combine() const;
 
-    uint32_t split();
+    void split();
 
     Result run();
 

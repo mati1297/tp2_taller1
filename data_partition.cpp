@@ -3,8 +3,7 @@
 #include "data_partition.h"
 
 DataPartition::DataPartition(const uint32_t & index, const uint32_t & rows,
-                             const uint32_t & columns):
-                             index(index), rows(rows),
+                             const uint32_t & columns): rows(rows),
                              columns(columns), _row(0),
                              _column(0), state(STATE_CLEAR),
                              data(columns,
@@ -28,10 +27,15 @@ void DataPartition::load(const uint16_t & number) {
     }
 }
 
-void DataPartition::reset(const uint32_t & index_) {
-    index = index_;
+void DataPartition::reset() {
+    if (_row < rows && _row != 0) {
+        for(uint32_t i = 0; i < columns; i++){
+            data[i].resize(rows);
+        }
+    }
     _column = _row = 0;
     state = STATE_CLEAR;
+
 }
 
 bool DataPartition::isFull() const {
@@ -56,18 +60,6 @@ const std::vector<uint16_t>&
     return data[column_idx];
 }
 
-uint32_t DataPartition::getFirstRowIndex() const {
-    return index * rows;
-}
-
-uint32_t DataPartition::getLastRowIndex() const {
-    return (index + 1) * rows - 1;
-}
-
-uint32_t DataPartition::getIndex() const {
-    return index;
-}
-
 void DataPartition::setRows(const uint32_t & rows_) {
     if (this->rows == rows_)
         return;
@@ -82,6 +74,12 @@ void DataPartition::close() {
             data[_column++][_row] = 0;
         _column = 0;
         _row++;
+    }
+    //esto estoy seguro que solo pasa una vez.
+    if (_row < rows && _row != 0) {
+        for (uint32_t i = 0; i < columns; i++) {
+            data[i].resize(_row);
+        }
     }
     state = STATE_FULL;
 }

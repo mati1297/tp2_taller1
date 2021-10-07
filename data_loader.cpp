@@ -11,10 +11,10 @@ bool DataLoader::endOfDataset() const {
     return (file_reader->eof() || counter >= (end-start));
 }
 
-void DataLoader::load(DataPartition & dp, const uint32_t & idx) {
+void DataLoader::load(DataPartition & dp) {
     if (!file_reader->peekEof() && counter < (end - start)){
-        dp.reset(idx);
-        while (!dp.isFull()){
+        dp.reset();
+        while (!dp.isFull() && counter < (end-start)){
             uint16_t number;
             if (file_reader->peekEof())
                 break;

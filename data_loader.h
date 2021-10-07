@@ -14,7 +14,7 @@ class DataLoader {
 public:
     explicit DataLoader(FileReader * const & file_reader);
 
-    void load(DataPartition & dp, const uint32_t & idx);
+    void load(DataPartition & dp);
 
     bool endOfDataset() const;
 
