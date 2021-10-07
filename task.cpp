@@ -50,9 +50,7 @@ void Task::apply(const DataPartition & dp){
         throw std::invalid_argument("no hay un operador designado");
     try {
         Result temp_result;
-        const std::vector<uint16_t> &column_data =
-                dp.getColumnData(column_to_process);
-        op->operate(temp_result, column_data);
+        op->operate(temp_result, dp, column_to_process);
         op->operate(result, temp_result);
     }
     catch(std::invalid_argument& e) {

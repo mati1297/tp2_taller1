@@ -7,23 +7,27 @@
 
 void Operator::operate(Result & accumulator,
                        Result & new_result) const {
-    if(!accumulator.isInitialized())
-        accumulator.setNumber(new_result.getNumber());
-    else {
-        uint16_t acc = accumulator.getNumber();
-        operate(acc, new_result.getNumber());
-        accumulator.setNumber(acc);
-    }
+    accumulator.accumulate(new_result, this);
 }
 
-void Operator::operate(Result & result, const std::vector<uint16_t> & data) const {
+void Operator::operate(Result & result, const DataPartition & data,
+                       const uint32_t & column_to_op) const {
     uint16_t accumulator = getNeutralValue();
-    for (uint32_t i = 0; i < data.size(); i++){
-        operate(accumulator, data[i]);
+    const std::vector<uint16_t> & col_data =
+                data.getColumnData(column_to_op);
+    for (uint32_t i = 0; i < col_data.size(); i++){
+        operate(accumulator, col_data[i]);
     }
     result.setNumber(accumulator);
+}
+
+void Operator::operateExtra(uint32_t & accumulator, const uint32_t &number) const {
+    accumulator = 0;
 }
 
 void Operator::printResult(Result & result) const {
     std::cout << result.getNumber() << std::endl;
 }
+
+
+

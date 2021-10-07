@@ -4,6 +4,10 @@
 
 #include <cstdint>
 #include <cstddef>
+#include <mutex>
+#include "operator.h"
+
+class Operator;
 
 class Result {
     uint16_t number;
@@ -23,7 +27,9 @@ public:
 
     void reset();
 
-    const bool isInitialized() const;
+    void accumulate(const uint16_t & number_, const uint32_t & extra_, const Operator * const & op);
+
+    void accumulate(const Result &result_, const Operator * const & op);
 };
 
 

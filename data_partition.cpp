@@ -84,4 +84,8 @@ void DataPartition::close() {
     state = STATE_FULL;
 }
 
+const uint32_t & DataPartition::getRows() const {
+    return _row;
+}
+
 

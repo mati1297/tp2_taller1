@@ -37,6 +37,8 @@ public:
     void setRows(const uint32_t & rows_);
 
     void close();
+
+    const uint32_t &getRows() const;
 };
 
 

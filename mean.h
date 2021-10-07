@@ -6,18 +6,20 @@
 #include <cstdint>
 #include <vector>
 #include "result.h"
+#include "operator.h"
 #include "sum.h"
+
 
 class Mean: public Sum {
 public:
     void operate(Result & accumulator,
                            Result & new_result) const override;
 
+    void operate(Result &result, const DataPartition &data, const uint32_t &column_to_op) const override;
 
+    void printResult(Result & result) const override;
 
-    virtual void printResult(Result & result) const override;
-
-    void operate(Result &result, const std::vector<uint16_t> &data) const override;
+    void operateExtra(uint32_t & accumulator, const uint32_t &number) const override;
 };
 
 
