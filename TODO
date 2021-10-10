@@ -1,2 +1,5 @@
 aclaracion: para que result sea protegido se debe operar sobre el con un mismo operador.
 hacer apply privado ?? ( ver cuando haga lo de threads)
+ver de guardar referencias en vez de punteros
+ver lo de pasar referencia y guardar puntero adentro?
+O DIRECTO GUARDAR REFERENCIA?

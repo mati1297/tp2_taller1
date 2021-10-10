@@ -13,9 +13,12 @@ class Result {
     uint16_t number;
     uint32_t extra;
     bool initialized;
+    std::mutex mutex;
+
 
 public:
     Result();
+    Result(const Result & orig);
     explicit Result(const uint16_t & number);
     Result(const uint16_t & number, const uint32_t & extra);
     void setNumber(const uint16_t & number_);

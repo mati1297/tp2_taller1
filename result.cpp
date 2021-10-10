@@ -2,21 +2,30 @@
 #include "result.h"
 #include "operator.h"
 
-Result::Result(): number(0), extra(0), initialized(false) {}
+Result::Result(): number(0), extra(0), initialized(false), mutex() {}
 
 Result::Result(const uint16_t & number): number(number), extra(0) {}
 
 Result::Result(const uint16_t & number,
                const uint32_t & extra): number(number), extra(extra) {}
 
+Result::Result(const Result & orig) {
+    number = orig.number;
+    extra = orig.extra;
+}
+
 void Result::reset(){
+    mutex.lock();
     number = 0;
     extra = 0;
+    mutex.unlock();
 }
 
 void Result::setNumber(const uint16_t & number_) {
+    mutex.lock();
     initialized = true;
     this->number = number_;
+    mutex.unlock();
 }
 
 void Result::accumulate(const Result & result_, const Operator * const & op) {
@@ -24,6 +33,7 @@ void Result::accumulate(const Result & result_, const Operator * const & op) {
 }
 
 void Result::accumulate(const uint16_t & number_, const uint32_t & extra_, const Operator * const & op) {
+    mutex.lock();
     if (initialized) {
         op->operate(number, number_);
         op->operateExtra(extra, extra_);
@@ -32,11 +42,14 @@ void Result::accumulate(const uint16_t & number_, const uint32_t & extra_, const
         extra = extra_;
         initialized = true;
     }
+    mutex.unlock();
 }
 
 void Result::setExtra(const uint32_t & extra_) {
+    mutex.lock();
     initialized = true;
     this->extra = extra_;
+    mutex.unlock();
 }
 
 const uint16_t & Result::getNumber() const {
@@ -46,4 +59,6 @@ const uint16_t & Result::getNumber() const {
 const uint32_t & Result::getExtra() const {
     return extra;
 }
+
+
 

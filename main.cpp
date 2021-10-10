@@ -24,10 +24,10 @@ int main(int argc, char * argv[]) {
     uint32_t columns = std::stoul(argv[2]);
     uint32_t workers = std::stoul(argv[3]);
 
-    DataLoader data_loader = DataLoader(&file_reader);
-    Task task = Task(columns, workers, &data_loader);
+    DataLoader data_loader(file_reader);
+    Task task(columns, workers, &data_loader);
 
-    TaskReader task_reader = TaskReader();
+    TaskReader task_reader;
 
     while (!std::cin.eof() && std::cin.peek() != EOF) {
         try {

@@ -1,9 +1,13 @@
 #include <cstdint>
 #include <vector>
 #include <algorithm>
+#include <thread>
+#include <iostream>
 #include "task.h"
 #include "data_partition.h"
 #include "operator.h"
+#include "to_do_queue.h"
+#include "worker.h"
 
 Task::Task(const uint32_t & part_columns, const uint32_t & workers,
            DataLoader * const & data_loader):
@@ -20,7 +24,7 @@ void Task::reset(){
     result.reset();
 }
 
-Result Task::run() {
+/*Result Task::run() {
     reset();
     try {
         while (!data_loader->endOfDataset()) {
@@ -33,7 +37,41 @@ Result Task::run() {
     }
     op->printResult(result);
     return result;
+}*/
+
+Result Task::run() {
+    reset();
+    ToDoQueue queue;
+
+    std::vector<Worker> workers_(workers, Worker(&queue, data_loader, &result, &partitions, op, column_to_process));
+
+    std::vector<std::thread> threads(workers);
+
+    for(uint32_t i = 0; i < workers; i++){
+        threads[i] = std::thread(workers_[i]);
+    }
+
+    for(uint32_t j = 0; j < ceil(index_to - index_from, part_rows); ){
+        for(uint32_t i = 0; i < workers; i++){
+            if (partitions[i].isDone()) {
+                partitions[i].setDone(false);
+                queue.push(ToDoToken(i, false));
+                j++;
+            }
+        }
+    }
+
+    for(uint32_t i = 0; i < workers; i++){
+        queue.push(ToDoToken(0, true));
+    }
+    for(uint32_t i = 0; i < workers; i++){
+        threads[i].join();
+    }
+    op->printResult(result);
+    return result;
 }
+
+
 
 void Task::split() {
     try {

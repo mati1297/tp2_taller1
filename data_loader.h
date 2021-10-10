@@ -2,6 +2,7 @@
 #define TP2_TALLER1_DATA_LOADER_H
 
 
+#include <mutex>
 #include "file_reader.h"
 #include "data_partition.h"
 
@@ -10,9 +11,10 @@ class DataLoader {
     uint32_t start;
     uint32_t end;
     uint32_t counter;
+    std::mutex m;
 
 public:
-    explicit DataLoader(FileReader * const & file_reader);
+    explicit DataLoader(FileReader & file_reader);
 
     void load(DataPartition & dp);
 

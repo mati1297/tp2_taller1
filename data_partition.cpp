@@ -7,7 +7,10 @@ DataPartition::DataPartition(const uint32_t & index, const uint32_t & rows,
                              columns(columns), _row(0),
                              _column(0), state(STATE_CLEAR),
                              data(columns,
-                                  std::vector<uint16_t>(rows)) {}
+                                  std::vector<uint16_t>(rows)), done(true), m() {}
+
+DataPartition::DataPartition(const DataPartition &orig): rows(orig.rows), columns(orig.columns),
+_row(orig._row), _column(orig._column), state(orig.state), data(orig.data), done(orig.done), m() {}
 
 void DataPartition::load(const uint16_t & number) {
     if (state == STATE_FULL)
@@ -87,5 +90,17 @@ void DataPartition::close() {
 const uint32_t & DataPartition::getRows() const {
     return _row;
 }
+
+void DataPartition::setDone(bool done_) {
+    m.lock();
+    done = done_;
+    m.unlock();
+}
+
+bool DataPartition::isDone() const {
+    return done;
+}
+
+
 
 

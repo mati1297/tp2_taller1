@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <mutex>
 
 class DataPartition {
 private:
@@ -18,10 +19,14 @@ private:
     uint32_t _column;
     enum State state;
     std::vector<std::vector<uint16_t>> data;
+    bool done;
+    std::mutex m;
 
 public:
     DataPartition(const uint32_t & index, const uint32_t & rows,
                   const uint32_t & columns);
+
+    DataPartition(const DataPartition & orig);
 
     void load(const uint16_t &number);
 
@@ -39,6 +44,10 @@ public:
     void close();
 
     const uint32_t &getRows() const;
+
+    void setDone(bool done_);
+
+    bool isDone() const;
 };
 
 
