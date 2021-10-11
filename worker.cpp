@@ -1,7 +1,3 @@
-//
-// Created by matias on 7/10/21.
-//
-
 #include <iostream>
 #include "worker.h"
 #include "to_do_token.h"
@@ -21,7 +17,7 @@ void Worker::operator()() {
 }
 
 void Worker::run() const {
-    while (true){
+    while (true) {
         ToDoToken to_do_token;
         bool queue_not_empty = queue->ifNotEmptyPop(to_do_token);
         if (!queue_not_empty)
@@ -29,19 +25,14 @@ void Worker::run() const {
         if (to_do_token.endOfWork())
             return;
         uint32_t part_index = to_do_token.getIndex();
-        if (data_loader->endOfDataset())
-            return;
 
         data_loader->load((*data_partitions)[part_index]);
-        try {
-            Result temp_result;
-            op->operate(temp_result, (*data_partitions)[part_index],
-                        column_to_process);
-            op->operate(*result, temp_result);
-        }
-        catch(std::invalid_argument& e) {
-            throw;
-        }
+
+        Result temp_result;
+        op->operate(temp_result, (*data_partitions)[part_index],
+                    column_to_process);
+        op->operate(*result, temp_result);
+
         (*data_partitions)[part_index].setDone(true);
     }
 }

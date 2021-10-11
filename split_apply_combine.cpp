@@ -14,7 +14,12 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
     uint32_t columns = 0;
     uint8_t workers = 0;
 
-    loadAndValidate(dataset_filename, text_columns, text_workers, columns, workers);
+    try {
+        loadAndValidate(dataset_filename, text_columns, text_workers, columns, workers);
+    }
+    catch(std::exception & e) {
+        throw;
+    }
 
     Task task(columns, workers, &data_loader);
 

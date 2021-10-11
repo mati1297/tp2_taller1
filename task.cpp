@@ -43,12 +43,12 @@ Result Task::run() {
     reset();
     ToDoQueue queue;
 
-    std::vector<Worker> workers_(workers, Worker(&queue, data_loader, &result, &partitions, op, column_to_process));
+    std::vector<Worker> workers_vector(workers, Worker(&queue, data_loader, &result, &partitions, op, column_to_process));
 
-    std::vector<std::thread> threads(workers);
+    std::vector<std::thread> threads_vector(workers);
 
     for(uint32_t i = 0; i < workers; i++){
-        threads[i] = std::thread(workers_[i]);
+        threads_vector[i] = std::thread(workers_vector[i]);
     }
 
     for(uint32_t j = 0; j < ceil(index_to - index_from, part_rows); ){
@@ -67,8 +67,10 @@ Result Task::run() {
         queue.push(ToDoToken(0, true));
     }
     for(uint32_t i = 0; i < workers; i++)
-        threads[i].join();
+        threads_vector[i].join();
+
     op->printResult(result);
+
     return result;
 }
 
@@ -83,7 +85,6 @@ void Task::split() {
     }
 }
 
-//revisarlo esto, ver tema de si se puede hacer sin ir a negativo.
 void Task::apply(const DataPartition & dp){
     if (op == nullptr)
         throw std::invalid_argument("no hay un operador designado");
