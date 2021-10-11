@@ -31,12 +31,6 @@ public:
     Task(const uint32_t & part_columns, const uint32_t & workers,
           DataLoader *const & data_loader);
 
-    void apply(const DataPartition &dp);
-
-    //Result combine() const;
-
-    void split();
-
     Result run();
 
     void setOperator(const Operator * const & op);

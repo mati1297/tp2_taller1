@@ -14,7 +14,7 @@ const uint32_t & ToDoToken::getIndex() const {
     return idx;
 }
 
-const ToDoToken& ToDoToken::operator=(const ToDoToken & orig) {
+ToDoToken& ToDoToken::operator=(const ToDoToken & orig) {
     this->end = orig.end;
     this->idx = orig.idx;
     return *this;

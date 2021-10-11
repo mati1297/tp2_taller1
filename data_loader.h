@@ -13,10 +13,12 @@ class DataLoader {
     uint32_t counter;
     std::mutex m;
 
+    void load(DataPartition & dp);
+
 public:
     explicit DataLoader(FileReader & file_reader);
 
-    void load(DataPartition & dp);
+    bool ifDatasetNotEndedLoad(DataPartition & dp);
 
     bool endOfDataset() const;
 

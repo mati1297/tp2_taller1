@@ -18,7 +18,7 @@ public:
 
     ToDoToken(uint32_t idx_, bool end_);
 
-    const ToDoToken& operator=(const ToDoToken &);
+    ToDoToken& operator=(const ToDoToken &);
 
     const uint32_t & getIndex() const;
 

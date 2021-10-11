@@ -8,11 +8,10 @@ DataLoader::DataLoader(FileReader & file_reader):
 
 
 bool DataLoader::endOfDataset() const {
-    return (file_reader->eof() || counter >= (end-start));
+    return (file_reader->eof() || file_reader->peekEof() || counter >= (end-start));
 }
 
 void DataLoader::load(DataPartition & dp) {
-    m.lock();
     if (!file_reader->peekEof() && counter < (end - start)){
         dp.reset();
         while (!dp.isFull() && counter < (end-start)){
@@ -29,10 +28,20 @@ void DataLoader::load(DataPartition & dp) {
             counter++;
         }
         dp.close();
-        //dp.print();
     }
-    m.unlock();
 }
+
+bool DataLoader::ifDatasetNotEndedLoad(DataPartition & dp) {
+    m.lock();
+    if(endOfDataset()) {
+        m.unlock();
+        return false;
+    }
+    load(dp);
+    m.unlock();
+    return true;
+}
+
 
 void DataLoader::setStart(const uint32_t & start_) {
     m.lock();

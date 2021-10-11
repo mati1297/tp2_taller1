@@ -24,24 +24,13 @@ void Task::reset(){
     result.reset();
 }
 
-/*Result Task::run() {
-    reset();
-    try {
-        while (!data_loader->endOfDataset()) {
-            split();
-            apply(partitions[0]); //hardcoded para 1 worker
-        }
-    }
-    catch(std::exception& e){
-        throw;
-    }
-    op->printResult(result);
-    return result;
-}*/
 
 Result Task::run() {
     reset();
     ToDoQueue queue;
+
+    if (op == nullptr)
+        throw std::invalid_argument("no hay un operador designado");
 
     std::vector<Worker> workers_vector(workers, Worker(&queue, data_loader, &result, &partitions, op, column_to_process));
 
@@ -74,35 +63,6 @@ Result Task::run() {
     return result;
 }
 
-
-
-void Task::split() {
-    try {
-        data_loader->load(partitions[0]); //hardcoded para 1 worker
-    }
-    catch(std::length_error& e){
-        throw;
-    }
-}
-
-void Task::apply(const DataPartition & dp){
-    if (op == nullptr)
-        throw std::invalid_argument("no hay un operador designado");
-    try {
-        Result temp_result;
-        op->operate(temp_result, dp, column_to_process);
-        op->operate(result, temp_result);
-    }
-    catch(std::invalid_argument& e) {
-        throw;
-    }
-}
-
-//Result Task::combine() const {
-//    Result result;
-//    op->operate(result, results);
-//    return result;
-//}
 
 void Task::setOperator(const Operator * const & op) {
     this->op = op;

@@ -26,7 +26,10 @@ void Worker::run() const {
             return;
         uint32_t part_index = to_do_token.getIndex();
 
-        data_loader->load((*data_partitions)[part_index]);
+        if(!data_loader->ifDatasetNotEndedLoad((*data_partitions)[part_index])) {
+            (*data_partitions)[part_index].setDone(true);
+            continue;
+        }
 
         Result temp_result;
         op->operate(temp_result, (*data_partitions)[part_index],
