@@ -8,7 +8,6 @@
 #include "task_reader.h"
 
 class SplitApplyCombine {
-    FileReader file_reader;
     DataLoader data_loader;
 
     void loadAndValidate(const char * const dataset_filename,

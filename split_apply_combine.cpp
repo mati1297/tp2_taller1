@@ -7,8 +7,7 @@
 #include "string_to_num.h"
 
 
-SplitApplyCombine::SplitApplyCombine(): file_reader(),
-                                        data_loader(file_reader) {}
+SplitApplyCombine::SplitApplyCombine(): data_loader() {}
 
 void SplitApplyCombine::execute(const char * const dataset_filename,
                          const std::string & text_columns,
@@ -53,7 +52,7 @@ void SplitApplyCombine::loadAndValidate(const char * const dataset_filename,
                      const std::string & text_workers,
                      uint32_t & columns, uint8_t & workers) {
     try {
-        file_reader.open(dataset_filename);
+        data_loader.openFile(dataset_filename);
     }
     catch(std::exception & e) {
         std::string msg = e.what();

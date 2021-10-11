@@ -15,7 +15,7 @@ Task::Task(const uint32_t & part_columns, const uint32_t & workers,
         part_rows(1), column_to_process(0),
         index_from(0), index_to(1),
         result(), partitions(workers,
-                             DataPartition(0, part_rows, part_columns)),
+                             DataPartition(part_rows, part_columns)),
         data_loader(data_loader) {}
 
 void Task::reset(){

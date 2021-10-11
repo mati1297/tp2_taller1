@@ -5,10 +5,13 @@
 FileReader::FileReader(): file() {}
 
 void FileReader::open(const char * const & filename) {
+    // Si hay un archivo abierto se cierra.
     if (file.is_open()){
         file.close();
     }
+    // Se abre el archivo
     file.open(filename);
+    // Si no se pudo abrir, se lanza una excepcion.
     if (!file.is_open()) {
         file.close();
         throw std::invalid_argument("el archivo no existe");
@@ -46,7 +49,7 @@ bool FileReader::peekEof() {
 }
 
 FileReader::~FileReader() {
-    file.close();
+    close();
 }
 
 void FileReader::setTo(const uint32_t & position) {

@@ -2,43 +2,61 @@
 #include "data_partition.h"
 #include "file_reader.h"
 
-DataLoader::DataLoader(FileReader & file_reader):
-                       file_reader(&file_reader), start(0),
+DataLoader::DataLoader(): file_reader(), start(0),
                        end(UINT32_MAX), counter(0), m() {}
 
+void DataLoader::openFile(const char * const & filename) {
+    try{
+        file_reader.open(filename);
+    }
+    catch(std::exception & e){
+        throw;
+    }
+}
 
-bool DataLoader::endOfDataset() const {
-    return (file_reader->eof() || file_reader->peekEof()
+bool DataLoader::endOfDataset() {
+    return (file_reader.eof() || file_reader.peekEof()
             || counter >= (end-start));
 }
 
 void DataLoader::load(DataPartition & dp) {
-    if (!file_reader->peekEof() && counter < (end - start)){
-        dp.reset();
-        while (!dp.isFull() && counter < (end-start)){
-            uint16_t number;
-            if (file_reader->peekEof())
-                break;
-            file_reader->read(number);
-            try {
-                dp.load(number);
-            }
-            catch(std::length_error& e){
-                throw;
-            }
-            counter++;
+    // Si todavia no se alcanzo el final se lee
+    if (endOfDataset())
+        return;
+    // Se resetea el DataPartition.
+    dp.reset();
+    // Mientras que la particion no este llena y el contador
+    // este en rango se lee.
+    while (!dp.isClosed() && counter < (end - start)){
+        uint16_t number;
+        // Si se alcanzo end of file se rompe el ciclo.
+        if (file_reader.peekEof())
+            break;
+        // Se lee el numero.
+        file_reader.read(number);
+        // Se intenta cargar, si falla se lanza la excepcion atrapada.
+        try {
+            dp.load(number);
         }
-        dp.close();
-        //dp.print();
+        catch(std::length_error& e){
+            throw;
+        }
+        // Se incrementa el contador de datos leidos.
+        counter++;
     }
+    // Se cierra la particion de datos tras leer (este llena o no).
+    dp.close();
 }
 
 bool DataLoader::ifDatasetNotEndedLoad(DataPartition & dp) {
+    // Se bloquea el mutex.
     m.lock();
+    // Si se llego al final del dataset no se hace nada.
     if (endOfDataset()) {
         m.unlock();
         return false;
     }
+    // Si todavia queda por leer se carga.
     load(dp);
     m.unlock();
     return true;
@@ -48,7 +66,7 @@ bool DataLoader::ifDatasetNotEndedLoad(DataPartition & dp) {
 void DataLoader::setStart(const uint32_t & start_) {
     m.lock();
     start = start_;
-    file_reader->setTo(start_ * 2);
+    file_reader.setTo(start_ * 2);
     counter = 0;
     m.unlock();
 }
@@ -59,3 +77,5 @@ void DataLoader::setEnd(const uint32_t & end_) {
     counter = 0;
     m.unlock();
 }
+
+
