@@ -34,8 +34,6 @@ public:
 
     void reset();
 
-    void print();
-
     const std::vector<uint16_t> &getColumnData(const uint32_t
                                                 & column_idx) const;
 
