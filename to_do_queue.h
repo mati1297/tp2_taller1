@@ -11,16 +11,14 @@
 
 class ToDoQueue {
     std::mutex m;
-    std::vector<ToDoToken> queue;
-    uint32_t counter;
-    uint32_t new_element;
+    std::queue<ToDoToken> queue;
 
 public:
     ToDoQueue();
 
     void push(const ToDoToken & new_token);
 
-    bool ifNotEmptyPop(ToDoToken &token, int &);
+    bool ifNotEmptyPop(ToDoToken &token);
 };
 
 

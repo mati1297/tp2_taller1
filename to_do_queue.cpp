@@ -1,24 +1,23 @@
 #include "to_do_queue.h"
-#include <iostream>
 
-ToDoQueue::ToDoQueue(): m(), queue(), counter(0), new_element(0) {}
+ToDoQueue::ToDoQueue(): m(), queue() {}
 
-void ToDoQueue::push(const ToDoToken & new_token){
+void ToDoQueue::push(const ToDoToken & new_token) {
     m.lock();
-    queue.push_back(new_token);
-    new_element++;
+    queue.push(new_token);
     m.unlock();
 }
 
-bool ToDoQueue::ifNotEmptyPop(ToDoToken & token, int & cou) {
+bool ToDoQueue::ifNotEmptyPop(ToDoToken & token) {
     m.lock();
-    if(counter < new_element){
-        token = queue[counter++];
-        cou = counter;
+    if(!queue.empty()) {
+        token = queue.front();
+        queue.pop();
         m.unlock();
         return true;
     }
     m.unlock();
     return false;
 }
+
 

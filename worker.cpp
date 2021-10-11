@@ -16,8 +16,7 @@ Worker::Worker(ToDoQueue *const &queue_, DataLoader *const &data_loader_, Result
 void Worker::operator()() {
     ToDoToken to_do_token;
     while(true) {
-        int counter;
-        bool not_empty = queue->ifNotEmptyPop(to_do_token, counter);
+        bool not_empty = queue->ifNotEmptyPop(to_do_token);
         if (!not_empty) {
             continue;
         } else if (to_do_token.endOfWork()) {
