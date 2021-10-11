@@ -14,6 +14,35 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
     uint32_t columns = 0;
     uint8_t workers = 0;
 
+    loadAndValidate(dataset_filename, text_columns, text_workers, columns, workers);
+
+    Task task(columns, workers, &data_loader);
+
+    TaskReader task_reader;
+
+    while (true) {
+        try {
+            if (task_reader.read(task))
+                break;
+        }
+        catch(std::exception &e) {
+            std::string msg = e.what();
+            throw std::invalid_argument("Error al leer la tarea: " + msg);
+        }
+        try {
+            task.run();
+        }
+        catch(std::exception &e){
+            std::string msg = e.what();
+            throw std::invalid_argument("Error al correr la tarea: " + msg);
+        }
+    }
+}
+
+
+void SplitApplyCombine::loadAndValidate(const char * const dataset_filename,
+                     const std::string & text_columns, const std::string & text_workers,
+                     uint32_t & columns, uint8_t & workers) {
     try {
         file_reader.open(dataset_filename);
     }
@@ -36,27 +65,5 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
     catch(std::exception& e){
         std::string msg = e.what();
         throw std::invalid_argument("Error al leer la fila inicial: " + msg);
-    }
-
-    Task task(columns, workers, &data_loader);
-
-    TaskReader task_reader;
-
-    while (true) {
-        try {
-            if (task_reader.read(task))
-                break;
-        }
-        catch(std::exception &e) {
-            std::string msg = e.what();
-            throw std::invalid_argument("Error al leer la tarea: " + msg);
-        }
-        try {
-            task.run();
-        }
-        catch(std::exception &e){
-            std::string msg = e.what();
-            throw std::invalid_argument("Error al correr la tarea: " + msg);
-        }
     }
 }
