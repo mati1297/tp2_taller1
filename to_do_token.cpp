@@ -1,10 +1,9 @@
-//
-// Created by matias on 7/10/21.
-//
-
 #include "to_do_token.h"
 
-ToDoToken::ToDoToken(uint32_t idx_, bool end_): idx(idx_), end(end_) {}
+ToDoToken::ToDoToken(): idx(0), end(false) {}
+
+ToDoToken::ToDoToken(const uint32_t & idx_, const bool & end_):
+        idx(idx_), end(end_) {}
 
 bool ToDoToken::endOfWork() const {
     return end;
@@ -20,4 +19,4 @@ ToDoToken& ToDoToken::operator=(const ToDoToken & orig) {
     return *this;
 }
 
-ToDoToken::ToDoToken(): idx(0), end(false) {}
+

@@ -1,9 +1,6 @@
-#include <vector>
 #include "sum.h"
 
-
-
-void Sum::operate(uint16_t & accumulator, const uint16_t & number) const {
+void Sum::accumulate(uint16_t & accumulator, const uint16_t & number) const {
     accumulator += number;
 }
 

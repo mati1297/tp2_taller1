@@ -3,7 +3,7 @@
 #include "min.h"
 
 
-void Min::operate(uint16_t & accumulator, const uint16_t & number) const {
+void Min::accumulate(uint16_t & accumulator, const uint16_t & number) const {
     accumulator = std::min(accumulator, number);
 }
 

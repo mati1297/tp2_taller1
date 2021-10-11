@@ -43,7 +43,8 @@ Result Task::run() {
         threads_vector[i] = std::thread(workers_vector[i]);
     }
 
-    for (uint32_t j = 0; j < ceil(index_to - index_from, part_rows); ){
+    for (uint32_t j = 0; j < ceil(index_to - index_from, part_rows) &&
+                            !data_loader->endOfDataset(); ){
         for (uint32_t i = 0; i < workers; i++){
             if (partitions[i].isDone()) {
                 partitions[i].setDone(false);
