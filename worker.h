@@ -5,6 +5,7 @@
 #ifndef TP2_TALLER1_WORKER_H
 #define TP2_TALLER1_WORKER_H
 
+#include <vector>
 #include "result.h"
 #include "to_do_queue.h"
 #include "data_loader.h"
@@ -20,10 +21,14 @@ class Worker {
 
 
 public:
-    Worker(ToDoQueue * const & queue_, DataLoader * const & data_loader_, Result * const & result_, std::vector<DataPartition> * const & data_partitions_, const Operator * const & operator_,
-           const uint32_t & col_to_process);
+    Worker(ToDoQueue * const & queue_, DataLoader * const & data_loader_,
+           Result * const & result_,
+           std::vector<DataPartition> * const & data_partitions_,
+           const Operator * const & operator_, const uint32_t & col_to_process);
 
-    void operator ()();
+    void operator()();
+
+    void run() const;
 };
 
 
