@@ -5,6 +5,7 @@
 #include "sum.h"
 #include "max.h"
 #include "min.h"
+#include "string_to_num.h"
 
 TaskReader::TaskReader(): sum(), min(), max(), mean() {}
 
@@ -69,22 +70,20 @@ void TaskReader::setupOperator(Task & task, const std::string & text) const {
 
 void TaskReader::setupRanges(Task & task, const std::string & text_from,
                              const std::string & text_to) {
-    uint32_t from, to;
+    uint32_t from = 0, to = 0;
     try {
-        if (text_from.find('-') != std::string::npos)
-            throw std::invalid_argument("");
-        from = std::stoull(text_from);
+        from = StringToNum::stou32(text_from);
     }
     catch(std::exception& e){
-        throw std::invalid_argument("error al leer la fila inicial");
+        std::string msg = e.what();
+        throw std::invalid_argument("error al leer la fila inicial: " + msg);
     }
     try {
-        if (text_to.find('-') != std::string::npos)
-            throw std::invalid_argument("");
-        to = std::stoull(text_to);
+        to = StringToNum::stou32(text_to);
     }
     catch(std::exception& e){
-        throw std::invalid_argument("error al leer la fila final");
+        std::string msg = e.what();
+        throw std::invalid_argument("error al leer la fila final: " + msg);
     }
     try {
         task.setRange(from, to);
@@ -95,14 +94,13 @@ void TaskReader::setupRanges(Task & task, const std::string & text_from,
 }
 
 void TaskReader::setupColumn(Task & task, const std::string & text) {
-    uint32_t column;
+    uint32_t column = 0;
     try {
-        if (text.find('-') != std::string::npos)
-            throw std::invalid_argument("");
-        column = std::stoull(text);
+        column = StringToNum::stou32(text);
     }
     catch(std::exception& e){
-        throw std::invalid_argument("error al leer la columna");
+        std::string msg = e.what();
+        throw std::invalid_argument("error al leer la columna: " + msg);
     }
     try {
         task.setColumnToProcess(column);
@@ -113,15 +111,13 @@ void TaskReader::setupColumn(Task & task, const std::string & text) {
 }
 
 void TaskReader::setupPartitionRows(Task & task, const std::string & text) {
-    uint32_t partition_rows;
+    uint32_t partition_rows = 0;
     try {
-        if (text.find('-') != std::string::npos)
-            throw std::invalid_argument("");
-        partition_rows = std::stoull(text);
+        partition_rows = StringToNum::stou32(text);
     }
     catch(std::exception& e){
-        throw std::invalid_argument("error al leer la cantidad de"
-                                    " filas por particion");
+        std::string msg = e.what();
+        throw std::invalid_argument("error al leer la cantidad de filas por columna: " + msg);
     }
     try {
         task.setPartitionRows(partition_rows);
