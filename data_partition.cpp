@@ -31,7 +31,7 @@ void DataPartition::load(const uint16_t & number) {
         close();
     }
 }
-
+/*
 void DataPartition::print(){
     std::cout << "Particion:" << std::endl;
     for (uint32_t i = 0; i < rows; i++){
@@ -39,7 +39,7 @@ void DataPartition::print(){
             std::cout << data[j][i] << " ";
         std::cout << std::endl;
     }
-}
+}*/
 
 void DataPartition::reset() {
     if (_row < rows && _row != 0) {
@@ -98,8 +98,11 @@ void DataPartition::setDone(bool done_) {
     m.unlock();
 }
 
-bool DataPartition::isDone() const {
-    return done;
+bool DataPartition::isDone() {
+    m.lock();
+    bool ret = done;
+    m.unlock();
+    return ret;
 }
 
 
