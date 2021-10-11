@@ -9,13 +9,16 @@
 #include "data_partition.h"
 
 class ToDoToken {
-
-    const uint32_t idx;
+    uint32_t idx;
     bool end;
 
 
 public:
+    ToDoToken();
+
     ToDoToken(uint32_t idx_, bool end_);
+
+    const ToDoToken& operator=(const ToDoToken &);
 
     const uint32_t & getIndex() const;
 

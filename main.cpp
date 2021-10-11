@@ -20,7 +20,6 @@ int main(int argc, char * argv[]) {
         return EXIT_FAILURE;
     }
 
-
     uint32_t columns = std::stoul(argv[2]);
     uint32_t workers = std::stoul(argv[3]);
 

@@ -8,6 +8,7 @@
 #include "result.h"
 #include "to_do_queue.h"
 #include "data_loader.h"
+#include "sum.h"
 
 class Worker {
     ToDoQueue * const queue;
@@ -16,7 +17,6 @@ class Worker {
     std::vector<DataPartition> * const data_partitions;
     const Operator * const op;
     const uint32_t column_to_process;
-    uint32_t index;
 
 
 public:
@@ -24,8 +24,6 @@ public:
            const uint32_t & col_to_process);
 
     void operator ()();
-
-    uint32_t getIndex() const;
 };
 
 

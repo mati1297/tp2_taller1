@@ -58,15 +58,16 @@ Result Task::run() {
                 queue.push(ToDoToken(i, false));
                 j++;
             }
+            if(j >= ceil(index_to - index_from, part_rows))
+                break;
         }
     }
 
     for(uint32_t i = 0; i < workers; i++){
         queue.push(ToDoToken(0, true));
     }
-    for(uint32_t i = 0; i < workers; i++){
+    for(uint32_t i = 0; i < workers; i++)
         threads[i].join();
-    }
     op->printResult(result);
     return result;
 }
