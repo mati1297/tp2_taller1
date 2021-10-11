@@ -32,30 +32,33 @@ Result Task::run() {
     if (op == nullptr)
         throw std::invalid_argument("no hay un operador designado");
 
-    std::vector<Worker> workers_vector(workers, Worker(&queue, data_loader, &result, &partitions, op, column_to_process));
+    std::vector<Worker> workers_vector(workers,
+                                       Worker(&queue, data_loader,
+                                              &result, &partitions,
+                                              op, column_to_process));
 
     std::vector<std::thread> threads_vector(workers);
 
-    for(uint32_t i = 0; i < workers; i++){
+    for (uint32_t i = 0; i < workers; i++){
         threads_vector[i] = std::thread(workers_vector[i]);
     }
 
-    for(uint32_t j = 0; j < ceil(index_to - index_from, part_rows); ){
-        for(uint32_t i = 0; i < workers; i++){
+    for (uint32_t j = 0; j < ceil(index_to - index_from, part_rows); ){
+        for (uint32_t i = 0; i < workers; i++){
             if (partitions[i].isDone()) {
                 partitions[i].setDone(false);
                 queue.push(ToDoToken(i, false));
                 j++;
             }
-            if(j >= ceil(index_to - index_from, part_rows))
+            if (j >= ceil(index_to - index_from, part_rows))
                 break;
         }
     }
 
-    for(uint32_t i = 0; i < workers; i++){
+    for (uint32_t i = 0; i < workers; i++){
         queue.push(ToDoToken(0, true));
     }
-    for(uint32_t i = 0; i < workers; i++)
+    for (uint32_t i = 0; i < workers; i++)
         threads_vector[i].join();
 
     op->printResult(result);

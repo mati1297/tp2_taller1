@@ -1,6 +1,7 @@
 #ifndef TP2_TALLER1_SPLITAPPLYCOMBINE_H
 #define TP2_TALLER1_SPLITAPPLYCOMBINE_H
 
+#include <string>
 #include "file_reader.h"
 #include "data_loader.h"
 #include "task.h"
@@ -11,14 +12,16 @@ class SplitApplyCombine {
     DataLoader data_loader;
 
     void loadAndValidate(const char * const dataset_filename,
-                         const std::string & text_columns, const std::string & text_workers,
+                         const std::string & text_columns,
+                         const std::string & text_workers,
                          uint32_t & columns, uint8_t & workers);
 
 public:
     SplitApplyCombine();
 
     void execute(const char * const dataset_filename,
-                                    const std::string & text_columns, const std::string & text_workers);
+                                    const std::string & text_columns,
+                                    const std::string & text_workers);
 };
 
 

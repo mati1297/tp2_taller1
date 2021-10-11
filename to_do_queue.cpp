@@ -10,7 +10,7 @@ void ToDoQueue::push(const ToDoToken & new_token) {
 
 bool ToDoQueue::ifNotEmptyPop(ToDoToken & token) {
     m.lock();
-    if(!queue.empty()) {
+    if (!queue.empty()) {
         token = queue.front();
         queue.pop();
         m.unlock();

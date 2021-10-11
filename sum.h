@@ -9,8 +9,6 @@ class Sum: public Operator{
     uint16_t getNeutralValue() const override;
 public:
     void operate(uint16_t &accumulator, const uint16_t &number) const override;
-
-
 };
 
 

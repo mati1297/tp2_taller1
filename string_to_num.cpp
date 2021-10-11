@@ -13,7 +13,7 @@ uint32_t StringToNum::stou32(const std::string & str) {
     try {
         size_t pos;
         auto temp = std::stoull(str, &pos, 10);
-        if(pos != str.length())
+        if (pos != str.length())
             throw std::invalid_argument("otros caracteres ademas de numeros");
         if (temp > UINT32_MAX)
             throw std::out_of_range("numero de mas de 32 bits");
@@ -32,7 +32,7 @@ uint8_t StringToNum::stou8(const std::string & str) {
     try {
         size_t pos;
         auto temp = std::stoull(str, &pos, 10);
-        if(pos != str.length())
+        if (pos != str.length())
             throw std::invalid_argument("otros caracteres ademas de numeros");
         if (temp > UINT8_MAX)
             throw std::out_of_range("numero de mas de 8 bits");

@@ -17,7 +17,7 @@ int main(int argc, char * argv[]) {
     try {
         split_apply_combine.execute(argv[1], argv[2], argv[3]);
     }
-    catch (std::exception & e){
+    catch(std::exception & e){
         std::cerr << e.what() << std::endl;
         return EXIT_FAILURE;
     }

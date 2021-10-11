@@ -117,7 +117,8 @@ void TaskReader::setupPartitionRows(Task & task, const std::string & text) {
     }
     catch(std::exception& e){
         std::string msg = e.what();
-        throw std::invalid_argument("error al leer la cantidad de filas por columna: " + msg);
+        throw std::invalid_argument("error al leer la cantidad "
+                                    "de filas por columna: " + msg);
     }
     try {
         task.setPartitionRows(partition_rows);

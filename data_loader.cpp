@@ -8,7 +8,8 @@ DataLoader::DataLoader(FileReader & file_reader):
 
 
 bool DataLoader::endOfDataset() const {
-    return (file_reader->eof() || file_reader->peekEof() || counter >= (end-start));
+    return (file_reader->eof() || file_reader->peekEof()
+            || counter >= (end-start));
 }
 
 void DataLoader::load(DataPartition & dp) {
@@ -33,7 +34,7 @@ void DataLoader::load(DataPartition & dp) {
 
 bool DataLoader::ifDatasetNotEndedLoad(DataPartition & dp) {
     m.lock();
-    if(endOfDataset()) {
+    if (endOfDataset()) {
         m.unlock();
         return false;
     }

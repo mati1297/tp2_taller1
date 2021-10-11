@@ -28,7 +28,8 @@ public:
 
     void reset();
 
-    void accumulate(const uint16_t & number_, const uint32_t & extra_, const Operator * const & op);
+    void accumulate(const uint16_t & number_,
+                    const uint32_t & extra_, const Operator * const & op);
 
     void accumulate(const Result &result_, const Operator * const & op);
 };

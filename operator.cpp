@@ -21,7 +21,8 @@ void Operator::operate(Result & result, const DataPartition & data,
     result.setNumber(accumulator);
 }
 
-void Operator::operateExtra(uint32_t & accumulator, const uint32_t &number) const {
+void Operator::operateExtra(uint32_t & accumulator,
+                            const uint32_t &number) const {
     accumulator = 0;
 }
 

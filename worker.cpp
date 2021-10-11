@@ -1,4 +1,4 @@
-#include <iostream>
+#include <vector>
 #include "worker.h"
 #include "to_do_token.h"
 #include "sum.h"
@@ -26,7 +26,8 @@ void Worker::run() const {
             return;
         uint32_t part_index = to_do_token.getIndex();
 
-        if(!data_loader->ifDatasetNotEndedLoad((*data_partitions)[part_index])) {
+        if (!data_loader->ifDatasetNotEndedLoad
+                ((*data_partitions)[part_index])) {
             (*data_partitions)[part_index].setDone(true);
             continue;
         }

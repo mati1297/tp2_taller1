@@ -1,5 +1,5 @@
 #include "split_apply_combine.h"
-
+#include <string>
 #include "file_reader.h"
 #include "data_loader.h"
 #include "task.h"
@@ -7,15 +7,18 @@
 #include "string_to_num.h"
 
 
-SplitApplyCombine::SplitApplyCombine(): file_reader(), data_loader(file_reader) {}
+SplitApplyCombine::SplitApplyCombine(): file_reader(),
+                                        data_loader(file_reader) {}
 
 void SplitApplyCombine::execute(const char * const dataset_filename,
-                         const std::string & text_columns, const std::string & text_workers) {
+                         const std::string & text_columns,
+                         const std::string & text_workers) {
     uint32_t columns = 0;
     uint8_t workers = 0;
 
     try {
-        loadAndValidate(dataset_filename, text_columns, text_workers, columns, workers);
+        loadAndValidate(dataset_filename, text_columns,
+                        text_workers, columns, workers);
     }
     catch(std::exception & e) {
         throw;
@@ -46,7 +49,8 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
 
 
 void SplitApplyCombine::loadAndValidate(const char * const dataset_filename,
-                     const std::string & text_columns, const std::string & text_workers,
+                     const std::string & text_columns,
+                     const std::string & text_workers,
                      uint32_t & columns, uint8_t & workers) {
     try {
         file_reader.open(dataset_filename);

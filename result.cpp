@@ -27,7 +27,8 @@ void Result::accumulate(const Result & result_, const Operator * const & op) {
     accumulate(result_.getNumber(), result_.getExtra(), op);
 }
 
-void Result::accumulate(const uint16_t & number_, const uint32_t & extra_, const Operator * const & op) {
+void Result::accumulate(const uint16_t & number_, const uint32_t & extra_,
+                        const Operator * const & op) {
     mutex.lock();
     if (initialized) {
         op->operate(number, number_);

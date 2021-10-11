@@ -9,7 +9,8 @@ void Mean::operate(Result & accumulator,
     Operator::operate(accumulator, new_result);
 }
 
-void Mean::operate(Result & result, const DataPartition & data, const uint32_t & column_to_op) const {
+void Mean::operate(Result & result, const DataPartition & data,
+                   const uint32_t & column_to_op) const {
     Operator::operate(result, data, column_to_op);
     result.setExtra(data.getRows());
 }
