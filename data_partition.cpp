@@ -32,6 +32,15 @@ void DataPartition::load(const uint16_t & number) {
     }
 }
 
+void DataPartition::print(){
+    std::cout << "Particion:" << std::endl;
+    for (uint32_t i = 0; i < rows; i++){
+        for (uint32_t j = 0; j < columns; j++)
+            std::cout << data[j][i] << " ";
+        std::cout << std::endl;
+    }
+}
+
 void DataPartition::reset() {
     if (_row < rows && _row != 0) {
         for (uint32_t i = 0; i < columns; i++){

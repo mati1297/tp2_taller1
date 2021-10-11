@@ -11,6 +11,7 @@ Result::Result(const Result & orig) {
 
 void Result::reset(){
     mutex.lock();
+    initialized = false;
     number = 0;
     extra = 0;
     mutex.unlock();

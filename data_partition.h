@@ -37,6 +37,8 @@ public:
     const std::vector<uint16_t> &getColumnData(const uint32_t
                                                 & column_idx) const;
 
+    void print();
+
     void setRows(const uint32_t & rows_);
 
     void close();

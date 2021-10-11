@@ -29,6 +29,7 @@ void DataLoader::load(DataPartition & dp) {
             counter++;
         }
         dp.close();
+        //dp.print();
     }
 }
 
