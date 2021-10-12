@@ -7,7 +7,7 @@ DataPartition::DataPartition(const uint32_t & rows,
                                                         columns(columns), _row(0),
                                                         _column(0), closed(false),
                                                         data(columns,
-                             std::vector<uint16_t>(rows)), done(true), m() {}
+                             std::vector<uint16_t>(rows)), done(false), m() {}
 
 DataPartition::DataPartition(const DataPartition &orig): rows(orig.rows),
                                                          columns(orig.columns), _row(orig._row),

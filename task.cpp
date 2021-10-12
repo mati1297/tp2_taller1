@@ -9,43 +9,59 @@
 #include "to_do_queue.h"
 #include "worker.h"
 
-Task::Task(const uint32_t & part_columns, const uint32_t & workers,
+Task::Task(const uint32_t & part_columns, const uint8_t & workers,
            DataLoader * const & data_loader):
-        op(nullptr), workers(workers), part_columns(part_columns),
+        op(nullptr), workers_cant(workers), part_columns(part_columns),
         part_rows(1), column_to_process(0),
         index_from(0), index_to(1),
-        result(), partitions(workers,
-                             DataPartition(part_rows, part_columns)),
         data_loader(data_loader) {}
 
-void Task::reset(){
+void Task::resetDataLoader(){
     data_loader->setStart(index_from * part_columns);
     data_loader->setEnd(index_to * part_columns);
-    result.reset();
 }
 
-
 Result Task::run() {
-    reset();
+    // Se resetea el data loader.
+    resetDataLoader();
     ToDoQueue queue;
+    std::vector<DataPartition>
+            partitions(workers_cant, DataPartition(part_rows, part_columns));
+    Result result;
 
+    // Si no se configuro el operador, se lanza excepcion.
     if (op == nullptr)
         throw std::invalid_argument("no hay un operador designado");
 
-    std::vector<Worker> workers_vector(workers,
+
+    // Se carga el vector de workers_cant utilizando su constructor por copia.
+    std::vector<Worker> workers_vector(workers_cant,
                                        Worker(&queue, data_loader,
                                               &result, &partitions,
                                               op, column_to_process));
 
-    std::vector<std::thread> threads_vector(workers);
+    // Se crea el vector de workers_cant.
+    std::vector<std::thread> threads_vector(workers_cant);
 
-    for (uint32_t i = 0; i < workers; i++){
+    // Se lanzan los threads, uno por worker.
+    for (uint8_t i = 0; i < workers_cant; i++)
         threads_vector[i] = std::thread(workers_vector[i]);
-    }
 
+    /* Se setean todas las particiones con su flag done en true para entrar
+     * de manera correcta al siguiente ciclo. */
+    for(uint8_t i = 0; i < workers_cant; i++)
+        partitions[i].setDone(true);
+
+    /* Mientras que no se alcance el fin del dataset y no se lean todas
+     * las particiones, se van cargando (y recargando) y procesando
+     * las distintas particiones. */
     for (uint32_t j = 0; j < ceil(index_to - index_from, part_rows) &&
                             !data_loader->endOfDataset(); ){
-        for (uint32_t i = 0; i < workers; i++){
+        /* Se recorren todas las particiones para ver en cuales el trabajo
+         * esta terminado, cuando se encuentra una, se asigna ese indice a
+         * un token y se agrega a la cola de to do, luego se suma 1 al
+         * contador. */
+        for (uint32_t i = 0; i < workers_cant; i++){
             if (partitions[i].isDone()) {
                 partitions[i].setDone(false);
                 queue.push(ToDoToken(i, false));
@@ -56,14 +72,20 @@ Result Task::run() {
         }
     }
 
-    for (uint32_t i = 0; i < workers; i++){
+    /* Una vez terminado, se agrega un token por worker que indica
+     * el fin del trabajo. */
+    for (uint32_t i = 0; i < workers_cant; i++){
         queue.push(ToDoToken(0, true));
     }
-    for (uint32_t i = 0; i < workers; i++)
+    // Luego se joinean todos los threads.
+    for (uint32_t i = 0; i < workers_cant; i++)
         threads_vector[i].join();
 
+
+    // Se imprime el resultado segun el operador utilizado.
     op->printResult(result);
 
+    // Se devuelve el resultado.
     return result;
 }
 
@@ -93,9 +115,6 @@ void Task::setPartitionRows(const uint32_t & rows) {
     if (this->part_rows == rows)
         return;
     this->part_rows = rows;
-    for (uint32_t i = 0; i < workers; i++){
-        partitions[i].setRows(rows);
-    }
     data_loader->setStart(index_from * part_columns);
     data_loader->setEnd(index_to * part_columns);
 }
