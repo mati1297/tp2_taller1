@@ -74,11 +74,11 @@ Result Task::run() {
 
     /* Una vez terminado, se agrega un token por worker que indica
      * el fin del trabajo. */
-    for (uint32_t i = 0; i < workers_cant; i++){
+    for (uint8_t i = 0; i < workers_cant; i++){
         queue.push(ToDoToken(0, true));
     }
     // Luego se joinean todos los threads.
-    for (uint32_t i = 0; i < workers_cant; i++)
+    for (uint8_t i = 0; i < workers_cant; i++)
         threads_vector[i].join();
 
 
