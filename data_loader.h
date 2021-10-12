@@ -20,6 +20,9 @@ class DataLoader {
     // Metodo privado que permite cargar datos en una particion.
     void load(DataPartition & dp);
 
+    // Metodo privado para obtener end of dataset sin bloquear el mutex.
+    bool unlockedEndOfDataset();
+
 public:
     // Constructor.
     DataLoader();

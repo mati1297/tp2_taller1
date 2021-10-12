@@ -14,15 +14,19 @@ void DataLoader::openFile(const char * const & filename) {
     }
 }
 
-bool DataLoader::endOfDataset() {
+bool DataLoader::unlockedEndOfDataset() {
     return (file_reader.eof() || file_reader.peekEof()
             || counter >= (end-start));
 }
 
+bool DataLoader::endOfDataset() {
+    m.lock();
+    bool ret = unlockedEndOfDataset();
+    m.unlock();
+    return ret;
+}
+
 void DataLoader::load(DataPartition & dp) {
-    // Si todavia no se alcanzo el final se lee
-    if (endOfDataset())
-        return;
     // Se resetea el DataPartition.
     dp.reset();
     // Mientras que la particion no este llena y el contador
@@ -52,7 +56,7 @@ bool DataLoader::ifDatasetNotEndedLoad(DataPartition & dp) {
     // Se bloquea el mutex.
     m.lock();
     // Si se llego al final del dataset no se hace nada.
-    if (endOfDataset()) {
+    if (unlockedEndOfDataset()) {
         m.unlock();
         return false;
     }
