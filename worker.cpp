@@ -12,7 +12,7 @@ Worker::Worker(ToDoQueue & queue_, DataLoader & data_loader_,
 
 
 void Worker::operator()() {
-    // Se llama al metodo loadQueue.
+    // Se llama al metodo run
     run();
 }
 
