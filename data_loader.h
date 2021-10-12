@@ -23,6 +23,15 @@ public:
     // Constructor.
     DataLoader();
 
+    // Se borra el constructor por copia
+    DataLoader(const DataLoader & orig) = delete;
+
+    // Se borra el constructor por movimiento
+    DataLoader(DataLoader && orig) = delete;
+
+    // Se borra el operador =
+    DataLoader & operator=(const DataLoader & orig) = delete;
+
     // Metodo que abre un archivo para utilizar como dataset.
     void openFile(const char * const & filename);
 

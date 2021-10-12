@@ -7,12 +7,12 @@ DataPartition::DataPartition(const uint32_t & rows,
                              columns(columns), _row(0),
                              _column(0), closed(false),
                              data(columns,
-                             std::vector<uint16_t>(rows)), m() {}
+                             std::vector<uint16_t>(rows)) {}
 
 DataPartition::DataPartition(const DataPartition &orig): rows(orig.rows),
                              columns(orig.columns), _row(orig._row),
                              _column(orig._column), closed(orig.closed),
-                             data(orig.data), m() {}
+                             data(orig.data) {}
 
 void DataPartition::load(const uint16_t & number) {
     // Si la particion esta cerrada, se devuelve una excepcion.

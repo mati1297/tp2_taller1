@@ -21,7 +21,6 @@ private:
     uint32_t _column;
     bool closed;
     std::vector<std::vector<uint16_t>> data;
-    std::mutex m;
 
 public:
     // Constructor, recibe el tamanio en forma de rows y columns.

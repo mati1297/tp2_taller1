@@ -14,10 +14,13 @@ public:
     FileReader();
 
     // Se borra el constructor por copia.
-    FileReader(FileReader & original) = delete;
+    FileReader(const FileReader & original) = delete;
 
     // Se borra el constructor por movimiento.
     FileReader(FileReader && orig) = delete;
+
+    // Se borra el operador =
+    FileReader & operator=(const FileReader & orig) = delete;
 
     // Destructor.
     ~FileReader();
