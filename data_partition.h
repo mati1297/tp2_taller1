@@ -6,13 +6,10 @@
 #include <mutex>
 
 /* Clase protegida que representa una particion de datos que se
- * carga en memoria. Las particiones son accedidas solo por un hilo
- * al momento de cargar y procesar. Pero deben ser protegidos ciertos
- * metodos ya que al momento de la preparacion es accedida por un determinado
- * hilo y por el hilo principal.
- * Como atributos posee vectores con la informacion que contiene,
- * contadores de posicion, informacion sobre su tamano, un flag de
- * terminado e informacion sobre su estado de completitud. */
+ * carga en memoria. Como atributos posee vectores con la 
+ * informacion que contiene,contadores de posicion, informacion 
+ * sobre su tamano, un flag determinado e informacion sobre 
+ * su estado de completitud. */
 class DataPartition {
 private:
     uint32_t rows;
