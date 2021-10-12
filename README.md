@@ -16,9 +16,9 @@ En el siguiente diagrama de flujo se puede ver a grandes rasgos como es el funci
 
 Una vez que no hay mas entradas, el *main thread* le indica mediante *tokens* de finalizacion a los *threads* que finaliza y espera que finalicen. Luego imprime los resultados y finaliza.
 
-<!--<p align=center>
+<p align=center>
     <img src="images/flow_chart.png"alt="flow_chart"/>
-</p> -->
+</p>
 
 ### Clases
 
@@ -40,11 +40,23 @@ Cuando una partición se llena, esta prende un flag y de esta manera no puede se
 
 La clase ```DataLoader``` es, como se dijo antes, la encargada de leer y cargar los datos en las particiones, para ello posee una instancia de la clase ```FileReader```, encargada de la lectura de los ```uint16_t``` y conversión al endian de la máquina. ```DataLoader```, en particular su método ```load()```, se encuentra protegida mediante exclusión mútua, ya que es accedida por los distintos *threads workers* al mismo tiempo. Este método, además, valida que las posiciones que se le pasen para la lectura, sean válidas según el archivo, y toma medidas según corresponda.
 
+Los operadores son representados mediante la clase ```Operator```, la cual es abstracta, ya que no tiene implementada la totalidad de sus métodos. Las clases de operadores disponibles son: ```Sum```, ```Min```, ```Max``` (todas estas herederas de ```Operator```) y ```Mean``` (heredera de ```Sum```). Estas objetos son instanciados por ```TaskReader``` y este pasa como parámetro a las tareas un puntero a la operación que corresponda. Poseen métodos tanto para procesar las columnas de las particiones como para operar entre sí. Si bien una misma instancia de un objeto ```Operator``` (o de sus hijas) es compartido por varios *threads*, este no es protegido ya que todos sus métodos son ```const``` y no hay un problema de escritura, por lo que no existe una *race condition*. A continuación se muestra un diagrama que detalla las herencias entre operadores y que métodos implementan y reimplementan cada una de las clases.
 
-RESULT Y OPERATOR
+<p align=center>
+    <img src="images/class_operator.png"alt="class_operator"/>
+</p>
+
+Los resultados son representados por la clase ```Result```, la cual tiene como atributo un número (```uint16_t```), un extra (```uint32_t```, utilizado por ```Mean``` para contabilizar la cantidad de números procesados) y un separador, que define el formateo al imprimir. Si es cargado un separador, el resultado se imprimirá como ```%numero%separador%extra```, sin embargo, de ser el separador una cadena vacia, se imprimirá solo el numero. Esta clase está protegida mediante exclusión mutua, ya que ciertas instancias son accedidas a la vez por distintos *threads workers*.
 
 
-HABLAR SOBRE MUTEX
-QUE CLASES SON PROTEGIDAS
+A continuación se puede ver un diagrama de los recursos protegidos compartidos por el *main thread* y los *workers*, el primero es representado por la clase ```SplitApplyCombine```, la cual tiene como atributo al ```DataLoader``` e instancia 1 ```ToDoQueue``` y varios ```Result```. A estos accede ```Worker```, el cual cada uno de ellos tiene referencias a varias instancias de ```Result```, a una de ```ToDoQueue``` y a una de ```DataLoader```.
 
-MANEJO DE COMO SE HACE PARA LEER DE A VARIAS.
+<p align=center>
+    <img src="images/class_mutex.png"alt="class_mutex"/>
+</p>
+
+Para mas información acerca de las clases y sus métodos, revisar la documentación en el código.
+
+
+
+
