@@ -26,11 +26,9 @@ public:
     void accumulateExtra(uint32_t & accumulator,
                          const uint32_t &number) const override;
 
-    /* Formatea e imprime el resultado. Se redefine el metodo definido en
-     * la clase Operator. */
-    void printResult(Result & result) const override;
-
-
+    /* Devuelve el separador de la operacion para impresion del resultado.
+     * Sobrecarga el metodo de Operator.*/
+    std::string getSeparator() const override;
 };
 
 

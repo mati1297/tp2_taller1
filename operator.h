@@ -37,8 +37,8 @@ public:
     virtual void accumulateExtra(uint32_t & accumulator,
                                  const uint32_t & number) const;
 
-    // Formatea e imprime el resultado.
-    virtual void printResult(Result & result) const;
+    // Devuelve el separador de la operacion para impresion del resultado.
+    virtual std::string getSeparator() const;
 };
 
 

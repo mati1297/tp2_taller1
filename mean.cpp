@@ -17,7 +17,7 @@ void Mean::accumulateExtra(uint32_t & accumulator, const uint32_t & number) cons
     accumulator += number;
 }
 
-void Mean::printResult(Result & result) const {
-    // Se imprime el resultado y aparte el extra tras una barra.
-    std::cout << result.getNumber() << '/' << result.getExtra() << std::endl;
+std::string Mean::getSeparator() const {
+    return "/";
 }
+

@@ -81,10 +81,6 @@ Result Task::run() {
     for (uint8_t i = 0; i < workers_cant; i++)
         threads_vector[i].join();
 
-
-    // Se imprime el resultado segun el operador utilizado.
-    op->printResult(result);
-
     // Se devuelve el resultado.
     return result;
 }

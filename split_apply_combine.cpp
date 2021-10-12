@@ -1,5 +1,6 @@
 #include "split_apply_combine.h"
 #include <string>
+#include <iostream>
 #include "file_reader.h"
 #include "data_loader.h"
 #include "task.h"
@@ -27,6 +28,8 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
 
     TaskReader task_reader;
 
+    std::vector<Result> results(0);
+
     while (true) {
         try {
             if (task_reader.read(task))
@@ -37,12 +40,16 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
             throw std::invalid_argument("Error al leer la tarea: " + msg);
         }
         try {
-            task.run();
+            results.push_back(task.run());
         }
         catch(std::exception &e){
             std::string msg = e.what();
             throw std::invalid_argument("Error al correr la tarea: " + msg);
         }
+    }
+
+    for(size_t i = 0; i < results.size(); i++){
+        std::cout << results[i] << std::endl;
     }
 }
 

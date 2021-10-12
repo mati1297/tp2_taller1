@@ -25,6 +25,7 @@ void Operator::operateData(Result & result, const DataPartition & data,
     }
     // Se setea el valor en result.
     result.setNumber(accumulator);
+    result.setSeparator(getSeparator());
 }
 
 void Operator::accumulateExtra(uint32_t & accumulator,
@@ -33,9 +34,8 @@ void Operator::accumulateExtra(uint32_t & accumulator,
     accumulator = 0;
 }
 
-void Operator::printResult(Result & result) const {
-    // Por defecto, solo se imprime el numero del resultado.
-    std::cout << result.getNumber() << std::endl;
+std::string Operator::getSeparator() const {
+    return "";
 }
 
 

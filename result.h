@@ -18,8 +18,9 @@ class Operator;
 class Result {
     uint16_t number;
     uint32_t extra;
-    bool initialized{};
+    bool initialized;
     std::mutex mutex;
+    std::string separator; // Separador de numero y extra en impresion.
 
 public:
     // Constructor por defecto.
@@ -33,6 +34,9 @@ public:
 
     // Permite setear el parametro extra.
     void setExtra(const uint32_t & extra_);
+
+    // Setea el separador que separa el numero del extra en la impresion.
+    void setSeparator(const std::string separator_);
 
     // Devuelve el atributo numero.
     const uint16_t & getNumber() const;
@@ -55,6 +59,9 @@ public:
      * Pre:
      *      op debe apuntar a un objeto Operator valido. */
     void accumulate(const Result &result_, const Operator * const & op);
+
+    // Operador de output.
+    friend std::ostream& operator<<(std::ostream& os, const Result & result);
 };
 
 
