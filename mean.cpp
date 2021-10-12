@@ -1,25 +1,24 @@
-#include <vector>
+#include <string>
 #include <iostream>
 #include "mean.h"
 #include "result.h"
+#include "operator.h"
 
-void Mean::operate(Result & result, const std::vector<uint16_t> & data,
-                   const uint32_t & from, const uint32_t & to) const {
-    uint16_t sum = 0;
-    for (uint32_t i = from; i < to; i++)
-        sum += data[i];
-    result.setNumber(sum);
-    result.setExtra(to - from);
+void Mean::operateData(Result & result, const DataPartition & data,
+                       const uint32_t & column_to_op) const {
+    // Se opera igual que en cualquier Operator.
+    Operator::operateData(result, data, column_to_op);
+    // Luego, se setea el atributo extra como el total de filas procesadas.
+    result.setExtra(data.getFullRows());
 }
 
-void Mean::operate(Result & result, const std::vector<Result> & data) const {
-    Operator::operate(result, data);
-    uint32_t total_extra = 0;
-    for (uint32_t i = 0; i < data.size(); i++)
-        total_extra += data[i].getExtra();
-    result.setExtra(total_extra);
+void Mean::accumulateExtra(uint32_t & accumulator,
+                           const uint32_t & number) const {
+    // El extra se acumula como la suma de los extras.
+    accumulator += number;
 }
 
-void Mean::printResult(Result & result) const {
-    std::cout << result.getNumber() << '/' << result.getExtra() << std::endl;
+std::string Mean::getSeparator() const {
+    return "/";
 }
+

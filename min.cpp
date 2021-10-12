@@ -3,13 +3,12 @@
 #include "min.h"
 
 
-void Min::operate(Result & result, const std::vector<uint16_t>& data,
-                  const uint32_t & from, const uint32_t & to) const {
-    uint16_t minimum = UINT16_MAX;
-    for (uint32_t i = from; i < to; i++){
-        minimum = std::min(minimum, data[i]);
-    }
-    result.setNumber(minimum);
+void Min::accumulate(uint16_t & accumulator, const uint16_t & number) const {
+    accumulator = std::min(accumulator, number);
+}
+
+uint16_t Min::getNeutralValue() const {
+    return UINT16_MAX;
 }
 
 

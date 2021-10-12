@@ -5,10 +5,17 @@
 #include <cstdint>
 #include "operator.h"
 
+/* Clase que representa la operacion maximo, es heredera
+ * de la clase Operator. */
 class Max: public Operator {
+    // Metodo que devuelve el valor neutral de la operacion.
+    uint16_t getNeutralValue() const override;
+
 public:
-    void operate(Result & result, const std::vector<uint16_t> & data,
-                 const uint32_t & from, const uint32_t & to) const override;
+    /* Metodo que acumula segun la operacion en accumulator el resultado
+     * de operar a este y a number. */
+    void accumulate(uint16_t & accumulator,
+                    const uint16_t & number) const override;
 };
 
 

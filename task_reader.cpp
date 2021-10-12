@@ -5,14 +5,17 @@
 #include "sum.h"
 #include "max.h"
 #include "min.h"
+#include "string_to_num.h"
 
 TaskReader::TaskReader(): sum(), min(), max(), mean() {}
 
-uint8_t TaskReader::read(Task & task) {
+bool TaskReader::read(Task & task) {
+    // Se leen los rangos.
     std::string read1, read2;
     std::cin >> read1;
+    // Si se alcanzo eof se devuelve 1 indicando que termino la entrada.
     if (std::cin.eof())
-        return 1;
+        return false;
     std::cin >> read2;
     if (std::cin.eof())
         throw std::invalid_argument("faltan parametros de la tarea");
@@ -22,6 +25,7 @@ uint8_t TaskReader::read(Task & task) {
     catch(std::invalid_argument& e) {
         throw;
     }
+    // Se lee la cantidad de filas por particion.
     std::cin >> read1;
     if (std::cin.eof())
         throw std::invalid_argument("faltan parametros de la tarea");
@@ -31,15 +35,17 @@ uint8_t TaskReader::read(Task & task) {
     catch(std::invalid_argument& e){
         throw;
     }
+    // Se lee la columna a procesar.
     std::cin >> read1;
     if (std::cin.eof())
         throw std::invalid_argument("faltan parametros de la tarea");
     try{
-        setupColumn(task, read1);
+        setupColumnToProcess(task, read1);
     }
     catch(std::invalid_argument& e){
         throw;
     }
+    // Se lee la operacion.
     std::cin >> read1;
     if (std::cin.eof())
         throw std::invalid_argument("faltan parametros de la tarea");
@@ -49,7 +55,7 @@ uint8_t TaskReader::read(Task & task) {
     catch(std::invalid_argument& e){
         throw;
     }
-    return 0;
+    return true;
 }
 
 void TaskReader::setupOperator(Task & task, const std::string & text) const {
@@ -68,23 +74,21 @@ void TaskReader::setupOperator(Task & task, const std::string & text) const {
 }
 
 void TaskReader::setupRanges(Task & task, const std::string & text_from,
-                             const std::string & text_to) {
-    uint32_t from, to;
+                             const std::string & text_to) const {
+    uint32_t from = 0, to = 0;
     try {
-        if (text_from.find('-') != std::string::npos)
-            throw std::invalid_argument("");
-        from = std::stoull(text_from);
+        from = StringToNum::stou32(text_from);
     }
     catch(std::exception& e){
-        throw std::invalid_argument("error al leer la fila inicial");
+        std::string msg = e.what();
+        throw std::invalid_argument("error al leer la fila inicial: " + msg);
     }
     try {
-        if (text_to.find('-') != std::string::npos)
-            throw std::invalid_argument("");
-        to = std::stoull(text_to);
+        to = StringToNum::stou32(text_to);
     }
     catch(std::exception& e){
-        throw std::invalid_argument("error al leer la fila final");
+        std::string msg = e.what();
+        throw std::invalid_argument("error al leer la fila final: " + msg);
     }
     try {
         task.setRange(from, to);
@@ -94,15 +98,15 @@ void TaskReader::setupRanges(Task & task, const std::string & text_from,
     }
 }
 
-void TaskReader::setupColumn(Task & task, const std::string & text) {
-    uint32_t column;
+void TaskReader::setupColumnToProcess(Task & task,
+                                      const std::string & text) const {
+    uint32_t column = 0;
     try {
-        if (text.find('-') != std::string::npos)
-            throw std::invalid_argument("");
-        column = std::stoull(text);
+        column = StringToNum::stou32(text);
     }
     catch(std::exception& e){
-        throw std::invalid_argument("error al leer la columna");
+        std::string msg = e.what();
+        throw std::invalid_argument("error al leer la columna: " + msg);
     }
     try {
         task.setColumnToProcess(column);
@@ -112,16 +116,16 @@ void TaskReader::setupColumn(Task & task, const std::string & text) {
     }
 }
 
-void TaskReader::setupPartitionRows(Task & task, const std::string & text) {
-    uint32_t partition_rows;
+void TaskReader::setupPartitionRows(Task & task,
+                                    const std::string & text) const {
+    uint32_t partition_rows = 0;
     try {
-        if (text.find('-') != std::string::npos)
-            throw std::invalid_argument("");
-        partition_rows = std::stoull(text);
+        partition_rows = StringToNum::stou32(text);
     }
     catch(std::exception& e){
-        throw std::invalid_argument("error al leer la cantidad de"
-                                    " filas por particion");
+        std::string msg = e.what();
+        throw std::invalid_argument("error al leer la cantidad "
+                                    "de filas por columna: " + msg);
     }
     try {
         task.setPartitionRows(partition_rows);

@@ -1,22 +1,34 @@
 #ifndef TP2_TALLER1_MEAN_H
 #define TP2_TALLER1_MEAN_H
 
-
 #include <cstddef>
 #include <cstdint>
 #include <vector>
+#include <string>
 #include "result.h"
 #include "operator.h"
+#include "sum.h"
 
-class Mean: public Operator {
+/* Clase que representa la operacion promedio, es heredera
+ * de la clase Sum, ya que la operacion es similar. */
+class Mean: public Sum {
 public:
-    void operate(Result & result, const std::vector<uint16_t> & data,
-                 const uint32_t & from, const uint32_t & to) const override;
+    /* Metodo que opera sobre la particion, acumulando los valores
+     * de la columna correspondiente segun la operacion. Los resultados
+     * son guardados en result. Se redefine el metodo definido en la
+     * clase Operator.*/
+    void operateData(Result &result, const DataPartition &data,
+                     const uint32_t &column_to_op) const override;
 
-    void operate(Result & result,
-                 const std::vector<Result> & data) const override;
+    /* Metodo que acumula segun la operacion en accumulator el resultado
+     * de operar a este y a number. Se redefine el metodo definido en la
+     * clase Operator. */
+    void accumulateExtra(uint32_t & accumulator,
+                         const uint32_t &number) const override;
 
-    virtual void printResult(Result & result) const override;
+    /* Devuelve el separador de la operacion para impresion del resultado.
+     * Sobrecarga el metodo de Operator.*/
+    std::string getSeparator() const override;
 };
 
 

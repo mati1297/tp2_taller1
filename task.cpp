@@ -1,85 +1,40 @@
 #include <cstdint>
 #include <vector>
 #include <algorithm>
+#include <thread>
+#include <iostream>
 #include "task.h"
 #include "data_partition.h"
 #include "operator.h"
+#include "to_do_queue.h"
+#include "worker.h"
 
-Task::Task(const uint32_t & part_columns, const uint32_t & workers,
-           DataLoader * const & data_loader):
-        op(nullptr), workers(workers), part_columns(part_columns),
+Task::Task(const uint32_t & part_columns):
+        op(nullptr), part_columns(part_columns),
         part_rows(1), column_to_process(0),
-        index_from(0), index_to(1),
-        fake_index_to(index_to - index_from),
-        results(ceil(index_to - index_from, part_rows)),
-        partitions(workers, DataPartition(0, part_rows, part_columns)),
-        data_loader(data_loader), current_data_partition_index(0) {}
+        index_from(0), index_to(1) {}
 
-void Task::reset(){
-    data_loader->setStart(index_from * part_columns);
-    data_loader->setEnd(index_to * part_columns);
-    fake_index_to = index_to - index_from;
-    current_data_partition_index = 0;
-    for (Result & result : results)
-        result.reset();
-}
 
-Result Task::run() {
-    reset();
-    try {
-        while (!data_loader->endOfDataset()) {
-            uint32_t index = split();
-            apply(partitions[index]);
-        }
-    }
-    catch(std::exception& e){
-        throw;
-    }
-    Result result = combine();
-    op->printResult(result);
-    return result;
-}
-
-uint32_t Task::split() {
-    uint32_t reduced_index = current_data_partition_index % workers;
-    try {
-        data_loader->load(partitions[reduced_index],
-                          current_data_partition_index);
-    }
-    catch(std::length_error& e){
-        throw;
-    }
-    current_data_partition_index++;
-    return reduced_index;
-}
-
-//revisarlo esto, ver tema de si se puede hacer sin ir a negativo.
-void Task::apply(const DataPartition & dp){
+void Task::loadQueue(ToDoQueue & queue, const size_t & result_idx) {
+    // Si no se configuro el operador, se lanza excepcion.
     if (op == nullptr)
         throw std::invalid_argument("no hay un operador designado");
-    int64_t dp_from = std::max((uint32_t) 0,
-                           dp.getFirstRowIndex()) - dp.getFirstRowIndex();
-    int64_t dp_to = std::min(fake_index_to - 1,
-                         dp.getLastRowIndex()) - dp.getFirstRowIndex() + 1;
-    if (dp_to > dp_from){
-        uint32_t idx = dp.getIndex();
-        try {
-            const std::vector<uint16_t> &column_data =
-                    dp.getColumnData(column_to_process);
-            op->operate(results[idx],
-                        column_data, dp_from, dp_to);
-        }
-        catch(std::invalid_argument& e) {
-            throw;
-        }
+
+
+    // Se itera tantas veces como particiones haya.
+    for (uint32_t j = 0; j < ceil(index_to - index_from, part_rows); j++){
+        // Se calculan valores inicial y final en terminos de numeros a leer.
+        uint32_t from = (index_from + j * part_rows) * part_columns;
+        uint32_t to = (index_from + (j+1) * part_rows) * part_columns;
+        if (to > index_to * part_columns)
+            to = index_to * part_columns;
+
+        // Se arma el token y se pushea a la cola.
+        queue.push(ToDoToken(false, op, result_idx, part_rows,
+                             from, to, column_to_process));
     }
 }
 
-Result Task::combine() const {
-    Result result;
-    op->operate(result, results);
-    return result;
-}
 
 void Task::setOperator(const Operator * const & op) {
     this->op = op;
@@ -88,14 +43,8 @@ void Task::setOperator(const Operator * const & op) {
 void Task::setRange(const uint32_t & from, const uint32_t & to) {
     if (to <= from)
         throw std::invalid_argument("la fila inicial es mayor que la final");
-    if ((index_to - index_from) != (to - from))
-        results = std::vector<Result>(
-                ceil(to - from, part_rows));
     index_from = from;
     index_to = to;
-    data_loader->setStart(index_from * part_columns);
-    data_loader->setEnd(index_to * part_columns);
-    fake_index_to = index_to - index_from;
 }
 
 void Task::setColumnToProcess(const uint32_t & column) {
@@ -110,13 +59,6 @@ void Task::setPartitionRows(const uint32_t & rows) {
     if (this->part_rows == rows)
         return;
     this->part_rows = rows;
-    for (uint32_t i = 0; i < workers; i++){
-        partitions[i].setRows(rows);
-    }
-    results = std::vector<Result>(
-            ceil(index_to - index_from, part_rows));
-    data_loader->setStart(index_from * part_columns);
-    data_loader->setEnd(index_to * part_columns);
 }
 
 uint32_t Task::ceil(const uint32_t & num, const uint32_t & den) {
