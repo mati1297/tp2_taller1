@@ -20,6 +20,7 @@ Result & Result::operator= (const Result & orig){
 
 
 void Result::reset(){
+    // Se utiliza lock guard, que utiliza RAII.
     std::lock_guard<std::mutex> lock_guard(mutex);
     // Se setean todos los valores a false y 0.
     initialized = false;
@@ -29,6 +30,7 @@ void Result::reset(){
 }
 
 void Result::setNumber(const uint16_t & number_) {
+    // Se utiliza lock guard, que utiliza RAII.
     std::lock_guard<std::mutex> lock_guard(mutex);
     // Se setea inicializado a true y se guarda el numero.
     initialized = true;
@@ -36,6 +38,7 @@ void Result::setNumber(const uint16_t & number_) {
 }
 
 void Result::setExtra(const uint32_t & extra_) {
+    // Se utiliza lock guard, que utiliza RAII.
     std::lock_guard<std::mutex> lock_guard(mutex);
     // Se setea inicializado a true y se guarda el extra.
     initialized = true;
@@ -53,6 +56,7 @@ void Result::accumulate(const Result & result_, const Operator * const & op) {
 
 void Result::accumulate(const uint16_t & number_, const uint32_t & extra_,
                         const Operator * const & op) {
+    // Se utiliza lock guard, que utiliza RAII.
     std::lock_guard<std::mutex> lock_guard(mutex);
     // Si esta inicializado se acumula.
     if (initialized) {

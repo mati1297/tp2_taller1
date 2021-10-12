@@ -9,8 +9,7 @@ DataPartition::DataPartition(const uint32_t & rows,
                              data(columns,
                              std::vector<uint16_t>(rows)), m() {}
 
-DataPartition::DataPartition
-                            (const DataPartition &orig): rows(orig.rows),
+DataPartition::DataPartition(const DataPartition &orig): rows(orig.rows),
                              columns(orig.columns), _row(orig._row),
                              _column(orig._column), closed(orig.closed),
                              data(orig.data), m() {}
@@ -33,15 +32,6 @@ void DataPartition::load(const uint16_t & number) {
         close();
     }
 }
-
-/*void DataPartition::print(){
-    std::cout << "Particion:" << std::endl;
-    for (size_t i = 0; i < rows; i++){
-        for (size_t j = 0; j < columns; j++)
-            std::cout << data[j][i] << " ";
-        std::cout << std::endl;
-    }
-}*/
 
 void DataPartition::reset() {
     // Si se habia achicado anteriormente, se cambia el tamanio al original.
@@ -90,7 +80,7 @@ void DataPartition::close() {
     closed = true;
 }
 
-const uint32_t & DataPartition::getRows() const {
+const uint32_t & DataPartition::getFullRows() const {
     return _row;
 }
 

@@ -10,16 +10,14 @@
 #include "data_loader.h"
 #include "to_do_queue.h"
 
-/* Clase que representa una tarea a realizar, es la encargada
- * de inicializar los hilos y enviarles sus tareas.
- * Posee como atributos un puntero al operador que debe utilizar,
- * la cantidad de workers_cant que posee, la cantidad de particiones por
- * columnas y filas, que columna debe procesar, desde y hasta que indices
- * de filas debe procesar y un puntero al data loader. */
+/* Clase que representa una tarea a realizar, se encarga de cargar
+ * en la queue de tareas las tareas que corresponden a si misma.
+ * Posee como atributos un puntero al operador que utiliza, la cantidad
+ * de filas y columnas por particion, que columna debe procesar, y desde
+ * y hasta que fila se debe leer. */
 class Task {
 private:
     const Operator * op;
-    const uint8_t workers_cant;
     const uint32_t part_columns;
     uint32_t part_rows;
     uint32_t column_to_process;
@@ -31,16 +29,12 @@ private:
     static uint32_t ceil(const uint32_t & num, const uint32_t & den);
 
 public:
-    /* Constructor, toma como parametros las columnas por particion,
-     * la cantidad de workers_cant y un puntero al data loader.
-     * Pre:
-     *      data_loader debe apuntar a un objeto tipo DataLoader
-     *          valido. */
-    Task(const uint32_t & part_columns, const uint8_t & workers,
-          DataLoader * const & data_loader);
+    /* Constructor, toma como parametros la cantidad de columnas por
+     * particion. */
+    explicit Task(const uint32_t & part_columns);
 
-    /* Metodo que ejecuta la tarea. Este inicializa las particiones y workers_cant,
-     * y les asigna sus tareas. */
+    /* Metodo que carga la cola con las tareas correspondientes a esta
+     * tarea. */
     void loadQueue(ToDoQueue & queue, const size_t & result_idx);
 
     /* Setea el operador que ejecutara la tarea.

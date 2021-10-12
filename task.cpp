@@ -9,9 +9,8 @@
 #include "to_do_queue.h"
 #include "worker.h"
 
-Task::Task(const uint32_t & part_columns, const uint8_t & workers,
-           DataLoader * const & data_loader):
-        op(nullptr), workers_cant(workers), part_columns(part_columns),
+Task::Task(const uint32_t & part_columns):
+        op(nullptr), part_columns(part_columns),
         part_rows(1), column_to_process(0),
         index_from(0), index_to(1) {}
 
@@ -21,20 +20,16 @@ void Task::loadQueue(ToDoQueue & queue, const size_t & result_idx) {
     if (op == nullptr)
         throw std::invalid_argument("no hay un operador designado");
 
-    //std::cout << "entre" << std::endl;
 
-
-
+    // Se itera tantas veces como particiones haya.
     for (uint32_t j = 0; j < ceil(index_to - index_from, part_rows); j++){
-        //std::cout << index_to << std::endl;
+        // Se calculan valores inicial y final en terminos de numeros a leer.
         uint32_t from = (index_from + j * part_rows) * part_columns;
         uint32_t to = (index_from + (j+1) * part_rows) * part_columns;
-        if (to > index_to * part_columns) {
+        if (to > index_to * part_columns)
             to = index_to * part_columns;
-            //std::cout << to << std::endl;
-        }
 
-
+        // Se arma el token y se pushea a la cola.
         queue.push(ToDoToken(false, op, result_idx, part_rows,
                              from, to, column_to_process));
     }

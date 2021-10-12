@@ -29,47 +29,47 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
         throw;
     }
 
+    // Se inicializa la lista, el vector de resultados y el vector de workers.
     ToDoQueue queue;
     std::vector<Result> results(0);
-
-
     std::vector<Worker> workers_vector(workers_cant,
-                                       Worker(&queue,
-                                              &data_loader,
-                                              &results, part_columns));
+                                       Worker(queue,
+                                              data_loader,
+                                              results, part_columns));
 
-    // Se crea el vector de workers_cant.
+    // Se crea el vector de threads, pero todavia no se lanzan.
     std::vector<std::thread> threads_vector(workers_cant);
 
-    // Se lanzan los threads, uno por worker.
+    // Se lanzan los threads, asignandole un worker a cada uno.
     for (uint8_t i = 0; i < workers_cant; i++)
         threads_vector[i] = std::thread(workers_vector[i]);
 
-    // Se crea la task, el TaskReader y el vector de resultados.
-    Task task(part_columns, workers_cant, &data_loader);
-
+    // Se crea una task y el task reader.
+    Task task(part_columns);
     TaskReader task_reader;
-
 
     // Se realiza un loop infinito hasta que termine la entrada.
     for (size_t i = 0; true ; i++) {
         // Se lee la entrada y se carga en la task.
         try {
-            if (task_reader.read(task))
+            // Si no se leyo se rompe el ciclo.
+            if (!task_reader.read(task))
                 break;
+            // Se crea un nuevo resultado.
             results.emplace_back(Result());
         }
         catch(std::exception &e) {
+            // Si falla se terminan los hilos y se termina el programa.
             endAndJoin(workers_cant, threads_vector, queue);
             std::string msg = e.what();
             throw std::invalid_argument("Error al leer la tarea: " + msg);
         }
-        /* Se ejecuta la tarea y se guarda el resultado en el vector
-         * de resultados. */
+        // Se carga la cola con los quehaceres correspondientes a la tarea.
         try {
             task.loadQueue(queue, i);
         }
         catch(std::exception &e){
+            // Si falla se terminan los hilos y se termina el programa.
             endAndJoin(workers_cant, threads_vector, queue);
             std::string msg = e.what();
             throw std::invalid_argument("Error al correr la tarea: " + msg);
@@ -78,7 +78,7 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
 
     endAndJoin(workers_cant, threads_vector, queue);
 
-    // Se imprimen los resultados.
+    // Se imprimen los de todas las tareas realizadas.
     for (size_t i = 0; i < results.size(); i++){
         std::cout << results[i] << std::endl;
     }
@@ -88,7 +88,7 @@ void SplitApplyCombine::endAndJoin(const uint8_t & workers_cant,
                                    std::vector<std::thread> & threads_vector,
                                    ToDoQueue & queue){
     for (uint8_t i = 0; i < workers_cant; i++)
-        queue.push(ToDoToken(true));
+        queue.push(ToDoToken());
 
     for (uint8_t i = 0; i < workers_cant; i++)
         threads_vector[i].join();

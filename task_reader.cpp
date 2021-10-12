@@ -9,11 +9,13 @@
 
 TaskReader::TaskReader(): sum(), min(), max(), mean() {}
 
-uint8_t TaskReader::read(Task & task) {
+bool TaskReader::read(Task & task) {
+    // Se leen los rangos.
     std::string read1, read2;
     std::cin >> read1;
+    // Si se alcanzo eof se devuelve 1 indicando que termino la entrada.
     if (std::cin.eof())
-        return 1;
+        return false;
     std::cin >> read2;
     if (std::cin.eof())
         throw std::invalid_argument("faltan parametros de la tarea");
@@ -23,6 +25,7 @@ uint8_t TaskReader::read(Task & task) {
     catch(std::invalid_argument& e) {
         throw;
     }
+    // Se lee la cantidad de filas por particion.
     std::cin >> read1;
     if (std::cin.eof())
         throw std::invalid_argument("faltan parametros de la tarea");
@@ -32,6 +35,7 @@ uint8_t TaskReader::read(Task & task) {
     catch(std::invalid_argument& e){
         throw;
     }
+    // Se lee la columna a procesar.
     std::cin >> read1;
     if (std::cin.eof())
         throw std::invalid_argument("faltan parametros de la tarea");
@@ -41,6 +45,7 @@ uint8_t TaskReader::read(Task & task) {
     catch(std::invalid_argument& e){
         throw;
     }
+    // Se lee la operacion.
     std::cin >> read1;
     if (std::cin.eof())
         throw std::invalid_argument("faltan parametros de la tarea");
@@ -50,7 +55,7 @@ uint8_t TaskReader::read(Task & task) {
     catch(std::invalid_argument& e){
         throw;
     }
-    return 0;
+    return true;
 }
 
 void TaskReader::setupOperator(Task & task, const std::string & text) const {

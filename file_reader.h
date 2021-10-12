@@ -49,6 +49,7 @@ public:
      * del archivo. */
     void setTo(const uint32_t & position);
 
+    // Devuelve la posicion en que se cuentra el final del archivo.
     uint32_t positionOfEnd();
 };
 

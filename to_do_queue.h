@@ -17,6 +17,15 @@ public:
     // Constructor sin parametros.
     ToDoQueue();
 
+    // No tiene constructor por copia.
+    ToDoQueue(const ToDoQueue & orig) = delete;
+
+    // No tiene constructor por movimiento.
+    ToDoQueue(const ToDoQueue && orig) = delete;
+
+    // No tiene operador =.
+    ToDoQueue & operator=(const ToDoQueue & orig) = delete;
+
     /* Coloca un token (el cual se copia) al final de la
      * cola. */
     void push(const ToDoToken & new_token);

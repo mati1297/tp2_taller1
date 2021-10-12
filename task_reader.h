@@ -34,9 +34,12 @@ private:
     void setupPartitionRows(Task &task, const std::string& text) const;
 
 public:
+    // Constructor sin parametros.
     TaskReader();
 
-    uint8_t read(Task& task);
+    /* Lee de stdin, valida y carga task. Devuelve true si se pudo leer
+     * y false si se alcanzo eof. */
+    bool read(Task& task);
 };
 
 

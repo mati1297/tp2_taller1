@@ -8,19 +8,20 @@
 #include "sum.h"
 
 /* Clase (Functor) que se encarga de ejecutar las acciones de los
- * distintos hilos del programa. Posee variables y punteros a
- * los objetos que el hilo debe utilizar para funcionar. */
+ * distintos hilos del programa. Posee una particion de datos
+ * y referencias a los objetos que necesita del programa. */
 class Worker {
-    ToDoQueue * const queue;
-    DataLoader * const data_loader;
-    std::vector <Result> * const results;
+    ToDoQueue & queue;
+    DataLoader & data_loader;
+    std::vector <Result> & results;
     DataPartition data_partition;
 
 
 public:
-    Worker(ToDoQueue *const &queue_, DataLoader *const &data_loader_,
-           std::vector<Result> *const &results_, const uint32_t &part_columns);
-
+    /* Constructor, se le pasa la lista de to do, el data loader,
+     * y la cantidad de columnas por particion. */
+    Worker(ToDoQueue & queue_, DataLoader & data_loader_,
+           std::vector<Result> & results_, const uint32_t &part_columns);
 
     // Operador (), ya que Worker es un functor, este debe ser poder llamado.
     void operator()();

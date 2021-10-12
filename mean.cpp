@@ -9,7 +9,7 @@ void Mean::operateData(Result & result, const DataPartition & data,
     // Se opera igual que en cualquier Operator.
     Operator::operateData(result, data, column_to_op);
     // Luego, se setea el atributo extra como el total de filas procesadas.
-    result.setExtra(data.getRows());
+    result.setExtra(data.getFullRows());
 }
 
 void Mean::accumulateExtra(uint32_t & accumulator,

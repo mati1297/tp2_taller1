@@ -6,9 +6,10 @@
 #include "operator.h"
 
 /* Representa una orden de procesamiento o de finalizacion,
- * posee un index correspondiente a una de las particiones
- * de datos existente en memoria y un flag de trabajo terminado.
- */
+ * posee como atributos, cual es el operador a utilizar,
+ * el index donde se debe guardar el resultado, cantidad
+ * de filas, desde y hasta donde se debe leer y que
+ * columna se debe procesar. */
 class ToDoToken {
     bool end;
     const Operator * op;
@@ -19,15 +20,16 @@ class ToDoToken {
     uint32_t column_to_process;
 
 public:
-    // Constructor por sin parametros.
+    /* Constructor sin parametros, se setea por defecto end en false,
+     * se utiliza para crear un token de finalizacion. */
+
     ToDoToken();
 
+    // Constructor en el que se cargan todos los atributos.
     ToDoToken(const bool &end_, const Operator *const &op_,
               const size_t & result_idx_, const uint32_t &part_rows_,
               const uint32_t &from, const uint32_t &to,
               const uint32_t & column_to_process_);
-
-    explicit ToDoToken(const bool &end_);
 
     // Operador asignacion.
     ToDoToken& operator=(const ToDoToken &);
@@ -35,18 +37,23 @@ public:
     // Devuelve el flag de finalizacion.
     bool endOfWork() const;
 
-    const Operator  *const &getOperator() const;
+    // Devuelve un puntero al operador.
+    const Operator  *const & getOperator() const;
 
+    // Devuelve la cantidad de filas por particion.
     const uint32_t &getPartitionRows() const;
 
+    // Devuelve la posicion del inicio de la lectura.
     const uint32_t &getFrom() const;
 
+    // Devuelve la posiciond del final de la lectura.
     const uint32_t &getTo() const;
 
+    // Devuelve la columna que se debe procesar.
     const uint32_t &getColumnToProcess() const;
 
+    // Devuelve el index donde se debe guardar el resultado.
     const size_t &getResultIndex() const;
 };
-
 
 #endif //TP2_TALLER1_TO_DO_TOKEN_H

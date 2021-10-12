@@ -1,6 +1,6 @@
 #include "to_do_token.h"
 
-ToDoToken::ToDoToken(): end(false), op(nullptr), result_idx(0),
+ToDoToken::ToDoToken(): end(true), op(nullptr), result_idx(0),
                         part_rows(0), from(0), to(0),
                         column_to_process(0) {}
 
@@ -12,9 +12,6 @@ ToDoToken::ToDoToken(const bool & end_, const Operator * const & op_,
         part_rows(part_rows_), from(from),
         to(to), column_to_process(column_to_process_) {}
 
-ToDoToken::ToDoToken(const bool & end_): end(end_), op(nullptr), result_idx(0),
-                                         part_rows(0), from(0), to(0),
-                                         column_to_process(0) {}
 
 bool ToDoToken::endOfWork() const {
     return end;

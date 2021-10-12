@@ -17,16 +17,18 @@ void DataLoader::openFile(const char * const & filename) {
 
 void DataLoader::load(DataPartition & dp, const uint32_t & start,
                       const uint32_t & end) {
+    // Se bloquea utilizando un lock guard (que usa RAII).
     std::lock_guard<std::mutex> lock_guard(m);
     // Se resetea el DataPartition.
     dp.reset();
-    // Mientras que la particion no este llena (cerrada) y el contador
-    // este en rango se lee.
+    // Si se comienza antes del final, se setea la posicion. Sino se retorna.
     if (start < end_position)
         unlockedSetPosition(start);
     else
         return;
 
+    /* Mientras que la data partition no este cerrada, no se alcance el final
+     * de la lectura ni del archivo, se lee de a 2 bytes (uint16_t). */
     while (!dp.isClosed() && position < end_position && position < end){
         uint16_t number;
         // Si se alcanzo end of file se rompe el ciclo.
@@ -41,14 +43,12 @@ void DataLoader::load(DataPartition & dp, const uint32_t & start,
         catch(std::length_error& e){
             throw;
         }
-        // Se incrementa el contador de datos leidos.
+        // Se incrementa la posicion.
         position++;
     }
     // Se cierra la particion de datos tras leer (este llena o no).
     dp.close();
-    //dp.print();
 }
-
 
 void DataLoader::unlockedSetPosition(const uint32_t & start_) {
     file_reader.setTo(start_ * 2);

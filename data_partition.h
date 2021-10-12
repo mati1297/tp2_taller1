@@ -47,13 +47,11 @@ public:
     // Cierra la particion.
     void close();
 
-    // Devuelve la cantidad de filas de la particion.
-    const uint32_t & getRows() const;
+    // Devuelve la cantidad de filas ocupadas de la particion.
+    const uint32_t & getFullRows() const;
 
+    // Setea la cantidad de filas de la particion.
     void setRows(const uint32_t &rows_);
-
-    //void print();
 };
-
 
 #endif //TP2_TALLER1_DATAPARTITION_H
