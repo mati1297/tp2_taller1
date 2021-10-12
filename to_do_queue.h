@@ -14,7 +14,7 @@ class ToDoQueue {
     std::queue<ToDoToken> queue;
 
 public:
-    // Constructor por defecto.
+    // Constructor sin parametros.
     ToDoQueue();
 
     /* Coloca un token (el cual se copia) al final de la

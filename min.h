@@ -14,7 +14,8 @@ class Min: public Operator {
 public:
     /* Metodo que acumula segun la operacion en accumulator el resultado
      * de operar a este y a number. */
-    void accumulate(uint16_t &accumulator, const uint16_t &number) const override;
+    void accumulate(uint16_t &accumulator,
+                    const uint16_t &number) const override;
 };
 
 

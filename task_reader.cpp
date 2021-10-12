@@ -36,7 +36,7 @@ uint8_t TaskReader::read(Task & task) {
     if (std::cin.eof())
         throw std::invalid_argument("faltan parametros de la tarea");
     try{
-        setupColumn(task, read1);
+        setupColumnToProcess(task, read1);
     }
     catch(std::invalid_argument& e){
         throw;
@@ -69,7 +69,7 @@ void TaskReader::setupOperator(Task & task, const std::string & text) const {
 }
 
 void TaskReader::setupRanges(Task & task, const std::string & text_from,
-                             const std::string & text_to) {
+                             const std::string & text_to) const {
     uint32_t from = 0, to = 0;
     try {
         from = StringToNum::stou32(text_from);
@@ -93,7 +93,8 @@ void TaskReader::setupRanges(Task & task, const std::string & text_from,
     }
 }
 
-void TaskReader::setupColumn(Task & task, const std::string & text) {
+void TaskReader::setupColumnToProcess(Task & task,
+                                      const std::string & text) const {
     uint32_t column = 0;
     try {
         column = StringToNum::stou32(text);
@@ -110,7 +111,8 @@ void TaskReader::setupColumn(Task & task, const std::string & text) {
     }
 }
 
-void TaskReader::setupPartitionRows(Task & task, const std::string & text) {
+void TaskReader::setupPartitionRows(Task & task,
+                                    const std::string & text) const {
     uint32_t partition_rows = 0;
     try {
         partition_rows = StringToNum::stou32(text);

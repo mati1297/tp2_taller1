@@ -1,4 +1,4 @@
-#include <vector>
+#include <string>
 #include <iostream>
 #include "mean.h"
 #include "result.h"
@@ -12,7 +12,8 @@ void Mean::operateData(Result & result, const DataPartition & data,
     result.setExtra(data.getRows());
 }
 
-void Mean::accumulateExtra(uint32_t & accumulator, const uint32_t & number) const {
+void Mean::accumulateExtra(uint32_t & accumulator,
+                           const uint32_t & number) const {
     // El extra se acumula como la suma de los extras.
     accumulator += number;
 }

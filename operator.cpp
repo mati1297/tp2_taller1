@@ -1,6 +1,7 @@
 #include <cstdint>
 #include <vector>
 #include <iostream>
+#include <string>
 #include "operator.h"
 #include "result.h"
 #include "data_partition.h"

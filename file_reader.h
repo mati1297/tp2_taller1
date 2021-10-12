@@ -10,7 +10,7 @@ private:
     std::ifstream file;
 
 public:
-    // Constructor por defecto.
+    // Constructor sin parametros.
     FileReader();
 
     // Se borra el constructor por copia.
@@ -48,8 +48,6 @@ public:
     /* Setea el lector a una determinada posicion desde el principio
      * del archivo. */
     void setTo(const uint32_t & position);
-
-
 };
 
 

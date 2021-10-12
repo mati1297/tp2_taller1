@@ -10,7 +10,7 @@
  * numericas. */
 class StringToNum {
 private:
-    /* Constructor por defecto, se coloca como privado para que la
+    /* Constructor sin parametros, se coloca como privado para que la
      * clase no sea instanciable. */
     StringToNum();
 

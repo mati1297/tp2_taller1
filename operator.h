@@ -1,6 +1,7 @@
 #ifndef TP2_TALLER1_OPERATOR_H
 #define TP2_TALLER1_OPERATOR_H
 #include <vector>
+#include <string>
 #include "result.h"
 #include "data_partition.h"
 

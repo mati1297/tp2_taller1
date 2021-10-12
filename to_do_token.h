@@ -13,7 +13,7 @@ class ToDoToken {
     bool end;
 
 public:
-    // Constructor por defecto.
+    // Constructor por sin parametros.
     ToDoToken();
 
     /* Constructor. Se le pasa el index y el flag

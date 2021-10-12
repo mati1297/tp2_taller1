@@ -10,6 +10,9 @@
 
 class Task;
 
+/* Clase que se encarga de leer datos de stdin y cargarlos
+ * en una task. Contiene como atributos instancias de operaciones
+ * que utilizara para cargarlas en las tareas. */
 class TaskReader {
 private:
     const Sum sum;
@@ -17,14 +20,18 @@ private:
     const Max max;
     const Mean mean;
 
+    // Metodo privado que valida y setea el operador.
     void setupOperator(Task &task, const std::string &text) const;
 
-    static void setupRanges(Task &task, const std::string& text_from,
-                            const std::string& text_to);
+    // Metodo privado que setea los rangos de lectura.
+    void setupRanges(Task &task, const std::string& text_from,
+                            const std::string& text_to) const;
 
-    static void setupColumn(Task &task, const std::string& text);
+    // Metodo privado que setea la columna que se debe procesar.
+    void setupColumnToProcess(Task &task, const std::string& text) const;
 
-    static void setupPartitionRows(Task &task, const std::string& text);
+    // Metodo privado que setea la cantidad de particiones por filas.
+    void setupPartitionRows(Task &task, const std::string& text) const;
 
 public:
     TaskReader();

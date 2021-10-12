@@ -1,10 +1,10 @@
 #ifndef TP2_TALLER1_MEAN_H
 #define TP2_TALLER1_MEAN_H
 
-
 #include <cstddef>
 #include <cstdint>
 #include <vector>
+#include <string>
 #include "result.h"
 #include "operator.h"
 #include "sum.h"

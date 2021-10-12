@@ -1,7 +1,7 @@
 #include "split_apply_combine.h"
 #include <string>
+#include <vector>
 #include <iostream>
-#include "file_reader.h"
 #include "data_loader.h"
 #include "task.h"
 #include "task_reader.h"
@@ -16,6 +16,8 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
     uint32_t columns = 0;
     uint8_t workers = 0;
 
+    /* Se validan los datos ingresados, se abre el archivo, y se convierten
+     * a datos numericos las columnas y workers. */
     try {
         loadAndValidate(dataset_filename, text_columns,
                         text_workers, columns, workers);
@@ -24,13 +26,16 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
         throw;
     }
 
+    // Se crea la task, el TaskReader y el vector de resultados.
     Task task(columns, workers, &data_loader);
 
     TaskReader task_reader;
 
     std::vector<Result> results(0);
 
+    // Se realiza un loop infinito hasta que termine la entrada.
     while (true) {
+        // Se lee la entrada y se carga en la task.
         try {
             if (task_reader.read(task))
                 break;
@@ -39,6 +44,8 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
             std::string msg = e.what();
             throw std::invalid_argument("Error al leer la tarea: " + msg);
         }
+        /* Se ejecuta la tarea y se guarda el resultado en el vector
+         * de resultados. */
         try {
             results.push_back(task.run());
         }
@@ -48,7 +55,8 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
         }
     }
 
-    for(size_t i = 0; i < results.size(); i++){
+    // Se imprimen los resultados.
+    for (size_t i = 0; i < results.size(); i++){
         std::cout << results[i] << std::endl;
     }
 }

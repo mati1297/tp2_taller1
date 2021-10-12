@@ -4,15 +4,16 @@
 
 DataPartition::DataPartition(const uint32_t & rows,
                              const uint32_t & columns): rows(rows),
-                                                        columns(columns), _row(0),
-                                                        _column(0), closed(false),
-                                                        data(columns,
+                             columns(columns), _row(0),
+                             _column(0), closed(false),
+                             data(columns,
                              std::vector<uint16_t>(rows)), done(false), m() {}
 
-DataPartition::DataPartition(const DataPartition &orig): rows(orig.rows),
-                                                         columns(orig.columns), _row(orig._row),
-                                                         _column(orig._column), closed(orig.closed),
-                                                         data(orig.data), done(orig.done), m() {}
+DataPartition::DataPartition
+                            (const DataPartition &orig): rows(orig.rows),
+                             columns(orig.columns), _row(orig._row),
+                             _column(orig._column), closed(orig.closed),
+                             data(orig.data), done(orig.done), m() {}
 
 void DataPartition::load(const uint16_t & number) {
     // Si la particion esta cerrada, se devuelve una excepcion.
@@ -56,18 +57,9 @@ const std::vector<uint16_t>&
     return data[column_idx];
 }
 
-void DataPartition::setRows(const uint32_t & rows_) {
-    if (this->rows == rows_)
-        return;
-    this->rows = rows_;
-    // Se realiza un resize.
-    for (uint32_t i = 0; i < columns; i++)
-        data[i].resize(rows_);
-}
-
 void DataPartition::close() {
     // Si ya esta cerrado no se hace nada.
-    if(closed)
+    if (closed)
         return;
     /* Se chequea si falta terminar una fila, si es asi
      * se rellena con 0. */

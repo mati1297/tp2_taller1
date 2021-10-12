@@ -1,7 +1,7 @@
 #ifndef TP2_TALLER1_RESULT_H
 #define TP2_TALLER1_RESULT_H
 
-
+#include <string>
 #include <cstdint>
 #include <cstddef>
 #include <mutex>
@@ -23,7 +23,7 @@ class Result {
     std::string separator; // Separador de numero y extra en impresion.
 
 public:
-    // Constructor por defecto.
+    // Constructor por sin parametros.
     Result();
 
     // Constructor por copia.
@@ -36,7 +36,7 @@ public:
     void setExtra(const uint32_t & extra_);
 
     // Setea el separador que separa el numero del extra en la impresion.
-    void setSeparator(const std::string separator_);
+    void setSeparator(const std::string & separator_);
 
     // Devuelve el atributo numero.
     const uint16_t & getNumber() const;

@@ -49,7 +49,7 @@ Result Task::run() {
 
     /* Se setean todas las particiones con su flag done en true para entrar
      * de manera correcta al siguiente ciclo. */
-    for(uint8_t i = 0; i < workers_cant; i++)
+    for (uint8_t i = 0; i < workers_cant; i++)
         partitions[i].setDone(true);
 
     /* Mientras que no se alcance el fin del dataset y no se lean todas

@@ -1,8 +1,10 @@
 #include <iostream>
+#include <string>
 #include "result.h"
 #include "operator.h"
 
-Result::Result(): number(0), extra(0), initialized(false), mutex(), separator("") {}
+Result::Result(): number(0), extra(0), initialized(false),
+                  mutex(), separator("") {}
 
 Result::Result(const Result & orig): number(orig.number), extra(orig.extra),
                                      initialized(orig.initialized), mutex(),
@@ -34,7 +36,7 @@ void Result::setExtra(const uint32_t & extra_) {
     mutex.unlock();
 }
 
-void Result::setSeparator(const std::string separator_) {
+void Result::setSeparator(const std::string & separator_) {
     initialized = true;
     separator = separator_;
 }
@@ -69,7 +71,7 @@ const uint32_t & Result::getExtra() const {
 }
 
 std::ostream& operator<<(std::ostream& os, const Result & result) {
-    if(result.separator == "")
+    if (result.separator == "")
         os << result.number;
     else
         os << result.number << result.separator << result.extra;

@@ -45,9 +45,6 @@ public:
     const std::vector<uint16_t> &getColumnData(const uint32_t
                                                 & column_idx) const;
 
-    // Setea la cantidad de filas de la particion.
-    void setRows(const uint32_t & rows_);
-
     // Cierra la particion.
     void close();
 
