@@ -7,13 +7,13 @@ DataPartition::DataPartition(const uint32_t & rows,
                              columns(columns), _row(0),
                              _column(0), closed(false),
                              data(columns,
-                             std::vector<uint16_t>(rows)), done(false), m() {}
+                             std::vector<uint16_t>(rows)), m() {}
 
 DataPartition::DataPartition
                             (const DataPartition &orig): rows(orig.rows),
                              columns(orig.columns), _row(orig._row),
                              _column(orig._column), closed(orig.closed),
-                             data(orig.data), done(orig.done), m() {}
+                             data(orig.data), m() {}
 
 void DataPartition::load(const uint16_t & number) {
     // Si la particion esta cerrada, se devuelve una excepcion.
@@ -33,6 +33,15 @@ void DataPartition::load(const uint16_t & number) {
         close();
     }
 }
+
+/*void DataPartition::print(){
+    std::cout << "Particion:" << std::endl;
+    for (size_t i = 0; i < rows; i++){
+        for (size_t j = 0; j < columns; j++)
+            std::cout << data[j][i] << " ";
+        std::cout << std::endl;
+    }
+}*/
 
 void DataPartition::reset() {
     // Si se habia achicado anteriormente, se cambia el tamanio al original.
@@ -85,21 +94,14 @@ const uint32_t & DataPartition::getRows() const {
     return _row;
 }
 
-void DataPartition::setDone(bool done_) {
-    // Se bloquea y se setea done.
-    m.lock();
-    done = done_;
-    m.unlock();
+void DataPartition::setRows(const uint32_t & rows_) {
+    if (this->rows == rows_)
+        return;
+    this->rows = rows_;
+    for (uint32_t i = 0; i < columns; i++)
+        data[i] = std::vector<uint16_t>(rows_);
 }
 
-bool DataPartition::isDone() {
-    /* Se bloquea, se carga done en una variable auxiliar, se desbloquea
-     * y se devuelve. */
-    m.lock();
-    bool ret = done;
-    m.unlock();
-    return ret;
-}
 
 
 

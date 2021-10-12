@@ -48,6 +48,8 @@ public:
     /* Setea el lector a una determinada posicion desde el principio
      * del archivo. */
     void setTo(const uint32_t & position);
+
+    uint32_t positionOfEnd();
 };
 
 

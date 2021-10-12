@@ -29,6 +29,8 @@ public:
     // Constructor por copia.
     Result(const Result & orig);
 
+    Result & operator= (const Result & orig);
+
     // Permite setear el parametro numero.
     void setNumber(const uint16_t & number_);
 

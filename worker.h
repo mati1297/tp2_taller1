@@ -13,32 +13,21 @@
 class Worker {
     ToDoQueue * const queue;
     DataLoader * const data_loader;
-    Result * const result;
-    std::vector<DataPartition> * const data_partitions;
-    const Operator * const op;
-    const uint32_t column_to_process;
+    std::vector <Result> * const results;
+    DataPartition data_partition;
 
 
 public:
-    /* Constructor.
-     * Pre:
-     *      queue_ debe apuntar a un objeto ToDoQueue valida.
-     *      data_loader debe apuntar a un objeto DataLoader valido.
-     *      result_ debe apuntar a un objeto Result valido.
-     *      data_partitions_ debe apuntar a un objeto
-     *          std::vector<DataPartition> valido.
-     *      operator_ debe apuntar a un objeto Operator valido. */
-    Worker(ToDoQueue * const & queue_, DataLoader * const & data_loader_,
-           Result * const & result_,
-           std::vector<DataPartition> * const & data_partitions_,
-           const Operator * const & operator_, const uint32_t & col_to_process);
+    Worker(ToDoQueue *const &queue_, DataLoader *const &data_loader_, std::vector<Result> *const &results_,
+           const uint32_t &part_columns);
+
 
     // Operador (), ya que Worker es un functor, este debe ser poder llamado.
     void operator()();
 
     /* Metodo que realiza todas las acciones del Worker, y por consiguiente
      * del hilo. */
-    void run() const;
+    void run();
 };
 
 

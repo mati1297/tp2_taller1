@@ -10,6 +10,15 @@ Result::Result(const Result & orig): number(orig.number), extra(orig.extra),
                                      initialized(orig.initialized), mutex(),
                                      separator(orig.separator) {}
 
+Result & Result::operator= (const Result & orig){
+    number = orig.number;
+    extra = orig.extra;
+    initialized = orig.initialized;
+    separator = orig.separator;
+    return *this;
+}
+
+
 void Result::reset(){
     mutex.lock();
     // Se setean todos los valores a false y 0.

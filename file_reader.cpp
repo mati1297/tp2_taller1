@@ -56,6 +56,14 @@ void FileReader::setTo(const uint32_t & position) {
     file.seekg(position, std::ios_base::beg);
 }
 
+uint32_t FileReader::positionOfEnd(){
+    uint32_t pos = file.tellg();
+    file.seekg(0, std::ios_base::end);
+    uint32_t end = file.tellg();
+    file.seekg(pos, std::ios_base::beg);
+    return end;
+}
+
 
 
 

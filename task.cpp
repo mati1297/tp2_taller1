@@ -13,76 +13,21 @@ Task::Task(const uint32_t & part_columns, const uint8_t & workers,
            DataLoader * const & data_loader):
         op(nullptr), workers_cant(workers), part_columns(part_columns),
         part_rows(1), column_to_process(0),
-        index_from(0), index_to(1),
-        data_loader(data_loader) {}
+        index_from(0), index_to(1) {}
 
-void Task::resetDataLoader(){
-    data_loader->setStart(index_from * part_columns);
-    data_loader->setEnd(index_to * part_columns);
-}
 
-Result Task::run() {
-    // Se resetea el data loader.
-    resetDataLoader();
-    ToDoQueue queue;
-    std::vector<DataPartition>
-            partitions(workers_cant, DataPartition(part_rows, part_columns));
-    Result result;
-
+void Task::loadQueue(ToDoQueue & queue, const size_t & result_idx) {
     // Si no se configuro el operador, se lanza excepcion.
     if (op == nullptr)
         throw std::invalid_argument("no hay un operador designado");
 
+    //std::cout << "entre" << std::endl;
 
-    // Se carga el vector de workers_cant utilizando su constructor por copia.
-    std::vector<Worker> workers_vector(workers_cant,
-                                       Worker(&queue, data_loader,
-                                              &result, &partitions,
-                                              op, column_to_process));
-
-    // Se crea el vector de workers_cant.
-    std::vector<std::thread> threads_vector(workers_cant);
-
-    // Se lanzan los threads, uno por worker.
-    for (uint8_t i = 0; i < workers_cant; i++)
-        threads_vector[i] = std::thread(workers_vector[i]);
-
-    /* Se setean todas las particiones con su flag done en true para entrar
-     * de manera correcta al siguiente ciclo. */
-    for (uint8_t i = 0; i < workers_cant; i++)
-        partitions[i].setDone(true);
-
-    /* Mientras que no se alcance el fin del dataset y no se lean todas
-     * las particiones, se van cargando (y recargando) y procesando
-     * las distintas particiones. */
-    for (uint32_t j = 0; j < ceil(index_to - index_from, part_rows) &&
-                            !data_loader->endOfDataset(); ){
-        /* Se recorren todas las particiones para ver en cuales el trabajo
-         * esta terminado, cuando se encuentra una, se asigna ese indice a
-         * un token y se agrega a la cola de to do, luego se suma 1 al
-         * contador. */
-        for (uint32_t i = 0; i < workers_cant; i++){
-            if (partitions[i].isDone()) {
-                partitions[i].setDone(false);
-                queue.push(ToDoToken(i, false));
-                j++;
-            }
-            if (j >= ceil(index_to - index_from, part_rows))
-                break;
-        }
+    for (uint32_t j = 0; j < ceil(index_to - index_from, part_rows); j++){
+        queue.push(ToDoToken(false, op, result_idx, part_rows, (index_from + j) * part_columns * part_rows,
+                             (index_from + j + 1) * part_columns * std::min(part_rows, index_to), column_to_process));
     }
 
-    /* Una vez terminado, se agrega un token por worker que indica
-     * el fin del trabajo. */
-    for (uint8_t i = 0; i < workers_cant; i++){
-        queue.push(ToDoToken(0, true));
-    }
-    // Luego se joinean todos los threads.
-    for (uint8_t i = 0; i < workers_cant; i++)
-        threads_vector[i].join();
-
-    // Se devuelve el resultado.
-    return result;
 }
 
 
@@ -95,8 +40,6 @@ void Task::setRange(const uint32_t & from, const uint32_t & to) {
         throw std::invalid_argument("la fila inicial es mayor que la final");
     index_from = from;
     index_to = to;
-    data_loader->setStart(index_from * part_columns);
-    data_loader->setEnd(index_to * part_columns);
 }
 
 void Task::setColumnToProcess(const uint32_t & column) {
@@ -111,8 +54,6 @@ void Task::setPartitionRows(const uint32_t & rows) {
     if (this->part_rows == rows)
         return;
     this->part_rows = rows;
-    data_loader->setStart(index_from * part_columns);
-    data_loader->setEnd(index_to * part_columns);
 }
 
 uint32_t Task::ceil(const uint32_t & num, const uint32_t & den) {

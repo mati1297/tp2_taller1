@@ -21,7 +21,6 @@ private:
     uint32_t _column;
     bool closed;
     std::vector<std::vector<uint16_t>> data;
-    bool done;
     std::mutex m;
 
 public:
@@ -51,11 +50,9 @@ public:
     // Devuelve la cantidad de filas de la particion.
     const uint32_t & getRows() const;
 
-    // Setea el flag done segun done_.
-    void setDone(bool done_);
+    void setRows(const uint32_t &rows_);
 
-    // Devuelve el flag done.
-    bool isDone();
+    //void print();
 };
 
 

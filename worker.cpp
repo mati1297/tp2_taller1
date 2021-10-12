@@ -3,21 +3,20 @@
 #include "to_do_token.h"
 #include "sum.h"
 
-Worker::Worker(ToDoQueue *const &queue_, DataLoader *const &data_loader_,
-               Result *const &result_,
-               std::vector<DataPartition> *const &data_partitions_,
-               const Operator *const &operator_,
-               const uint32_t &col_to_process):
-               queue(queue_), data_loader(data_loader_), result(result_),
-               data_partitions(data_partitions_), op(operator_),
-               column_to_process(col_to_process) {}
+
+Worker::Worker(ToDoQueue * const & queue_, DataLoader * const &data_loader_,
+               std::vector<Result> * const & results_,
+               const uint32_t & part_columns): queue(queue_),
+               data_loader(data_loader_), results(results_),
+               data_partition(0, part_columns) {}
+
 
 void Worker::operator()() {
-    // Se llama al metodo run.
+    // Se llama al metodo loadQueue.
     run();
 }
 
-void Worker::run() const {
+void Worker::run() {
     /* Se realiza un while infinito hasta que salga mediante
      * la llegada de un token que indique la finalizacion. */
     while (true) {
@@ -31,29 +30,28 @@ void Worker::run() const {
         if (to_do_token.endOfWork())
             break;
 
-        /* Se carga el indice de la particion que asigno el main thread
-         * al worker */
-        uint32_t part_index = to_do_token.getIndex();
+        uint32_t part_rows = to_do_token.getPartitionRows();
 
-        /* Si el dataset no termino, se cargan los datos en la particion.
-         * Por el contrario, si termino, se continua. No se termina el ciclo
-         * hasta que no se reciba el token que lo indique. */
-        if (!data_loader->ifDatasetNotEndedLoad
-                ((*data_partitions)[part_index])) {
-            (*data_partitions)[part_index].setDone(true);
+        if(data_partition.getRows() != part_rows)
+            data_partition.setRows(part_rows);
+
+        uint32_t from = to_do_token.getFrom();
+        uint32_t to = to_do_token.getTo();
+        uint32_t column_to_process = to_do_token.getColumnToProcess();
+        const size_t result_idx = to_do_token.getResultIndex();
+        const Operator * op = to_do_token.getOperator();
+
+        data_loader->load(data_partition, from, to);
+        if(!data_partition.isClosed())
             continue;
-        }
 
         /* Se prepara un resultado temporal y se le pasa al metodo accumulate
          * del operador. */
         Result temp_result;
-        op->operateData(temp_result, (*data_partitions)[part_index],
+        op->operateData(temp_result, data_partition,
                         column_to_process);
         // Se opera acumulativamente y se guarda en el resultado compartido.
-        op->accumulate(*result, temp_result);
-
-        // Se setea el flag done de la particion de datos como true.
-        (*data_partitions)[part_index].setDone(true);
+        op->accumulate((*results)[result_idx], temp_result);
     }
 }
 

@@ -12,16 +12,11 @@
  * ya que es accedida por los distintos hilos al mismo tiempo. */
 class DataLoader {
     FileReader file_reader;
-    uint32_t start; // Posicion en la que se arranca (cada 2 bytes)
-    uint32_t end; // Posicion en la que se arranca (cada 2 bytes)
-    uint32_t counter; // Contador de datos leidos (cada 2 bytes)
+    uint32_t end_position;
+    uint32_t position; // Contador de datos leidos (cada 2 bytes)
     std::mutex m;
 
-    // Metodo privado que permite cargar datos en una particion.
-    void load(DataPartition & dp);
-
-    // Metodo privado para obtener end of dataset sin bloquear el mutex.
-    bool unlockedEndOfDataset();
+    void unlockedSetPosition(const uint32_t &start_);
 
 public:
     // Constructor.
@@ -30,21 +25,7 @@ public:
     // Metodo que abre un archivo para utilizar como dataset.
     void openFile(const char * const & filename);
 
-    /* Metodo que permite cargar la particion de datos dp si
-     * el dataset no termino. */
-    bool ifDatasetNotEndedLoad(DataPartition & dp);
-
-    /* Metodo que devuelve true si el dataset termino. Esto puede
-     * ser ya porque se alcanzo eof (o el siguiente caracter lo es)
-     * o porque se alcanzo el limite correspondiente a lo que se debe
-     * leer. */
-    bool endOfDataset();
-
-    // Metodo que permite setear donde se inicia la lectura.
-    void setStart(const uint32_t & start_);
-
-    // Metodo que permite setear donde se termina la lectura.
-    void setEnd(const uint32_t & end_);
+    void load(DataPartition & dp, const uint32_t & start, const uint32_t & end);
 };
 
 #endif //TP2_TALLER1_DATA_LOADER_H

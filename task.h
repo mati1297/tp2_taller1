@@ -8,6 +8,7 @@
 #include "operator.h"
 #include "file_reader.h"
 #include "data_loader.h"
+#include "to_do_queue.h"
 
 /* Clase que representa una tarea a realizar, es la encargada
  * de inicializar los hilos y enviarles sus tareas.
@@ -24,10 +25,6 @@ private:
     uint32_t column_to_process;
     uint32_t index_from;
     uint32_t index_to;
-    DataLoader *data_loader;
-
-    // Resetea el data loader.
-    void resetDataLoader();
 
     /* Funcion auxiliar estatica utilizada por la clase que permite
      * calcular el techo de una division. */
@@ -44,7 +41,7 @@ public:
 
     /* Metodo que ejecuta la tarea. Este inicializa las particiones y workers_cant,
      * y les asigna sus tareas. */
-    Result run();
+    void loadQueue(ToDoQueue & queue, const size_t & result_idx);
 
     /* Setea el operador que ejecutara la tarea.
      * Pre:
