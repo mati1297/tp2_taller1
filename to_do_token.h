@@ -22,10 +22,12 @@ public:
     // Constructor por sin parametros.
     ToDoToken();
 
-    ToDoToken(const bool &end_, const Operator *const &op_, const size_t & result_idx_, const uint32_t &part_rows_,
-              const uint32_t &from, const uint32_t &to, const uint32_t & column_to_process_);
+    ToDoToken(const bool &end_, const Operator *const &op_,
+              const size_t & result_idx_, const uint32_t &part_rows_,
+              const uint32_t &from, const uint32_t &to,
+              const uint32_t & column_to_process_);
 
-    ToDoToken(const bool &end_);
+    explicit ToDoToken(const bool &end_);
 
     // Operador asignacion.
     ToDoToken& operator=(const ToDoToken &);

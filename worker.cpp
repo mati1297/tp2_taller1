@@ -32,7 +32,7 @@ void Worker::run() {
 
         uint32_t part_rows = to_do_token.getPartitionRows();
 
-        if(data_partition.getRows() != part_rows)
+        if (data_partition.getRows() != part_rows)
             data_partition.setRows(part_rows);
 
         uint32_t from = to_do_token.getFrom();
@@ -42,7 +42,7 @@ void Worker::run() {
         const Operator * op = to_do_token.getOperator();
 
         data_loader->load(data_partition, from, to);
-        if(!data_partition.isClosed())
+        if (!data_partition.isClosed())
             continue;
 
         /* Se prepara un resultado temporal y se le pasa al metodo accumulate

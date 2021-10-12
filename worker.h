@@ -18,8 +18,8 @@ class Worker {
 
 
 public:
-    Worker(ToDoQueue *const &queue_, DataLoader *const &data_loader_, std::vector<Result> *const &results_,
-           const uint32_t &part_columns);
+    Worker(ToDoQueue *const &queue_, DataLoader *const &data_loader_,
+           std::vector<Result> *const &results_, const uint32_t &part_columns);
 
 
     // Operador (), ya que Worker es un functor, este debe ser poder llamado.

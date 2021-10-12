@@ -15,13 +15,14 @@ void DataLoader::openFile(const char * const & filename) {
     end_position = file_reader.positionOfEnd() / 2;
 }
 
-void DataLoader::load(DataPartition & dp, const uint32_t & start, const uint32_t & end) {
+void DataLoader::load(DataPartition & dp, const uint32_t & start,
+                      const uint32_t & end) {
     std::lock_guard<std::mutex> lock_guard(m);
     // Se resetea el DataPartition.
     dp.reset();
     // Mientras que la particion no este llena (cerrada) y el contador
     // este en rango se lee.
-    if(start < end_position)
+    if (start < end_position)
         unlockedSetPosition(start);
     else
         return;

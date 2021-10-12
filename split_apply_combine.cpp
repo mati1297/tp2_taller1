@@ -34,7 +34,9 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
 
 
     std::vector<Worker> workers_vector(workers_cant,
-                                       Worker(&queue, &data_loader, &results, part_columns));
+                                       Worker(&queue,
+                                              &data_loader,
+                                              &results, part_columns));
 
     // Se crea el vector de workers_cant.
     std::vector<std::thread> threads_vector(workers_cant);
@@ -50,7 +52,7 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
 
 
     // Se realiza un loop infinito hasta que termine la entrada.
-    for(size_t i = 0; true ; i++) {
+    for (size_t i = 0; true ; i++) {
         // Se lee la entrada y se carga en la task.
         try {
             if (task_reader.read(task))
