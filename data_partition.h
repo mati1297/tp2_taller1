@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <mutex>
 
-/* Clase protegida que representa una particion de datos que se
+/* Clase que representa una particion de datos que se
  * carga en memoria. Como atributos posee vectores con la 
  * informacion que contiene,contadores de posicion, informacion 
  * sobre su tamano, un flag determinado e informacion sobre 
