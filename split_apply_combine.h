@@ -2,6 +2,8 @@
 #define TP2_TALLER1_SPLITAPPLYCOMBINE_H
 
 #include <string>
+#include <thread>
+#include <vector>
 #include "file_reader.h"
 #include "data_loader.h"
 #include "task.h"
@@ -18,6 +20,10 @@ class SplitApplyCombine {
                          const std::string & text_columns,
                          const std::string & text_workers,
                          uint32_t & columns, uint8_t & workers);
+
+    void endAndJoin(const uint8_t &workers_cant,
+                    std::vector<std::thread> &threads_vector,
+                    ToDoQueue &queue);
 
 public:
     // Constructor sin parametros.

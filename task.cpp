@@ -23,12 +23,20 @@ void Task::loadQueue(ToDoQueue & queue, const size_t & result_idx) {
 
     //std::cout << "entre" << std::endl;
 
+
+
     for (uint32_t j = 0; j < ceil(index_to - index_from, part_rows); j++){
+        //std::cout << index_to << std::endl;
+        uint32_t from = (index_from + j * part_rows) * part_columns;
+        uint32_t to = (index_from + (j+1) * part_rows) * part_columns;
+        if (to > index_to * part_columns) {
+            to = index_to * part_columns;
+            //std::cout << to << std::endl;
+        }
+
+
         queue.push(ToDoToken(false, op, result_idx, part_rows,
-                             (index_from + j) * part_columns * part_rows,
-                             (index_from + j + 1) * part_columns *
-                             std::min(part_rows, index_to),
-                             column_to_process));
+                             from, to, column_to_process));
     }
 }
 

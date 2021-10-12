@@ -60,6 +60,7 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
             results.emplace_back(Result());
         }
         catch(std::exception &e) {
+            endAndJoin(workers_cant, threads_vector, queue);
             std::string msg = e.what();
             throw std::invalid_argument("Error al leer la tarea: " + msg);
         }
@@ -69,21 +70,28 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
             task.loadQueue(queue, i);
         }
         catch(std::exception &e){
+            endAndJoin(workers_cant, threads_vector, queue);
             std::string msg = e.what();
             throw std::invalid_argument("Error al correr la tarea: " + msg);
         }
     }
 
-    for (uint8_t i = 0; i < workers_cant; i++)
-        queue.push(ToDoToken(true));
-
-    for (uint8_t i = 0; i < workers_cant; i++)
-        threads_vector[i].join();
+    endAndJoin(workers_cant, threads_vector, queue);
 
     // Se imprimen los resultados.
     for (size_t i = 0; i < results.size(); i++){
         std::cout << results[i] << std::endl;
     }
+}
+
+void SplitApplyCombine::endAndJoin(const uint8_t & workers_cant,
+                                   std::vector<std::thread> & threads_vector,
+                                   ToDoQueue & queue){
+    for (uint8_t i = 0; i < workers_cant; i++)
+        queue.push(ToDoToken(true));
+
+    for (uint8_t i = 0; i < workers_cant; i++)
+        threads_vector[i].join();
 }
 
 
