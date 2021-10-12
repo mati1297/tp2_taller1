@@ -16,17 +16,15 @@ void DataLoader::openFile(const char * const & filename) {
 }
 
 void DataLoader::load(DataPartition & dp, const uint32_t & start, const uint32_t & end) {
-    m.lock();
+    std::lock_guard<std::mutex> lock_guard(m);
     // Se resetea el DataPartition.
     dp.reset();
     // Mientras que la particion no este llena (cerrada) y el contador
     // este en rango se lee.
     if(start < end_position)
         unlockedSetPosition(start);
-    else {
-        m.unlock();
+    else
         return;
-    }
 
     while (!dp.isClosed() && position < end_position && position < end){
         uint16_t number;
@@ -47,7 +45,6 @@ void DataLoader::load(DataPartition & dp, const uint32_t & start, const uint32_t
     }
     // Se cierra la particion de datos tras leer (este llena o no).
     dp.close();
-    m.unlock();
     //dp.print();
 }
 

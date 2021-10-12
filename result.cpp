@@ -20,29 +20,26 @@ Result & Result::operator= (const Result & orig){
 
 
 void Result::reset(){
-    mutex.lock();
+    std::lock_guard<std::mutex> lock_guard(mutex);
     // Se setean todos los valores a false y 0.
     initialized = false;
     number = 0;
     extra = 0;
     separator = "";
-    mutex.unlock();
 }
 
 void Result::setNumber(const uint16_t & number_) {
-    mutex.lock();
+    std::lock_guard<std::mutex> lock_guard(mutex);
     // Se setea inicializado a true y se guarda el numero.
     initialized = true;
     this->number = number_;
-    mutex.unlock();
 }
 
 void Result::setExtra(const uint32_t & extra_) {
-    mutex.lock();
+    std::lock_guard<std::mutex> lock_guard(mutex);
     // Se setea inicializado a true y se guarda el extra.
     initialized = true;
     this->extra = extra_;
-    mutex.unlock();
 }
 
 void Result::setSeparator(const std::string & separator_) {
@@ -56,7 +53,7 @@ void Result::accumulate(const Result & result_, const Operator * const & op) {
 
 void Result::accumulate(const uint16_t & number_, const uint32_t & extra_,
                         const Operator * const & op) {
-    mutex.lock();
+    std::lock_guard<std::mutex> lock_guard(mutex);
     // Si esta inicializado se acumula.
     if (initialized) {
         op->accumulate(number, number_);
@@ -68,7 +65,6 @@ void Result::accumulate(const uint16_t & number_, const uint32_t & extra_,
         initialized = true;
         separator = op->getSeparator();
     }
-    mutex.unlock();
 }
 
 const uint16_t & Result::getNumber() const {
@@ -80,7 +76,7 @@ const uint32_t & Result::getExtra() const {
 }
 
 std::ostream& operator<<(std::ostream& os, const Result & result) {
-    if (result.separator == "")
+    if (result.separator.empty())
         os << result.number;
     else
         os << result.number << result.separator << result.extra;

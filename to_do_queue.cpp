@@ -3,20 +3,17 @@
 ToDoQueue::ToDoQueue(): m(), queue() {}
 
 void ToDoQueue::push(const ToDoToken & new_token) {
-    m.lock();
+    std::lock_guard<std::mutex> lock_guard(m);
     queue.push(new_token);
-    m.unlock();
 }
 
 bool ToDoQueue::ifNotEmptyPop(ToDoToken & token) {
-    m.lock();
+    std::lock_guard<std::mutex> lock_guard(m);
     if (!queue.empty()) {
         token = queue.front();
         queue.pop();
-        m.unlock();
         return true;
     }
-    m.unlock();
     return false;
 }
 
