@@ -38,35 +38,24 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
     for (uint8_t i = 0; i < workers_cant; i++)
         threads_vector[i] = std::thread(workers_vector[i]);
 
-    // Se crea una task y el task reader.
-    Task task(part_columns);
     TaskReader task_reader;
 
     // Se realiza un loop infinito hasta que termine la entrada.
-    for (size_t i = 0; true ; i++) {
+    for (size_t i = 0; std::cin.peek() != EOF && !std::cin.eof(); i++) {
         // Se lee la entrada y se carga en la task.
         try {
+            // TODO como se cuando terminó la entrada?
             // Si no se leyo se rompe el ciclo.
-            if (!task_reader.read(task))
-                break;
+            Task task = task_reader.read(task, part_columns);
             // Se crea un nuevo resultado.
             results.emplace_back(Result());
-        }
-        catch(std::exception &e) {
-            // Si falla se terminan los hilos y se termina el programa.
-            endAndJoin(workers_cant, threads_vector, queue);
-            std::string msg = e.what();
-            throw std::invalid_argument("Error al leer la tarea: " + msg);
-        }
         // Se carga la cola con los quehaceres correspondientes a la tarea.
-        try {
             task.loadQueue(queue, i);
         }
         catch(std::exception &e){
             // Si falla se terminan los hilos y se termina el programa.
             endAndJoin(workers_cant, threads_vector, queue);
-            std::string msg = e.what();
-            throw std::invalid_argument("Error al correr la tarea: " + msg);
+            throw;
         }
     }
 

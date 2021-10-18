@@ -29,27 +29,17 @@ private:
     static uint32_t ceil(const uint32_t & num, const uint32_t & den);
 
 public:
-    /* Constructor, toma como parametros la cantidad de columnas por
-     * particion. */
-    explicit Task(const uint32_t & part_columns);
+    /* Constructor, toma como parametros la cantidad de columnas y filas por
+     * particion, el operador, desde y hasta que fila se debe procesar
+     * y la columna que se debe procesar.*/
+    Task(const uint32_t & part_columns_, const uint32_t & part_rows_,
+         const Operator *op_, const uint32_t &from, const uint32_t &to,
+         const uint32_t & col_to_proc);
+
 
     /* Metodo que carga la cola con las tareas correspondientes a esta
      * tarea. */
     void loadQueue(ToDoQueue & queue, const size_t & result_idx);
-
-    /* Setea el operador que ejecutara la tarea.
-     * Pre:
-     *      op debe apuntar a un objeto Operador valido. */
-    void setOperator(const Operator * const & op);
-
-    // Setea el rango de filas en el que operara la tarea.
-    void setRange(const uint32_t & from, const uint32_t & to);
-
-    // Setea la columna sobre la que operara la tarea.
-    void setColumnToProcess(const uint32_t & column);
-
-    // Setea la cantidad de filas que tendra cada particion.
-    void setPartitionRows(const uint32_t & partition_rows);
 };
 
 #endif //TP2_TALLER1_TASK_H
