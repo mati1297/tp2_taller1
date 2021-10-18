@@ -15,9 +15,6 @@ class ToDoToken {
     const Operator * op;
     const DataPartition dp;
     size_t result_idx;
-    uint32_t part_rows;
-    uint32_t from;
-    uint32_t to;
     uint32_t column_to_process;
 
 public:

@@ -62,7 +62,7 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
     printResults(results);
 }
 
-void SplitApplyCombine::printResults(ProtectedResultsVector & results) {
+void SplitApplyCombine::printResults(const ProtectedResultsVector & results) {
     // Se imprimen los de todas las tareas realizadas.
     for (size_t i = 0; i < results.size(); i++){
         std::cout << results[i] << std::endl;

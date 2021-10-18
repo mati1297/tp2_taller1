@@ -4,7 +4,7 @@
 #include "data_partition.h"
 
 DataLoader::DataLoader(const char * filename): file(filename),
-                                               from(0), to(0) {
+                                               from(0), to(0), counter(0) {
     if (!file.is_open())
         throw std::invalid_argument("el archivo no existe");
 }
