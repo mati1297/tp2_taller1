@@ -6,7 +6,6 @@
 #include "data_loader.h"
 #include "task.h"
 #include "task_reader.h"
-#include "string_to_num.h"
 #include "to_do_queue.h"
 #include "worker.h"
 
@@ -108,7 +107,9 @@ void SplitApplyCombine::loadAndValidate(const char * const dataset_filename,
     }
 
     try {
-        columns = StringToNum::stou32(text_columns);
+        if (text_columns.find('-') != std::string::npos)
+            throw std::invalid_argument("numero negativo");
+        columns = std::stoul(text_columns);
     }
     catch(std::exception& e){
         std::string msg = e.what();
@@ -116,7 +117,9 @@ void SplitApplyCombine::loadAndValidate(const char * const dataset_filename,
     }
 
     try {
-        workers = StringToNum::stou8(text_workers);
+        if (text_workers.find('-') != std::string::npos)
+            throw std::invalid_argument("numero negativo");
+        workers = std::stoul(text_columns);
     }
     catch(std::exception& e){
         std::string msg = e.what();

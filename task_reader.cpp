@@ -5,7 +5,6 @@
 #include "sum.h"
 #include "max.h"
 #include "min.h"
-#include "string_to_num.h"
 
 TaskReader::TaskReader(): sum(), min(), max(), mean() {}
 
@@ -77,14 +76,18 @@ void TaskReader::setupRanges(Task & task, const std::string & text_from,
                              const std::string & text_to) const {
     uint32_t from = 0, to = 0;
     try {
-        from = StringToNum::stou32(text_from);
+        if (text_from.find('-') != std::string::npos)
+            throw std::invalid_argument("numero negativo");
+        from = std::stoul(text_from);
     }
     catch(std::exception& e){
         std::string msg = e.what();
         throw std::invalid_argument("error al leer la fila inicial: " + msg);
     }
     try {
-        to = StringToNum::stou32(text_to);
+        if (text_to.find('-') != std::string::npos)
+            throw std::invalid_argument("numero negativo");
+        to = std::stoul(text_to);
     }
     catch(std::exception& e){
         std::string msg = e.what();
@@ -102,7 +105,9 @@ void TaskReader::setupColumnToProcess(Task & task,
                                       const std::string & text) const {
     uint32_t column = 0;
     try {
-        column = StringToNum::stou32(text);
+        if (text.find('-') != std::string::npos)
+            throw std::invalid_argument("numero negativo");
+        column = std::stoul(text);
     }
     catch(std::exception& e){
         std::string msg = e.what();
@@ -120,7 +125,9 @@ void TaskReader::setupPartitionRows(Task & task,
                                     const std::string & text) const {
     uint32_t partition_rows = 0;
     try {
-        partition_rows = StringToNum::stou32(text);
+        if (text.find('-') != std::string::npos)
+            throw std::invalid_argument("numero negativo");
+        partition_rows = std::stoul(text);
     }
     catch(std::exception& e){
         std::string msg = e.what();
