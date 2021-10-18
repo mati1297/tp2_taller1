@@ -8,6 +8,8 @@
 
 TaskReader::TaskReader(): sum(), min(), max(), mean() {}
 
+// TODO rehacer esta clase. borro directamente o hago inicializo un objeto?.
+
 bool TaskReader::read(Task & task) {
     // Se leen los rangos.
     std::string read1, read2;

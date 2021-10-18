@@ -20,13 +20,8 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
 
     /* Se validan los datos ingresados, se abre el archivo, y se convierten
      * a datos numericos las columnas y workers_cant. */
-    try {
-        loadAndValidate(dataset_filename, text_columns,
-                        text_workers, part_columns, workers_cant);
-    }
-    catch(std::exception & e) {
-        throw;
-    }
+    loadAndValidate(dataset_filename, text_columns,
+                    text_workers, part_columns, workers_cant);
 
     // Se inicializa la lista, el vector de resultados y el vector de workers.
     ToDoQueue queue;
@@ -98,31 +93,16 @@ void SplitApplyCombine::loadAndValidate(const char * const dataset_filename,
                      const std::string & text_columns,
                      const std::string & text_workers,
                      uint32_t & columns, uint8_t & workers) {
-    try {
-        data_loader.openFile(dataset_filename);
-    }
-    catch(std::exception & e) {
-        std::string msg = e.what();
-        throw std::invalid_argument("Error al abrir el archivo: " + msg);
-    }
 
-    try {
-        if (text_columns.find('-') != std::string::npos)
-            throw std::invalid_argument("numero negativo");
-        columns = std::stoul(text_columns);
-    }
-    catch(std::exception& e){
-        std::string msg = e.what();
-        throw std::invalid_argument("Error al leer las columnas: " + msg);
-    }
+    data_loader.openFile(dataset_filename);
 
-    try {
-        if (text_workers.find('-') != std::string::npos)
-            throw std::invalid_argument("numero negativo");
-        workers = std::stoul(text_columns);
-    }
-    catch(std::exception& e){
-        std::string msg = e.what();
-        throw std::invalid_argument("Error al leer la fila inicial: " + msg);
-    }
+    if (text_columns.find('-') != std::string::npos)
+        throw std::invalid_argument("numero negativo");
+
+    columns = std::stoul(text_columns);
+
+
+    if (text_workers.find('-') != std::string::npos)
+        throw std::invalid_argument("numero negativo");
+    workers = std::stoul(text_columns);
 }

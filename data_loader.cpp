@@ -6,12 +6,7 @@
 DataLoader::DataLoader(): file_reader(), end_position(0), position(0), m() {}
 
 void DataLoader::openFile(const char * const & filename) {
-    try{
-        file_reader.open(filename);
-    }
-    catch(std::exception & e){
-        throw;
-    }
+    file_reader.open(filename);
     end_position = file_reader.positionOfEnd() / 2;
 }
 
@@ -37,12 +32,7 @@ void DataLoader::load(DataPartition & dp, const uint32_t & start,
         // Se lee el numero.
         file_reader.read(number);
         // Se intenta cargar, si falla se lanza la excepcion atrapada.
-        try {
-            dp.load(number);
-        }
-        catch(std::length_error& e){
-            throw;
-        }
+        dp.load(number);
         // Se incrementa la posicion.
         position++;
     }
