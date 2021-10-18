@@ -28,7 +28,7 @@ public:
               const uint32_t & column_to_process_);
 
     // Operador asignacion.
-    ToDoToken& operator=(const ToDoToken &);
+    ToDoToken& operator=(const ToDoToken &) = delete;
 
     // Devuelve el flag de finalizacion.
     bool endOfWork() const;

@@ -29,15 +29,5 @@ const uint32_t & ToDoToken::getColumnToProcess() const {
     return column_to_process;
 }
 
-ToDoToken& ToDoToken::operator=(const ToDoToken & orig) {
-    this->end = orig.end;
-    this->op = orig.op;
-    this->result_idx = orig.result_idx;
-    this->part_rows = orig.part_rows;
-    this->from = orig.from;
-    this->to = orig.to;
-    this->column_to_process = orig.column_to_process;
-    return *this;
-}
 
 

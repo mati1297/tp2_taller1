@@ -10,6 +10,8 @@
 #include "worker.h"
 #include "protected_results_vector.h"
 
+// TODO achicar metodo.
+
 void SplitApplyCombine::execute(const char * const dataset_filename,
                          const std::string & text_columns,
                          const std::string & text_workers) {
@@ -59,10 +61,6 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
 
     endAndJoin(workers_cant, threads_vector, queue);
 
-    printResults(results);
-}
-
-void SplitApplyCombine::printResults(const ProtectedResultsVector & results) {
     // Se imprimen los de todas las tareas realizadas.
     for (size_t i = 0; i < results.size(); i++){
         std::cout << results[i] << std::endl;
