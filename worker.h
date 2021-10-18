@@ -13,16 +13,14 @@
  * y referencias a los objetos que necesita del programa. */
 class Worker {
     ToDoQueue & queue;
-    DataLoader & data_loader;
     ProtectedResultsVector & results;
-    DataPartition data_partition;
 
 
 public:
     /* Constructor, se le pasa la lista de to do, el data loader,
      * y la cantidad de columnas por particion. */
-    Worker(ToDoQueue & queue_, DataLoader & data_loader_,
-           ProtectedResultsVector & results_, const uint32_t &part_columns);
+    Worker(ToDoQueue & queue_, ProtectedResultsVector & results_,
+           const uint32_t &part_columns);
 
     // Operador (), ya que Worker es un functor, este debe ser poder llamado.
     void operator()();

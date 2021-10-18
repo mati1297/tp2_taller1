@@ -84,14 +84,6 @@ const uint32_t & DataPartition::getFullRows() const {
     return _row;
 }
 
-void DataPartition::setRows(const uint32_t & rows_) {
-    if (this->rows == rows_)
-        return;
-    this->rows = rows_;
-    for (uint32_t i = 0; i < columns; i++)
-        data[i] = std::vector<uint16_t>(rows_);
-}
-
 
 
 

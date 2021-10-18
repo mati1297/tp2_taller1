@@ -12,12 +12,9 @@
  * con la posicion final del archivo, y un mutex. */
 class DataLoader {
     std::ifstream file;
-    uint32_t end_position; // Posicion final del archivo (de a 2 bytes).
-    uint32_t position; // Posicion en el archivo (de a 2 bytes)
-    std::mutex m;
-
-    // Modifica la posicion en que se encuentra en el archivo, no bloquea.
-    void unlockedSetPosition(const uint32_t &start_);
+    uint32_t from;
+    uint32_t to;
+    uint32_t counter;
 
 public:
     // Constructor. Se le pasa el nombre del archivo.
@@ -34,7 +31,9 @@ public:
 
     /* Metodo protegido que lee el archivo desde la posicion (de a 2 bytes)
      * inicial hasta la final y guarda en la particion de datos. */
-    void load(DataPartition & dp, const uint32_t & start, const uint32_t & end);
+    void load(DataPartition & dp);
+
+    void setLimits(const uint32_t &from_, const uint32_t &to_);
 };
 
 #endif //TP2_TALLER1_DATA_LOADER_H

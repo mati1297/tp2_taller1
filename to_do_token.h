@@ -13,6 +13,7 @@
 class ToDoToken {
     bool end;
     const Operator * op;
+    const DataPartition dp;
     size_t result_idx;
     uint32_t part_rows;
     uint32_t from;
@@ -22,13 +23,11 @@ class ToDoToken {
 public:
     /* Constructor sin parametros, se setea por defecto end en false,
      * se utiliza para crear un token de finalizacion. */
-
     ToDoToken();
 
     // Constructor en el que se cargan todos los atributos.
-    ToDoToken(const bool &end_, const Operator *const &op_,
-              const size_t & result_idx_, const uint32_t &part_rows_,
-              const uint32_t &from, const uint32_t &to,
+    ToDoToken(const bool &end_, const Operator * op_,
+              const DataPartition & dp, const size_t & result_idx_,
               const uint32_t & column_to_process_);
 
     // Operador asignacion.
@@ -40,20 +39,13 @@ public:
     // Devuelve un puntero al operador.
     const Operator  *const & getOperator() const;
 
-    // Devuelve la cantidad de filas por particion.
-    const uint32_t &getPartitionRows() const;
-
-    // Devuelve la posicion del inicio de la lectura.
-    const uint32_t &getFrom() const;
-
-    // Devuelve la posiciond del final de la lectura.
-    const uint32_t &getTo() const;
-
     // Devuelve la columna que se debe procesar.
     const uint32_t &getColumnToProcess() const;
 
     // Devuelve el index donde se debe guardar el resultado.
     const size_t &getResultIndex() const;
+
+    const DataPartition & getDataPartition() const;
 };
 
 #endif //TP2_TALLER1_TO_DO_TOKEN_H

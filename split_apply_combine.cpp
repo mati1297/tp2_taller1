@@ -27,12 +27,10 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
     DataLoader data_loader(dataset_filename);
 
     // Se inicializa la lista, el vector de resultados y el vector de workers.
-    ToDoQueue queue;
+    ToDoQueue queue(workers_cant);
     ProtectedResultsVector results;
     std::vector<Worker> workers_vector(workers_cant,
-                                       Worker(queue,
-                                              data_loader,
-                                              results, part_columns));
+                                       Worker(queue, results, part_columns));
 
     // Se crea el vector de threads, pero todavia no se lanzan.
     std::vector<std::thread> threads_vector(workers_cant);
@@ -52,7 +50,7 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
             // Se crea un nuevo resultado.
             results.emplace_back(Result());
         // Se carga la cola con los quehaceres correspondientes a la tarea.
-            task.loadQueue(queue, i);
+            task.loadQueue(queue, data_loader, i);
         }
         catch(std::exception &e){
             // Si falla se terminan los hilos y se termina el programa.
@@ -91,5 +89,5 @@ void SplitApplyCombine::loadAndValidate(const std::string & text_columns,
 
     if (text_workers.find('-') != std::string::npos)
         throw std::invalid_argument("numero negativo");
-    workers = std::stoul(text_columns);
+    workers = std::stoul(text_workers);
 }

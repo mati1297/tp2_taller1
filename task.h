@@ -38,7 +38,8 @@ public:
 
     /* Metodo que carga la cola con las tareas correspondientes a esta
      * tarea. */
-    void loadQueue(ToDoQueue & queue, const size_t & result_idx);
+    void loadQueue(ToDoQueue &queue, DataLoader &data_loader,
+                   const size_t &result_idx);
 };
 
 #endif //TP2_TALLER1_TASK_H
