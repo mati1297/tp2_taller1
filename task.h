@@ -6,7 +6,6 @@
 #include <vector>
 #include "data_partition.h"
 #include "operator.h"
-#include "file_reader.h"
 #include "data_loader.h"
 #include "to_do_queue.h"
 

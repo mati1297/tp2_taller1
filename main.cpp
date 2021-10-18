@@ -1,9 +1,4 @@
 #include <iostream>
-#include "file_reader.h"
-#include "data_loader.h"
-#include "data_partition.h"
-#include "task.h"
-#include "task_reader.h"
 #include "split_apply_combine.h"
 
 int main(int argc, char * argv[]) {

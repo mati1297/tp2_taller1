@@ -10,7 +10,7 @@
 #include "worker.h"
 
 
-SplitApplyCombine::SplitApplyCombine(): data_loader() {}
+SplitApplyCombine::SplitApplyCombine() {}
 
 void SplitApplyCombine::execute(const char * const dataset_filename,
                          const std::string & text_columns,
@@ -20,8 +20,10 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
 
     /* Se validan los datos ingresados, se abre el archivo, y se convierten
      * a datos numericos las columnas y workers_cant. */
-    loadAndValidate(dataset_filename, text_columns,
-                    text_workers, part_columns, workers_cant);
+    loadAndValidate(text_columns, text_workers,
+                    part_columns, workers_cant);
+
+    DataLoader data_loader(dataset_filename);
 
     // Se inicializa la lista, el vector de resultados y el vector de workers.
     ToDoQueue queue;
@@ -78,12 +80,9 @@ void SplitApplyCombine::endAndJoin(const uint8_t & workers_cant,
 }
 
 
-void SplitApplyCombine::loadAndValidate(const char * const dataset_filename,
-                     const std::string & text_columns,
+void SplitApplyCombine::loadAndValidate(const std::string & text_columns,
                      const std::string & text_workers,
                      uint32_t & columns, uint8_t & workers) {
-    data_loader.openFile(dataset_filename);
-
     if (text_columns.find('-') != std::string::npos)
         throw std::invalid_argument("numero negativo");
 

@@ -3,7 +3,7 @@
 
 
 #include <mutex>
-#include "file_reader.h"
+#include <fstream>
 #include "data_partition.h"
 
 /* Clase protegida que permite cargar los datos desde un archivo en las
@@ -11,7 +11,7 @@
  * que guarda la posicion en que se encuentra del archivo, una variable
  * con la posicion final del archivo, y un mutex. */
 class DataLoader {
-    FileReader file_reader;
+    std::ifstream file;
     uint32_t end_position; // Posicion final del archivo (de a 2 bytes).
     uint32_t position; // Posicion en el archivo (de a 2 bytes)
     std::mutex m;
@@ -20,8 +20,8 @@ class DataLoader {
     void unlockedSetPosition(const uint32_t &start_);
 
 public:
-    // Constructor.
-    DataLoader();
+    // Constructor. Se le pasa el nombre del archivo.
+    explicit DataLoader(const char * filename);
 
     // Se borra el constructor por copia
     DataLoader(const DataLoader & orig) = delete;
@@ -31,9 +31,6 @@ public:
 
     // Se borra el operador =
     DataLoader & operator=(const DataLoader & orig) = delete;
-
-    // Metodo que abre un archivo para utilizar como dataset.
-    void openFile(const char * const & filename);
 
     /* Metodo protegido que lee el archivo desde la posicion (de a 2 bytes)
      * inicial hasta la final y guarda en la particion de datos. */

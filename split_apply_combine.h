@@ -4,20 +4,16 @@
 #include <string>
 #include <thread>
 #include <vector>
-#include "file_reader.h"
 #include "data_loader.h"
 #include "task.h"
 #include "task_reader.h"
 
 // Clase que ejecuta el programa.
 class SplitApplyCombine {
-    DataLoader data_loader;
-
     /* Metodo privado que valida los parametros que se le pasan
      * a la funcion execute y los convierte al tipo de dato
      * correspondiente. */
-    void loadAndValidate(const char * const dataset_filename,
-                         const std::string & text_columns,
+    void loadAndValidate(const std::string & text_columns,
                          const std::string & text_workers,
                          uint32_t & columns, uint8_t & workers);
 

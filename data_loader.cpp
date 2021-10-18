@@ -1,13 +1,16 @@
 #include <iostream>
+#include <netinet/in.h>
 #include "data_loader.h"
 #include "data_partition.h"
-#include "file_reader.h"
 
-DataLoader::DataLoader(): file_reader(), end_position(0), position(0), m() {}
-
-void DataLoader::openFile(const char * const & filename) {
-    file_reader.open(filename);
-    end_position = file_reader.positionOfEnd() / 2;
+DataLoader::DataLoader(const char * filename): file(filename),
+                                               end_position(0),
+                                               position(0), m() {
+    if (!file.is_open())
+        throw std::invalid_argument("el archivo no existe");
+    file.seekg(0, std::ios_base::end);
+    end_position = file.tellg();
+    file.seekg(0, std::ios_base::beg);
 }
 
 void DataLoader::load(DataPartition & dp, const uint32_t & start,
@@ -27,10 +30,11 @@ void DataLoader::load(DataPartition & dp, const uint32_t & start,
     while (!dp.isClosed() && position < end_position && position < end){
         uint16_t number;
         // Si se alcanzo end of file se rompe el ciclo.
-        if (file_reader.peekEof())
+        if (file.peek() == EOF)
             break;
         // Se lee el numero.
-        file_reader.read(number);
+        file.read((char*) &number, 2);
+        number = ntohs(number);
         // Se intenta cargar, si falla se lanza la excepcion atrapada.
         dp.load(number);
         // Se incrementa la posicion.
@@ -41,7 +45,7 @@ void DataLoader::load(DataPartition & dp, const uint32_t & start,
 }
 
 void DataLoader::unlockedSetPosition(const uint32_t & start_) {
-    file_reader.setTo(start_ * 2);
+    file.seekg(start_ * 2, std::ios_base::beg);
     position = start_;
 }
 
