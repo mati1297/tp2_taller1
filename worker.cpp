@@ -2,10 +2,11 @@
 #include "worker.h"
 #include "to_do_token.h"
 #include "sum.h"
+#include "protected_results_vector.h"
 
 
 Worker::Worker(ToDoQueue & queue_, DataLoader & data_loader_,
-               std::vector<Result> & results_,
+               ProtectedResultsVector & results_,
                const uint32_t & part_columns): queue(queue_),
                data_loader(data_loader_), results(results_),
                data_partition(0, part_columns) {}

@@ -8,6 +8,7 @@
 #include "task_reader.h"
 #include "to_do_queue.h"
 #include "worker.h"
+#include "protected_results_vector.h"
 
 
 SplitApplyCombine::SplitApplyCombine() {}
@@ -27,7 +28,7 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
 
     // Se inicializa la lista, el vector de resultados y el vector de workers.
     ToDoQueue queue;
-    std::vector<Result> results(0);
+    ProtectedResultsVector results;
     std::vector<Worker> workers_vector(workers_cant,
                                        Worker(queue,
                                               data_loader,
@@ -46,7 +47,6 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
     for (size_t i = 0; std::cin.peek() != EOF && !std::cin.eof(); i++) {
         // Se lee la entrada y se carga en la task.
         try {
-            // TODO como se cuando terminó la entrada?
             // Si no se leyo se rompe el ciclo.
             Task task = task_reader.read(task, part_columns);
             // Se crea un nuevo resultado.

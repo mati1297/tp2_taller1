@@ -6,6 +6,7 @@
 #include "to_do_queue.h"
 #include "data_loader.h"
 #include "sum.h"
+#include "protected_results_vector.h"
 
 /* Clase (Functor) que se encarga de ejecutar las acciones de los
  * distintos hilos del programa. Posee una particion de datos
@@ -13,7 +14,7 @@
 class Worker {
     ToDoQueue & queue;
     DataLoader & data_loader;
-    std::vector <Result> & results;
+    ProtectedResultsVector & results;
     DataPartition data_partition;
 
 
@@ -21,7 +22,7 @@ public:
     /* Constructor, se le pasa la lista de to do, el data loader,
      * y la cantidad de columnas por particion. */
     Worker(ToDoQueue & queue_, DataLoader & data_loader_,
-           std::vector<Result> & results_, const uint32_t &part_columns);
+           ProtectedResultsVector & results_, const uint32_t &part_columns);
 
     // Operador (), ya que Worker es un functor, este debe ser poder llamado.
     void operator()();
