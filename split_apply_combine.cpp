@@ -93,7 +93,6 @@ void SplitApplyCombine::loadAndValidate(const char * const dataset_filename,
                      const std::string & text_columns,
                      const std::string & text_workers,
                      uint32_t & columns, uint8_t & workers) {
-
     data_loader.openFile(dataset_filename);
 
     if (text_columns.find('-') != std::string::npos)

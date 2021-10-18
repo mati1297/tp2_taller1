@@ -6,7 +6,9 @@
 #include "max.h"
 #include "min.h"
 
-TaskReader::TaskReader(): sum(), min(), max(), mean() {}
+TaskReader::TaskReader(): sum(), max(), min(), mean(),
+                          operators {{"sum", &sum}, {"max", &max},
+                                     {"min", &min}, {"mean", &mean}} {}
 
 // TODO rehacer esta clase. borro directamente o hago inicializo un objeto?.
 
@@ -60,18 +62,8 @@ bool TaskReader::read(Task & task) {
 }
 
 void TaskReader::setupOperator(Task & task, const std::string & text) const {
-    const Operator * op = nullptr;
-    if (text == "sum")
-        op = &sum;
-    else if (text == "min")
-        op = &min;
-    else if (text == "max")
-        op = &max;
-    else if (text == "mean")
-        op = &mean;
-    else
-        throw std::invalid_argument("operador incorrecto");
-    task.setOperator(op);
+    // TODO ver si catcheo esto o lo dejo asi
+    task.setOperator(operators.at(text));
 }
 
 void TaskReader::setupRanges(Task & task, const std::string & text_from,

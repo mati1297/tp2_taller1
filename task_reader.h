@@ -2,6 +2,7 @@
 #define TP2_TALLER1_TASK_READER_H
 
 #include <string>
+#include <map>
 #include "task.h"
 #include "min.h"
 #include "sum.h"
@@ -16,9 +17,10 @@ class Task;
 class TaskReader {
 private:
     const Sum sum;
-    const Min min;
     const Max max;
+    const Min min;
     const Mean mean;
+    const std::map<const std::string, const Operator*> operators;
 
     // Metodo privado que valida y setea el operador.
     void setupOperator(Task &task, const std::string &text) const;
