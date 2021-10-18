@@ -30,7 +30,7 @@ void DataLoader::load(DataPartition & dp, const uint32_t & start,
     while (!dp.isClosed() && position < end_position && position < end){
         uint16_t number;
         // Si se alcanzo end of file se rompe el ciclo.
-        if (file.peek() == EOF)
+        if (file.peek() == EOF || !file)
             break;
         // Se lee el numero.
         file.read((char*) &number, 2);
