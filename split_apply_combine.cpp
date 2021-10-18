@@ -10,9 +10,6 @@
 #include "worker.h"
 #include "protected_results_vector.h"
 
-
-SplitApplyCombine::SplitApplyCombine() {}
-
 void SplitApplyCombine::execute(const char * const dataset_filename,
                          const std::string & text_columns,
                          const std::string & text_workers) {
@@ -39,9 +36,10 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
     for (uint8_t i = 0; i < workers_cant; i++)
         threads_vector[i] = std::thread(workers_vector[i]);
 
+    // Se crea el Task Reader.
     TaskReader task_reader;
 
-    // Se realiza un loop infinito hasta que termine la entrada.
+    // Se realiza un loop hasta que termine la entrada.
     for (size_t i = 0; std::cin.peek() != EOF && !std::cin.eof(); i++) {
         // Se lee la entrada y se carga en la task.
         try {
@@ -49,7 +47,7 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
             Task task = task_reader.read(task, part_columns);
             // Se crea un nuevo resultado.
             results.emplace_back(Result());
-        // Se carga la cola con los quehaceres correspondientes a la tarea.
+            // Se carga la cola con los quehaceres correspondientes a la tarea.
             task.loadQueue(queue, data_loader, i);
         }
         catch(std::exception &e){
@@ -61,6 +59,10 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
 
     endAndJoin(workers_cant, threads_vector, queue);
 
+    printResults(results);
+}
+
+void SplitApplyCombine::printResults(ProtectedResultsVector & results) {
     // Se imprimen los de todas las tareas realizadas.
     for (size_t i = 0; i < results.size(); i++){
         std::cout << results[i] << std::endl;

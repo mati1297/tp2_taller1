@@ -7,6 +7,7 @@
 #include "data_loader.h"
 #include "task.h"
 #include "task_reader.h"
+#include "protected_results_vector.h"
 
 // Clase que ejecuta el programa.
 class SplitApplyCombine {
@@ -23,9 +24,11 @@ class SplitApplyCombine {
                     std::vector<std::thread> &threads_vector,
                     ToDoQueue &queue);
 
+    void printResults(ProtectedResultsVector &results);
+
 public:
     // Constructor sin parametros.
-    SplitApplyCombine();
+    SplitApplyCombine() = default;
 
     /* Metodo que ejecuta el programa, recibe los parametros que se reciben
      * por linea de comandos, el nombre del dataset, la cantidad de columnas

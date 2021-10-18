@@ -25,7 +25,6 @@ void Worker::run() {
         if (to_do_token.endOfWork())
             break;
 
-
         // Se cargan los demas datos del token.
         uint32_t column_to_process = to_do_token.getColumnToProcess();
         const size_t result_idx = to_do_token.getResultIndex();
