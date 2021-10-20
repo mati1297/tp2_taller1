@@ -46,11 +46,13 @@ void Result::setExtra(const uint32_t & extra_) {
 }
 
 void Result::setSeparator(const std::string & separator_) {
+    std::lock_guard<std::mutex> lock_guard(mutex);
     initialized = true;
     separator = separator_;
 }
 
 void Result::accumulate(const Result & result_, const Operator * const & op) {
+    std::lock_guard<std::mutex> lock_guard(mutex);
     accumulate(result_.getNumber(), result_.getExtra(), op);
 }
 
