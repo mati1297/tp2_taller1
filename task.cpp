@@ -16,13 +16,17 @@ Task::Task(const uint32_t & part_columns_, const uint32_t & part_rows_,
         index_from(from), index_to(0) {
     // Se validan los argumentos
     if (part_columns_ == 0)
-        throw std::invalid_argument("la cantidad de columnas es menor o igual a 0");
+        throw std::invalid_argument("la cantidad de columnas"
+                                    " es menor o igual a 0");
     if (part_rows_ == 0)
-        throw std::invalid_argument("la cantidad de filas es menor o igual a 0");
+        throw std::invalid_argument("la cantidad de filas es"
+                                    " menor o igual a 0");
     if (col_to_proc >= part_columns_)
-        throw std::invalid_argument("la columna que se pide procesar no existe");
+        throw std::invalid_argument("la columna que se pide"
+                                    " procesar no existe");
     if (to < from)
-        throw std::invalid_argument("el parametro hasta es menor que el desde");
+        throw std::invalid_argument("el parametro hasta es "
+                                    "menor que el desde");
     part_columns = part_columns_;
     part_rows = part_rows_;
     column_to_process = col_to_proc;
