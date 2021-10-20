@@ -17,7 +17,7 @@
 class Task {
 private:
     const Operator * op;
-    const uint32_t part_columns;
+    uint32_t part_columns;
     uint32_t part_rows;
     uint32_t column_to_process;
     uint32_t index_from;
