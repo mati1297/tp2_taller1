@@ -9,8 +9,6 @@
 #include "to_do_queue.h"
 #include "worker.h"
 
-// TODO tirar excepcion en el constructor. (probar que no leakee)
-
 Task::Task(const uint32_t & part_columns_, const uint32_t & part_rows_,
            const Operator * op_, const uint32_t & from, const uint32_t & to,
            const uint32_t & col_to_proc):

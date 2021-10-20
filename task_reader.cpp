@@ -11,9 +11,6 @@ TaskReader::TaskReader(): sum(), max(), min(), mean(),
                           operators {{"sum", &sum}, {"max", &max},
                                      {"min", &min}, {"mean", &mean}} {}
 
-/* TODO Preguntar si deberia borrar la clase. Yo no la borraria ya que tiene el map y sería
-    engorroso hacerlo en un metodo de split apply combine */
-
 Task TaskReader::read(Task & task, const uint32_t & part_columns) {
     uint32_t part_rows = 0, from = 0, to = 0, col_to_process = 0;
     std::string op;
