@@ -18,7 +18,6 @@ void Worker::operator()() {
 void Worker::run() {
     /* Se realiza un while infinito hasta que salga mediante
      * la llegada de un token que indique la finalizacion. */
-    // TODO preguntar si el while esta bien que siga estando.
     while (true) {
         ToDoToken to_do_token = queue.pop();
         // Si el token indica el fin del trabajo, se rompe el ciclo.
