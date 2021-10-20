@@ -29,7 +29,7 @@ void Worker::run() {
         uint32_t column_to_process = to_do_token.getColumnToProcess();
         const size_t result_idx = to_do_token.getResultIndex();
         const Operator * op = to_do_token.getOperator();
-        const DataPartition data_partition = to_do_token.getDataPartition();
+        const DataPartition & data_partition = to_do_token.getDataPartition();
 
         /* Se prepara un resultado temporal y se le pasa al metodo accumulate
          * del operador. */
