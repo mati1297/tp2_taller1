@@ -7,10 +7,9 @@ int main(int argc, char * argv[]) {
         return EXIT_FAILURE;
     }
 
-    SplitApplyCombine split_apply_combine;
-
     try {
-        split_apply_combine.execute(argv[1], argv[2], argv[3]);
+        SplitApplyCombine split_apply_combine(argv[1], argv[2], argv[3]);
+        split_apply_combine.execute();
     }
     catch(std::exception & e){
         std::cerr << "Error: " << e.what() << std::endl;

@@ -6,10 +6,10 @@
 #include <fstream>
 #include "data_partition.h"
 
-/* Clase protegida que permite cargar los datos desde un archivo en las
- * particiones de datos. Contiene como atributos un FileReader, una variable
- * que guarda la posicion en que se encuentra del archivo, una variable
- * con la posicion final del archivo, y un mutex. */
+/* Clase que permite cargar los datos desde un archivo en las
+ * particiones de datos. Contiene como atributos un ifstream, variables
+ * que contienen desde y hasta donde se debe leer y un contador de bytes
+ * leidos. */
 class DataLoader {
     std::ifstream file;
     uint32_t from;
@@ -29,10 +29,12 @@ public:
     // Se borra el operador =
     DataLoader & operator=(const DataLoader & orig) = delete;
 
-    /* Metodo protegido que lee el archivo desde la posicion (de a 2 bytes)
-     * inicial hasta la final y guarda en la particion de datos. */
+    /* Metodo que lee la cantidad de bytes que corresponden para llenar a la
+     * DataPartition y mientras se lo permita sus limites. */
     void load(DataPartition & dp);
 
+    /* Metodo que setea los limites en donde se debe leer del archivo
+     * y resetea el contador. */
     void setLimits(const uint32_t &from_, const uint32_t &to_);
 };
 

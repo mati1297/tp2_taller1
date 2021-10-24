@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <utility>
 #include "data_partition.h"
 
 DataPartition::DataPartition(const uint32_t & rows,

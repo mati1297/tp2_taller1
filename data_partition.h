@@ -24,10 +24,8 @@ public:
     DataPartition(const uint32_t & rows,
                   const uint32_t & columns);
 
-    // Constructor por copia.
     DataPartition(const DataPartition & orig) = delete;
 
-    // Constructor por movimiento
     DataPartition(DataPartition && orig) noexcept;
 
     DataPartition& operator=(DataPartition && orig) noexcept;
@@ -50,9 +48,6 @@ public:
 
     // Devuelve la cantidad de filas ocupadas de la particion.
     const uint32_t & getFullRows() const;
-
-    // Setea la cantidad de filas de la particion.
-    void setRows(const uint32_t &rows_);
 };
 
 #endif //TP2_TALLER1_DATAPARTITION_H
