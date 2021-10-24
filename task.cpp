@@ -45,7 +45,8 @@ void Task::loadQueue(ToDoQueue & queue, DataLoader & data_loader,
         data_loader.load(dp);
 
         // Se arma el token y se pushea a la cola.
-        queue.push(ToDoToken(false, op, dp, result_idx, column_to_process));
+        ToDoToken new_token(false, op, dp, result_idx, column_to_process);
+        queue.push(new_token);
     }
 }
 

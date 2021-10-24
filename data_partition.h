@@ -13,7 +13,7 @@
 class DataPartition {
 private:
     uint32_t rows;
-    const uint32_t columns;
+    uint32_t columns;
     uint32_t _row;
     uint32_t _column;
     bool closed;
@@ -25,7 +25,12 @@ public:
                   const uint32_t & columns);
 
     // Constructor por copia.
-    DataPartition(const DataPartition & orig);
+    DataPartition(const DataPartition & orig) = delete;
+
+    // Constructor por movimiento
+    DataPartition(DataPartition && orig) noexcept;
+
+    DataPartition& operator=(DataPartition && orig) noexcept;
 
     // Carga un numero en la siguiente posicion de la particion.
     void load(const uint16_t & number);

@@ -13,7 +13,7 @@
 class ToDoToken {
     bool end;
     const Operator * op;
-    const DataPartition dp;
+    DataPartition dp;
     size_t result_idx;
     uint32_t column_to_process;
 
@@ -24,11 +24,18 @@ public:
 
     // Constructor en el que se cargan todos los atributos.
     ToDoToken(const bool &end_, const Operator * op_,
-              const DataPartition & dp, const size_t & result_idx_,
+              DataPartition & dp, const size_t & result_idx_,
               const uint32_t & column_to_process_);
+
+    ToDoToken(const ToDoToken & orig) = delete;
+
+    ToDoToken(ToDoToken &&orig) noexcept;
 
     // Operador asignacion.
     ToDoToken& operator=(const ToDoToken &) = delete;
+
+    // Operador asignacion por movimiento
+    ToDoToken & operator =(ToDoToken && orig) noexcept;
 
     // Devuelve el flag de finalizacion.
     bool endOfWork() const;

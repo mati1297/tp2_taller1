@@ -31,7 +31,7 @@ public:
 
     /* Coloca un token (el cual se copia) al final de la
      * cola. */
-    void push(const ToDoToken & new_token);
+    void push(ToDoToken & new_token);
 
     ToDoToken pop();
 };

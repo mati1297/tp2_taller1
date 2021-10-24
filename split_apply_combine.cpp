@@ -70,8 +70,10 @@ void SplitApplyCombine::execute(const char * const dataset_filename,
 void SplitApplyCombine::endAndJoin(const uint8_t & workers_cant,
                                    std::vector<std::thread> & threads_vector,
                                    ToDoQueue & queue){
-    for (uint8_t i = 0; i < workers_cant; i++)
-        queue.push(ToDoToken());
+    for (uint8_t i = 0; i < workers_cant; i++) {
+        ToDoToken end_token;
+        queue.push(end_token);
+    }
 
     for (uint8_t i = 0; i < workers_cant; i++)
         threads_vector[i].join();
