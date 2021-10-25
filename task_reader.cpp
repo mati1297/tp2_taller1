@@ -26,8 +26,8 @@ Task TaskReader::read(Task & task, const uint32_t & part_columns) {
 
     iss >> from >> to >> part_rows >> col_to_process >> op;
 
-    return Task(part_columns, part_rows, operators.at(op),
-                from, to, col_to_process);
+    return {part_columns, part_rows, operators.at(op),
+                from, to, col_to_process};
 }
 
 

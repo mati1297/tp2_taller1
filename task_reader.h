@@ -26,8 +26,8 @@ public:
     // Constructor sin parametros.
     TaskReader();
 
-    /* Lee de stdin, valida y carga task. Devuelve true si se pudo leer
-     * y false si se alcanzo eof. */
+    /* Lee de stdin, valida y carga task. Recibe como parametro
+     * la task y la cantidad de columnas por particion. */
     Task read(Task &task, const uint32_t &part_columns);
 };
 

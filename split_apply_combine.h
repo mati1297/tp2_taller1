@@ -39,13 +39,13 @@ public:
     * y la cantidad de workers.
     * Pre:
             *      dataset_filename debe apuntar a una posicion de memoria valida. */
-    SplitApplyCombine(const char *const dataset_filename, const std::string &text_columns,
+    SplitApplyCombine(const char *const dataset_filename,
+                      const std::string &text_columns,
                       const std::string &text_workers);
 
     /* Metodo que ejecuta el programa, prepara los threads y sus workers,
     * prepara la cola y las tareas y luego imprime el resultado. */
     void execute();
-
 };
 
 

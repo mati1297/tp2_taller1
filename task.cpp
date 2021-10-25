@@ -7,7 +7,6 @@
 #include "data_partition.h"
 #include "operator.h"
 #include "to_do_queue.h"
-#include "worker.h"
 
 Task::Task(const uint32_t & part_columns_, const uint32_t & part_rows_,
            const Operator * op_, const uint32_t & from, const uint32_t & to,

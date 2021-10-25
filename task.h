@@ -37,7 +37,8 @@ public:
 
 
     /* Metodo que carga la cola con las tareas correspondientes a esta
-     * tarea. */
+     * tarea. Toma como parametros la cola, el data loader a utilizar
+     * y el index de resultado que le corresponde. */
     void loadQueue(ToDoQueue &queue, DataLoader &data_loader,
                    const size_t &result_idx);
 };

@@ -12,9 +12,13 @@
 
 SplitApplyCombine::SplitApplyCombine(const char * const dataset_filename,
                                      const std::string & text_columns,
-                                     const std::string & text_workers): workers(validateAndConvert(text_workers)), part_columns(
-        validateAndConvert(text_columns)), data_loader(dataset_filename), queue(
-        workers), results_vector(), workers_vector(workers, Worker(queue, results_vector, part_columns)), threads_vector(workers) {}
+                                     const std::string & text_workers):
+                                 workers(validateAndConvert(text_workers)),
+                                 part_columns(validateAndConvert(text_columns)),
+                                 data_loader(dataset_filename), queue(workers),
+                                 results_vector(), workers_vector(workers,
+                                 Worker(queue, results_vector, part_columns)),
+                                 threads_vector(workers) {}
 
 void SplitApplyCombine::execute() {
     // Se lanzan los threads, asignandole un worker a cada uno.
@@ -46,7 +50,6 @@ void SplitApplyCombine::execute() {
 
     // Se imprimen los resultados.
     printResults();
-
 }
 
 void SplitApplyCombine::printResults(){

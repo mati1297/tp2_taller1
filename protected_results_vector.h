@@ -5,18 +5,24 @@
 #include <mutex>
 #include "result.h"
 
+/* Clase monitor de un vector que contiene objetos de tipo
+ * Result. Como atributos contiene al vector en si y a un mutex.*/
 class ProtectedResultsVector {
     std::vector<Result> vector;
     std::mutex mutex;
 
 public:
+    // Constructor.
     ProtectedResultsVector();
 
+    // Agrega un nuevo elemento al final.
     void emplace_back(const Result & result);
 
+    // Accede al elemento idx.
     Result& operator[](size_t idx);
 
-    size_t size() const;
+    // Devuelve el tamanio del vector.
+    size_t size();
 };
 
 

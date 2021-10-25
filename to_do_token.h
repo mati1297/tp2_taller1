@@ -1,15 +1,14 @@
 #ifndef TP2_TALLER1_TO_DO_TOKEN_H
 #define TP2_TALLER1_TO_DO_TOKEN_H
 
-
 #include "data_partition.h"
 #include "operator.h"
 
-/* Representa una orden de procesamiento o de finalizacion,
- * posee como atributos, cual es el operador a utilizar,
- * el index donde se debe guardar el resultado, cantidad
- * de filas, desde y hasta donde se debe leer y que
- * columna se debe procesar. */
+/* Representa una orden de procesamiento o de finalizaion,
+ * posee como atriubutos: cual es el operador a utilizar,
+ * el index donde se debe guardar el resultado, la particion
+ * donde se debe procesar, que columna se debe procesar
+ * y un flag de finalizacion de proceso. */
 class ToDoToken {
     bool end;
     const Operator * op;
@@ -29,6 +28,7 @@ public:
 
     ToDoToken(const ToDoToken & orig) = delete;
 
+    // Constructor por movimiento.
     ToDoToken(ToDoToken &&orig) noexcept;
 
     // Operador asignacion.
@@ -49,6 +49,7 @@ public:
     // Devuelve el index donde se debe guardar el resultado.
     const size_t &getResultIndex() const;
 
+    // Devuelve una referencia constante a la particion de datos.
     const DataPartition & getDataPartition() const;
 };
 
