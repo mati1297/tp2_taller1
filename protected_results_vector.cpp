@@ -1,6 +1,7 @@
 #include "protected_results_vector.h"
 #include <vector>
 #include <mutex>
+#include <iostream>
 #include "result.h"
 
 ProtectedResultsVector::ProtectedResultsVector(): vector(), mutex() {}
@@ -10,12 +11,16 @@ void ProtectedResultsVector::emplace_back(const Result & result) {
     vector.emplace_back(result);
 }
 
-Result& ProtectedResultsVector::operator[](size_t idx) {
+void ProtectedResultsVector::accumulate(size_t idx,
+                                        const Operator * op, Result & result) {
     std::lock_guard<std::mutex> lock(mutex);
-    return vector[idx];
+    op->accumulate(vector[idx], result);
 }
 
-size_t ProtectedResultsVector::size() {
-    std::lock_guard<std::mutex> lock(mutex);
-    return vector.size();
+
+std::ostream & operator<<(std::ostream &os, ProtectedResultsVector &vector) {
+    std::lock_guard<std::mutex> lock(vector.mutex);
+    for (size_t i = 0; i < vector.vector.size(); i++)
+        os << vector.vector[i] << std::endl;
+    return os;
 }

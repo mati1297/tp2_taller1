@@ -18,11 +18,12 @@ public:
     // Agrega un nuevo elemento al final.
     void emplace_back(const Result & result);
 
-    // Accede al elemento idx.
-    Result& operator[](size_t idx);
+    /* Permite acumular en el result del index pasado como parametro.
+     * el valor del result pasado, utilizando la operacion op. */
+    void accumulate(size_t idx, const Operator * op, Result & result);
 
-    // Devuelve el tamanio del vector.
-    size_t size();
+    friend std::ostream & operator<<(std::ostream & os,
+            ProtectedResultsVector & vector);
 };
 
 

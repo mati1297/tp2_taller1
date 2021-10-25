@@ -25,9 +25,6 @@ class SplitApplyCombine {
      * y espera a los threads. */
     void endAndJoin();
 
-    // Metodo que imprime resultados.
-    void printResults();
-
     /* Metodo que valida que el texto ingresado corresponda a un numero positivo
      * y lo convierte a uint32_t. */
     static uint32_t validateAndConvert(const std::string &text);

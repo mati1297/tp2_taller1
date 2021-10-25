@@ -49,13 +49,7 @@ void SplitApplyCombine::execute() {
     endAndJoin();
 
     // Se imprimen los resultados.
-    printResults();
-}
-
-void SplitApplyCombine::printResults(){
-    for (size_t i = 0; i < results_vector.size(); i++){
-        std::cout << results_vector[i] << std::endl;
-    }
+    std::cout << results_vector;
 }
 
 void SplitApplyCombine::endAndJoin(){

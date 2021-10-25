@@ -38,7 +38,7 @@ void Worker::run() {
         op->operateData(temp_result, data_partition,
                         column_to_process);
         // Se opera acumulativamente y se guarda en el resultado compartido.
-        op->accumulate(results[result_idx], temp_result);
+        results.accumulate(result_idx, op, temp_result);
     }
 }
 
