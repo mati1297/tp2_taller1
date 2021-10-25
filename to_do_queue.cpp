@@ -1,22 +1,30 @@
+#include <utility>
 #include "to_do_queue.h"
 
-ToDoQueue::ToDoQueue(): m(), queue() {}
+ToDoQueue::ToDoQueue(const uint8_t & max_tokens_): m(), cv_empty(),
+                     cv_full(), queue(), max_tokens(max_tokens_) {}
 
-void ToDoQueue::push(const ToDoToken & new_token) {
-    // Se utiliza lock guard, que utiliza RAII.
-    std::lock_guard<std::mutex> lock_guard(m);
-    queue.push(new_token);
+void ToDoQueue::push(ToDoToken & new_token) {
+    std::unique_lock<std::mutex> u_lock(m);
+    /* Se hace la cola bounded. Si se tiene la maxima cantidad
+     * de tokens permitida, se espera hasta que se notifique al
+     * condition variable que se quito un elemento. */
+    cv_full.wait(u_lock, [&] { return queue.size() < max_tokens; });
+    queue.push(std::move(new_token));
+    /* Una vez que se agrego un elemento, se notifica al condition
+     * variable que la cola ya no esta vacia. */
+    cv_empty.notify_all();
 }
 
-bool ToDoQueue::ifNotEmptyPop(ToDoToken & token) {
-    // Se utiliza lock guard, que funciona con RAII.
-    std::lock_guard<std::mutex> lock_guard(m);
-    if (!queue.empty()) {
-        token = queue.front();
-        queue.pop();
-        return true;
-    }
-    return false;
+
+ToDoToken ToDoQueue::pop(){
+    std::unique_lock<std::mutex> u_lock(m);
+    // Si la cola esta vacia se espera.
+    cv_empty.wait(u_lock, [&] { return !queue.empty(); });
+    ToDoToken token = std::move(queue.front());
+    queue.pop();
+    cv_full.notify_all();
+    return token;
 }
 
 

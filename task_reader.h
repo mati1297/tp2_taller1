@@ -2,6 +2,7 @@
 #define TP2_TALLER1_TASK_READER_H
 
 #include <string>
+#include <map>
 #include "task.h"
 #include "min.h"
 #include "sum.h"
@@ -16,30 +17,18 @@ class Task;
 class TaskReader {
 private:
     const Sum sum;
-    const Min min;
     const Max max;
+    const Min min;
     const Mean mean;
-
-    // Metodo privado que valida y setea el operador.
-    void setupOperator(Task &task, const std::string &text) const;
-
-    // Metodo privado que setea los rangos de lectura.
-    void setupRanges(Task &task, const std::string& text_from,
-                            const std::string& text_to) const;
-
-    // Metodo privado que setea la columna que se debe procesar.
-    void setupColumnToProcess(Task &task, const std::string& text) const;
-
-    // Metodo privado que setea la cantidad de particiones por filas.
-    void setupPartitionRows(Task &task, const std::string& text) const;
+    const std::map<const std::string, const Operator*> operators;
 
 public:
     // Constructor sin parametros.
     TaskReader();
 
-    /* Lee de stdin, valida y carga task. Devuelve true si se pudo leer
-     * y false si se alcanzo eof. */
-    bool read(Task& task);
+    /* Lee de stdin, valida y carga task. Recibe como parametro
+     * la task y la cantidad de columnas por particion. */
+    Task read(Task &task, const uint32_t &part_columns);
 };
 
 

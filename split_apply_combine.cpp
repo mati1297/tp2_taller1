@@ -6,120 +6,66 @@
 #include "data_loader.h"
 #include "task.h"
 #include "task_reader.h"
-#include "string_to_num.h"
 #include "to_do_queue.h"
 #include "worker.h"
+#include "protected_results_vector.h"
 
+SplitApplyCombine::SplitApplyCombine(const char * const dataset_filename,
+                                     const std::string & text_columns,
+                                     const std::string & text_workers):
+                                 workers(validateAndConvert(text_workers)),
+                                 part_columns(validateAndConvert(text_columns)),
+                                 data_loader(dataset_filename), queue(workers),
+                                 results_vector(), workers_vector(workers,
+                                 Worker(queue, results_vector, part_columns)),
+                                 threads_vector(workers) {}
 
-SplitApplyCombine::SplitApplyCombine(): data_loader() {}
-
-void SplitApplyCombine::execute(const char * const dataset_filename,
-                         const std::string & text_columns,
-                         const std::string & text_workers) {
-    uint32_t part_columns = 0;
-    uint8_t workers_cant = 0;
-
-    /* Se validan los datos ingresados, se abre el archivo, y se convierten
-     * a datos numericos las columnas y workers_cant. */
-    try {
-        loadAndValidate(dataset_filename, text_columns,
-                        text_workers, part_columns, workers_cant);
-    }
-    catch(std::exception & e) {
-        throw;
-    }
-
-    // Se inicializa la lista, el vector de resultados y el vector de workers.
-    ToDoQueue queue;
-    std::vector<Result> results(0);
-    std::vector<Worker> workers_vector(workers_cant,
-                                       Worker(queue,
-                                              data_loader,
-                                              results, part_columns));
-
-    // Se crea el vector de threads, pero todavia no se lanzan.
-    std::vector<std::thread> threads_vector(workers_cant);
-
+void SplitApplyCombine::execute() {
     // Se lanzan los threads, asignandole un worker a cada uno.
-    for (uint8_t i = 0; i < workers_cant; i++)
+    for (uint8_t i = 0; i < workers; i++)
         threads_vector[i] = std::thread(workers_vector[i]);
 
-    // Se crea una task y el task reader.
-    Task task(part_columns);
+    // Se crea el Task Reader.
     TaskReader task_reader;
 
-    // Se realiza un loop infinito hasta que termine la entrada.
-    for (size_t i = 0; true ; i++) {
+    // Se realiza un loop hasta que termine la entrada.
+    for (size_t i = 0; std::cin.peek() != EOF && !std::cin.eof(); i++) {
         // Se lee la entrada y se carga en la task.
         try {
             // Si no se leyo se rompe el ciclo.
-            if (!task_reader.read(task))
-                break;
+            Task task = task_reader.read(task, part_columns);
             // Se crea un nuevo resultado.
-            results.emplace_back(Result());
-        }
-        catch(std::exception &e) {
-            // Si falla se terminan los hilos y se termina el programa.
-            endAndJoin(workers_cant, threads_vector, queue);
-            std::string msg = e.what();
-            throw std::invalid_argument("Error al leer la tarea: " + msg);
-        }
-        // Se carga la cola con los quehaceres correspondientes a la tarea.
-        try {
-            task.loadQueue(queue, i);
+            results_vector.emplace_back(Result());
+            // Se carga la cola con los quehaceres correspondientes a la tarea.
+            task.loadQueue(queue, data_loader, i);
         }
         catch(std::exception &e){
             // Si falla se terminan los hilos y se termina el programa.
-            endAndJoin(workers_cant, threads_vector, queue);
-            std::string msg = e.what();
-            throw std::invalid_argument("Error al correr la tarea: " + msg);
+            endAndJoin();
+            throw;
         }
     }
+    // Se terminan y joinean los hilos.
+    endAndJoin();
 
-    endAndJoin(workers_cant, threads_vector, queue);
-
-    // Se imprimen los de todas las tareas realizadas.
-    for (size_t i = 0; i < results.size(); i++){
-        std::cout << results[i] << std::endl;
-    }
+    // Se imprimen los resultados.
+    std::cout << results_vector;
 }
 
-void SplitApplyCombine::endAndJoin(const uint8_t & workers_cant,
-                                   std::vector<std::thread> & threads_vector,
-                                   ToDoQueue & queue){
-    for (uint8_t i = 0; i < workers_cant; i++)
-        queue.push(ToDoToken());
+void SplitApplyCombine::endAndJoin(){
+    for (uint8_t i = 0; i < workers; i++) {
+        ToDoToken end_token;
+        queue.push(end_token);
+    }
 
-    for (uint8_t i = 0; i < workers_cant; i++)
+    for (uint8_t i = 0; i < workers; i++)
         threads_vector[i].join();
 }
 
 
-void SplitApplyCombine::loadAndValidate(const char * const dataset_filename,
-                     const std::string & text_columns,
-                     const std::string & text_workers,
-                     uint32_t & columns, uint8_t & workers) {
-    try {
-        data_loader.openFile(dataset_filename);
-    }
-    catch(std::exception & e) {
-        std::string msg = e.what();
-        throw std::invalid_argument("Error al abrir el archivo: " + msg);
-    }
+uint32_t SplitApplyCombine::validateAndConvert(const std::string & text){
+    if (text.find('-') != std::string::npos)
+        throw std::invalid_argument("numero negativo");
 
-    try {
-        columns = StringToNum::stou32(text_columns);
-    }
-    catch(std::exception& e){
-        std::string msg = e.what();
-        throw std::invalid_argument("Error al leer las columnas: " + msg);
-    }
-
-    try {
-        workers = StringToNum::stou8(text_workers);
-    }
-    catch(std::exception& e){
-        std::string msg = e.what();
-        throw std::invalid_argument("Error al leer la fila inicial: " + msg);
-    }
+    return std::stoul(text);
 }

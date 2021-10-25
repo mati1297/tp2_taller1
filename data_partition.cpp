@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <utility>
 #include "data_partition.h"
 
 DataPartition::DataPartition(const uint32_t & rows,
@@ -7,12 +8,28 @@ DataPartition::DataPartition(const uint32_t & rows,
                              columns(columns), _row(0),
                              _column(0), closed(false),
                              data(columns,
-                             std::vector<uint16_t>(rows)) {}
+                             std::vector<uint16_t>(rows)) {
+}
 
-DataPartition::DataPartition(const DataPartition &orig): rows(orig.rows),
-                             columns(orig.columns), _row(orig._row),
-                             _column(orig._column), closed(orig.closed),
-                             data(orig.data) {}
+DataPartition::DataPartition(DataPartition &&orig) noexcept:
+                             rows(orig.rows), columns(orig.columns),
+                             _row(orig._row), _column(orig._column),
+                             closed(orig.closed), data(std::move(orig.data)) {
+    orig.rows = orig.columns = orig._row = orig._column = 0;
+    orig.closed = false;
+}
+
+DataPartition &DataPartition::operator=(DataPartition &&orig) noexcept {
+    rows = orig.rows;
+    columns = orig.columns;
+    _row = orig._row;
+    _column = orig._column;
+    closed = orig.closed;
+    data = std::vector<std::vector<uint16_t>>(0);
+    orig.rows = orig.columns = orig._row = orig._column = 0;
+    orig.closed = false;
+    return *this;
+}
 
 void DataPartition::load(const uint16_t & number) {
     // Si la particion esta cerrada, se devuelve una excepcion.
@@ -84,13 +101,7 @@ const uint32_t & DataPartition::getFullRows() const {
     return _row;
 }
 
-void DataPartition::setRows(const uint32_t & rows_) {
-    if (this->rows == rows_)
-        return;
-    this->rows = rows_;
-    for (uint32_t i = 0; i < columns; i++)
-        data[i] = std::vector<uint16_t>(rows_);
-}
+
 
 
 

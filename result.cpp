@@ -46,6 +46,7 @@ void Result::setExtra(const uint32_t & extra_) {
 }
 
 void Result::setSeparator(const std::string & separator_) {
+    std::lock_guard<std::mutex> lock_guard(mutex);
     initialized = true;
     separator = separator_;
 }

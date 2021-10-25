@@ -1,9 +1,4 @@
 #include <iostream>
-#include "file_reader.h"
-#include "data_loader.h"
-#include "data_partition.h"
-#include "task.h"
-#include "task_reader.h"
 #include "split_apply_combine.h"
 
 int main(int argc, char * argv[]) {
@@ -12,15 +7,13 @@ int main(int argc, char * argv[]) {
         return EXIT_FAILURE;
     }
 
-    SplitApplyCombine split_apply_combine;
-
     try {
-        split_apply_combine.execute(argv[1], argv[2], argv[3]);
+        SplitApplyCombine split_apply_combine(argv[1], argv[2], argv[3]);
+        split_apply_combine.execute();
     }
     catch(std::exception & e){
-        std::cerr << e.what() << std::endl;
+        std::cerr << "Error: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
-
     return EXIT_SUCCESS;
 }

@@ -13,7 +13,7 @@
 class DataPartition {
 private:
     uint32_t rows;
-    const uint32_t columns;
+    uint32_t columns;
     uint32_t _row;
     uint32_t _column;
     bool closed;
@@ -24,8 +24,11 @@ public:
     DataPartition(const uint32_t & rows,
                   const uint32_t & columns);
 
-    // Constructor por copia.
-    DataPartition(const DataPartition & orig);
+    DataPartition(const DataPartition & orig) = delete;
+
+    DataPartition(DataPartition && orig) noexcept;
+
+    DataPartition& operator=(DataPartition && orig) noexcept;
 
     // Carga un numero en la siguiente posicion de la particion.
     void load(const uint16_t & number);
@@ -45,9 +48,6 @@ public:
 
     // Devuelve la cantidad de filas ocupadas de la particion.
     const uint32_t & getFullRows() const;
-
-    // Setea la cantidad de filas de la particion.
-    void setRows(const uint32_t &rows_);
 };
 
 #endif //TP2_TALLER1_DATAPARTITION_H
