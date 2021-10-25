@@ -32,8 +32,6 @@ La clase ```TaskReader``` se encarga de leer los datos desde la entrada estandar
 
 Los *tokens* se representan mediante la clase ```ToDoToken```, estos poseen los datos a procesar (un objeto ```DataPartition```), la operacion que se debe realizar y el indice donde se debe guardar el resultado. Son inicializados y cargados por la clase ```Task``` y agregados a la ```ToDoQueue```.
 
-La cola ```ToDoQueue``` es un monitor de un objeto ```queue```, está protegido por un ```std::mutex``` ya que es accedida al mismo tiempo por el *main thread* y los *threads* *workers*. Sus dos métodos son ```push()``` e ```ifNotEmptyPop()``` que permiten agregar y quitar elementos de la cola respectivamente.
-
 La cola ```ToDoQueue``` es un monitor de un objeto ```queue``` que lo convierte en una cola bloqueante y limitada. Esta cola no permite cargar mas de la cantidad que se le indique de *tokens* en ella, y al llegarse al máximo, bloquea. Lo mismo ocurre cuando se encuentra vacia y se quiere obtener un elemento, la cola se bloquea hasta que se cargue algun elemento.
 
 La clase ```DataPartition``` representa las particiones que cargan los distintos *workers*, esta está formada por un vector de vectores de ```uint16_t```, está organizado de manera tal que primero se accede a las columnas, por comodidad a la hora de procesar. Esta clase posee un método de carga ```load()```, el cual carga de a un ```uint16_t``` por vez, este método ese ejecutado por la clase ```DataLoader```. 
